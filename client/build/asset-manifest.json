@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/MapaViajero/static/css/main.766dc61f.css",
+    "main.js": "/MapaViajero/static/js/main.cc956a85.js",
+    "static/js/453.419a5d54.chunk.js": "/MapaViajero/static/js/453.419a5d54.chunk.js",
+    "static/media/mapa.png": "/MapaViajero/static/media/mapa.5f5379e414b10775fb9b.png",
+    "static/media/imagenes.png": "/MapaViajero/static/media/imagenes.7df91cb70532971b89f6.png",
+    "static/media/imgregistro.png": "/MapaViajero/static/media/imgregistro.f71a30150d9083219f16.png",
+    "static/media/Publi.png": "/MapaViajero/static/media/Publi.17163b083e716ee70fdd.png",
+    "static/media/img-canoa.png": "/MapaViajero/static/media/img-canoa.1a80f24fdcda9b88801c.png",
+    "static/media/image2.png": "/MapaViajero/static/media/image2.874b495ec213041e209e.png",
+    "static/media/image5.png": "/MapaViajero/static/media/image5.4693031d000eaba3e1df.png",
+    "index.html": "/MapaViajero/index.html",
+    "main.766dc61f.css.map": "/MapaViajero/static/css/main.766dc61f.css.map",
+    "main.cc956a85.js.map": "/MapaViajero/static/js/main.cc956a85.js.map",
+    "453.419a5d54.chunk.js.map": "/MapaViajero/static/js/453.419a5d54.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.766dc61f.css",
+    "static/js/main.cc956a85.js"
+  ]
+}

@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Just+Me+Again+Down+Here&display=swap');
+
+
+
+.Landing{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 80vh; /* Establece la altura completa para el div */
+}
+
+.Landing .bloque{
+    flex: 1; /*Reparte el espacio entre los dos bloques igual*/
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.Landing .bloque .textos{
+    margin-left: 90px;
+
+}
+
+.Landing .bloque .botoneslanding{
+    display: flex;
+    width: 650px;
+    align-items: center;
+    margin-top: 30px;
+
+
+}
+
+#div2{
+    display: none;
+}
+
+.Landing .bloque h1{
+    font-size: 90px;
+    font-family: "Jost", sans-serif;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);;
+    /* font-weight: bold; */
+
+}
+
+#textosjuntos{
+    display: flex;
+    flex-direction: row;
+}
+
+
+
+@media screen and (max-width: 768px) {
+    #imagenes{
+        display: none; /* Ocultar bloque de imágenes en la versión móvil */
+    }
+
+    .Landing{
+        display: block;
+        height: 80vh; /* Establece la altura completa para el div */
+    }
+
+    .Landing .bloque{
+        align-items: start;
+        margin-left: 50px;
+    
+    }
+
+    .Landing .bloque h1{
+        font-size: 60px;
+
+    }
+
+    #textosjuntos{
+        flex-direction: column;
+    }
+
+    #div2{
+        display: block;
+        margin-top: 40px;
+        display: flex;
+        justify-content: center;
+    }
+
+
+    .Landing .bloque .textos{
+        margin-left: 0px;
+    
+    }
+
+    .Landing .bloque h3{
+        display: none;
+    }
+
+}
+
+
+.Landing .bloque h3{
+    font-size: 25px;
+    margin-top: 20px;
+    font-family: "Jost", sans-serif;
+    font-weight: bold;
+
+}
+
+#imagenes{
+   width: 700px;
+}
+
+
+#textodistinto{
+    font-family: "Just Me Again Down Here";
+    color: #46AF12;
+}
+
+#textosjuntos{
+    display: flex;
+}
+
+#empieza{
+    padding: 5px 20px; /* Ajusta el padding para el tamaño del botón */
+    border: none; /* Sin borde */
+    border-radius: 40px; /* Añade bordes redondeados */
+    font-size: 25px;
+    margin-right: 30px;
+    background-color: #46AF12; /* Color de fondo */
+    color: white; /* Color del texto */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+
+#info {
+    color: black;
+    /* Color del texto */
+    text-decoration: none;
+    /* Puedes cambiarlo a none si no deseas subrayado */
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 25px;
+    font-family: "Jost", sans-serif;
+    
+}
+

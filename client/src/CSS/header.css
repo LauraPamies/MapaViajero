@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
+
+.custom-navbar-padding {
+    padding-left: 100px;
+    /* Margen izquierdo */
+    padding-right: 100px;
+    /* Margen derecho */
+}
+
+
+#login {
+    color: black;
+    /* Color del texto */
+    text-decoration: underline;
+    /* Puedes cambiarlo a none si no deseas subrayado */
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 25px;
+    font-family: "Jost", sans-serif;
+
+}
+
+#itinerarioslink, #presupuestolink, #contactolink {
+    color: black;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 25px;
+    font-family: "Jost", sans-serif;
+
+}
+#registro {
+    padding: 10px 20px;
+    /* Ajusta el padding para el tamaño del botón */
+    border: none;
+    /* Sin borde */
+    border-radius: 40px;
+    /* Añade bordes redondeados */
+    margin: 0 30px;
+    font-size: 25px;
+    background-color: #46AF12;
+    /* Color de fondo */
+    color: white;
+    /* Color del texto */
+    cursor: pointer;
+    /* Cambia el cursor al pasar sobre el botón */
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+
+#logo {
+    cursor: pointer;
+}
+
+#titulomapa {
+    font-size: 35px;
+    font-family: "Jost", sans-serif;
+
+
+}
+
+
+/*
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-----------------MEDIA QUERY--------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+*/
+/* Media query para dispositivos móviles */
+@media (max-width: 991px) {
+    .custom-navbar-padding {
+        padding-left: 20px;
+        /* Reducir el margen izquierdo en dispositivos móviles */
+        padding-right: 20px;
+        /* Reducir el margen derecho en dispositivos móviles */
+    }
+
+    #titulomapa {
+        display: none;
+    }
+
+    #login, #itinerarioslink, #presupuestolink, #contactolink {
+        font-weight: normal;
+        text-decoration: underline;
+        font-size: 25px;
+    }
+
+    #registro {
+        padding: 0px;
+        border: none;
+        text-decoration: underline;
+        border-radius: 0px;
+        margin: 0px;
+        font-size: 25px;
+        background-color: transparent;
+        color: black;
+        cursor: pointer;
+        box-shadow: none;
+    }
+
+   
+    
+}
+
+
+
+
