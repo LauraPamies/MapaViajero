@@ -83,7 +83,7 @@ function CuentaHeader() {
     return (
 
 
-        <Navbar expand="lg" className="justify-content-between">
+        <Navbar expand="lg" id="headercuenta" className="justify-content-between">
             <Container fluid className="custom-navbar-padding">
                 <Navbar.Brand className="d-flex align-items-center">
                     <Link to="/">

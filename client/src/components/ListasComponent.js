@@ -12,6 +12,12 @@ import { useForm } from "react-hook-form";
 
 const ListasComponent = () => {
 
+    const ir_mapa = () => {
+
+        navigate("/mapa");
+
+    };
+
     const navigate = useNavigate();
     //FORMULARIO
     const { register, handleSubmit,
@@ -52,103 +58,115 @@ const ListasComponent = () => {
             </div>
 
             <div className='contenidoListas'>
+
                 <form onSubmit={onSubmit} id='formularioreg'>
+                    <div id='contenedorformulario'>
+                        {/* Destino */}
+                        <div id="inputformlista">
+                            {/* <span id="icons"><img src={usericon} alt='logo' width={"50px"}></img></span> */}
+                            <input id="input" placeholder="Destino" type='text'
+                                {...register("destino", {
+                                    required: {
+                                        value: true,
+                                        message: "Destino requerido"
+                                    }
+                                })}
+                            ></input>
+                        </div>
+                        <div>
+                            {errors.destino && <span>{errors.destino.message}</span>}
+                        </div>
 
-                    {/* Destino */}
-                    <div id="inputformreg">
-                        {/* <span id="icons"><img src={usericon} alt='logo' width={"50px"}></img></span> */}
-                        <input id="input" placeholder="Destino" type='text'
-                            {...register("destino", {
-                                required: {
-                                    value: true,
-                                    message: "Destino requerido"
-                                }
-                            })}
-                        ></input>
+
+                        {/* Dias */}
+                        <div id="inputformlista">
+                            {/* <span id="icons"><img src={usericon} alt='logo' width={"50px"}></img></span> */}
+                            <input id="input" placeholder="Nº días" type='number'
+                                {...register("dias", {
+                                    required: {
+                                        value: true,
+                                        message: "Nº días requerido"
+                                    }
+                                })}
+                            ></input>
+                        </div>
+                        <div>
+                            {errors.dias && <span>{errors.dias.message}</span>}
+                        </div>
+
+
+                        {/* Personas */}
+                        <div id="inputformlista">
+                            {/* <span id="icons"><img src={usericon} alt='logo' width={"50px"}></img></span> */}
+                            <input id="input" placeholder="Nº personas" type='number'
+                                {...register("personas", {
+                                    required: {
+                                        value: true,
+                                        message: "Nº personas requerido"
+                                    }
+                                })}
+                            ></input>
+                        </div>
+                        <div>
+                            {errors.personas && <span>{errors.personas.message}</span>}
+                        </div>
+
+                        <div id='divpresupuestostop'>
+                            <h5>Presupuesto</h5>
+                            {/* Presupuesto Mínimo */}
+
+                            <div id='divpresupuestos'>
+                            <div id="inputformlista">
+                                <input id="input" placeholder="Mínimo" type='number'
+                                    {...register("pre_min", {
+                                        required: {
+                                            value: true,
+                                            message: "Mínimo requerido"
+                                        }
+                                    })}
+                                ></input>
+                            </div>
+                            <div>
+                                {errors.pre_min && <span>{errors.pre_min.message}</span>}
+                            </div>
+
+
+                            {/* Presupuesto Máximo */}
+                            <div id="inputformlista">
+                                <input id="input" placeholder="Máximo" type='number'
+                                    {...register("pre_max", {
+                                        required: {
+                                            value: true,
+                                            message: "Máximo requerido"
+                                        }
+                                    })}
+                                ></input>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            {errors.pre_max && <span>{errors.pre_max.message}</span>}
+                        </div>
+
+
+                        {/* BOTON */}
+                        <button type='submit' id='botonItinerarios'>Buscar itinerarios</button>
+
                     </div>
-                    <div>
-                        {errors.destino && <span>{errors.destino.message}</span>}
-                    </div>
-
-
-                    {/* Dias */}
-                    <div id="inputformreg">
-                        {/* <span id="icons"><img src={usericon} alt='logo' width={"50px"}></img></span> */}
-                        <input id="input" placeholder="Nº días" type='number'
-                            {...register("dias", {
-                                required: {
-                                    value: true,
-                                    message: "Nº días requerido"
-                                }
-                            })}
-                        ></input>
-                    </div>
-                    <div>
-                        {errors.dias && <span>{errors.dias.message}</span>}
-                    </div>
-
-
-                    {/* Personas */}
-                    <div id="inputformreg">
-                        {/* <span id="icons"><img src={usericon} alt='logo' width={"50px"}></img></span> */}
-                        <input id="input" placeholder="Nº personas" type='number'
-                            {...register("personas", {
-                                required: {
-                                    value: true,
-                                    message: "Nº personas requerido"
-                                }
-                            })}
-                        ></input>
-                    </div>
-                    <div>
-                        {errors.personas && <span>{errors.personas.message}</span>}
-                    </div>
-
-                    {/* Presupuesto Mínimo */}
-                    <div id="inputformreg">
-                        <input id="input" placeholder="Mínimo" type='number'
-                            {...register("pre_min", {
-                                required: {
-                                    value: true,
-                                    message: "Mínimo requerido"
-                                }
-                            })}
-                        ></input>
-                    </div>
-                    <div>
-                        {errors.pre_min && <span>{errors.pre_min.message}</span>}
-                    </div>
-
-
-                    {/* Presupuesto Máximo */}
-                    <div id="inputformreg">
-                        <input id="input" placeholder="Máximo" type='number'
-                            {...register("pre_max", {
-                                required: {
-                                    value: true,
-                                    message: "Máximo requerido"
-                                }
-                            })}
-                        ></input>
-                    </div>
-                    <div>
-                        {errors.pre_max && <span>{errors.pre_max.message}</span>}
-                    </div>
-
-
-                    {/* BOTON */}
-                    <button type='submit' id='botonItinerarios'>Buscar itinerarios</button>
-
-
                 </form>
 
 
-                <button  id='botonItinerarios'>Ver mapa</button>
+
+
+                <button id='botonmapa' onClick={ir_mapa}>Ver mapa</button>
 
                 <div id='itinerarios'>
 
                 </div>
             </div>
+
+
             <div className='publicidad2'>
                 <img src={publi} alt='publi'></img>
 

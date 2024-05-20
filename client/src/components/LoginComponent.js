@@ -53,7 +53,7 @@ const LoginComponent = () => {
     useEffect(() => {
         const isLoggedIn = localStorage.getItem('isLoggedIn');
         if (isLoggedIn === 'true') {
-            navigate("/presupuesto");
+            navigate("/listas");
         }
     }, []);
 
@@ -67,7 +67,7 @@ const LoginComponent = () => {
                 localStorage.setItem('userId', res.data[0].id);
                 localStorage.setItem('userName', res.data[0].name);
                 localStorage.setItem('userEmail', res.data[0].email);
-                navigate("/presupuesto");
+                navigate("/listas");
             } else {
                 noti.fire({
                     icon: "error",
