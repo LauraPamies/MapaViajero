@@ -18,8 +18,14 @@ const ListasComponent = () => {
 
     };
 
+
+
     const [itinerarios, setItinerarios] = useState([]);
 
+
+    const [orden, setOrden] = useState('');
+
+   
     const navigate = useNavigate();
     //FORMULARIO
     const { register, handleSubmit,
@@ -46,18 +52,26 @@ const ListasComponent = () => {
             console.log(localStorage.getItem('isLoggedIn'));
 
         }
+
     }, []);
+
+
 
     const onSubmit = handleSubmit(async (data) => {
         console.log(data);
+        var orden = "precio_asc";
         try {
-            const response = await axios.get('http://localhost:3050/getItinerarios');
+            const response = await axios.post('http://localhost:3050/getItinerarios', {
+                orden: orden
+            });
             setItinerarios(response.data);
+
+
         } catch (error) {
             console.error('Error al obtener los itinerarios:', error);
         }
-
     })
+
 
     return (
         <div className='Listasdiv'>
@@ -177,10 +191,9 @@ const ListasComponent = () => {
                     </div>
                 </form>
 
-
-
-
                 <button id='botonmapa' onClick={ir_mapa}>Ver mapa</button>
+
+                
 
 
                 <div className="itinerarios-container">
@@ -188,16 +201,18 @@ const ListasComponent = () => {
                         <div key={index} className="itinerario-card">
                             {/* <img src={itinerario.foto} alt={itinerario.titulo} className="itinerario-imagen" /> */}
                             <img
-              src={`${process.env.PUBLIC_URL}/fotos_itinerarios/${itinerario.foto.split('/').pop()}`}
-              alt={itinerario.titulo}
-              className="itinerario-imagen"
-            />
+                                src={`${process.env.PUBLIC_URL}/fotos_itinerarios/${itinerario.foto.split('/').pop()}`}
+                                alt={itinerario.titulo}
+                                className="itinerario-imagen"
+                            />
                             <div className="itinerario-info">
                                 <h2 className="itinerario-titulo">{itinerario.titulo}</h2>
                                 <p>{itinerario.dias} días</p>
                                 <p>{itinerario.personas} personas</p>
                                 <p className="itinerario-precio">{itinerario.precio}€</p>
-                                <p className="itinerario-autor">{itinerario.autor_id}</p>
+                                <p className="itinerario-autor">{itinerario.name}</p>
+                                <p>{itinerario.etiquetas}</p>
+
                             </div>
                         </div>
                     ))}
