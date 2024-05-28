@@ -29,6 +29,7 @@
     flex-direction: row;
     margin-top: 30px;
     align-items: flex-end;
+    
 }
 
 #divpresupuestos{
@@ -41,7 +42,26 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    
 }
+
+#contenedorpresupuestos{
+display: flex;
+
+}
+
+#divs-errores{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+#inputformlista{
+    display: flex;
+    flex-direction: column;
+}
+
 
 #input{
     padding-left: 4rem;
@@ -82,3 +102,51 @@
     cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
+
+/*ITINERARIOS*/
+.itinerarios-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .itinerario-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 16px;
+    padding: 16px;
+    max-width: 600px;
+    width: 100%;
+  }
+  
+  .itinerario-imagen {
+    border-radius: 8px;
+    width: 150px;
+    height: auto;
+    margin-right: 16px;
+  }
+  
+  .itinerario-info {
+    text-align: left;
+  }
+  
+  .itinerario-titulo {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .itinerario-precio {
+    color: #46AF12;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .itinerario-autor {
+    font-style: italic;
+    color: #777;
+  }

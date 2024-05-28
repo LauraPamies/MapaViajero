@@ -18,6 +18,8 @@ const ListasComponent = () => {
 
     };
 
+    const [itinerarios, setItinerarios] = useState([]);
+
     const navigate = useNavigate();
     //FORMULARIO
     const { register, handleSubmit,
@@ -46,8 +48,14 @@ const ListasComponent = () => {
         }
     }, []);
 
-    const onSubmit = handleSubmit((data) => {
+    const onSubmit = handleSubmit(async (data) => {
         console.log(data);
+        try {
+            const response = await axios.get('http://localhost:3050/getItinerarios');
+            setItinerarios(response.data);
+        } catch (error) {
+            console.error('Error al obtener los itinerarios:', error);
+        }
 
     })
 
@@ -62,91 +70,104 @@ const ListasComponent = () => {
                 <form onSubmit={onSubmit} id='formularioreg'>
                     <div id='contenedorformulario'>
                         {/* Destino */}
-                        <div id="inputformlista">
-                            {/* <span id="icons"><img src={usericon} alt='logo' width={"50px"}></img></span> */}
-                            <input id="input" placeholder="Destino" type='text'
-                                {...register("destino", {
-                                    required: {
-                                        value: true,
-                                        message: "Destino requerido"
-                                    }
-                                })}
-                            ></input>
-                        </div>
-                        <div>
-                            {errors.destino && <span>{errors.destino.message}</span>}
-                        </div>
-
-
-                        {/* Dias */}
-                        <div id="inputformlista">
-                            {/* <span id="icons"><img src={usericon} alt='logo' width={"50px"}></img></span> */}
-                            <input id="input" placeholder="Nº días" type='number'
-                                {...register("dias", {
-                                    required: {
-                                        value: true,
-                                        message: "Nº días requerido"
-                                    }
-                                })}
-                            ></input>
-                        </div>
-                        <div>
-                            {errors.dias && <span>{errors.dias.message}</span>}
-                        </div>
-
-
-                        {/* Personas */}
-                        <div id="inputformlista">
-                            {/* <span id="icons"><img src={usericon} alt='logo' width={"50px"}></img></span> */}
-                            <input id="input" placeholder="Nº personas" type='number'
-                                {...register("personas", {
-                                    required: {
-                                        value: true,
-                                        message: "Nº personas requerido"
-                                    }
-                                })}
-                            ></input>
-                        </div>
-                        <div>
-                            {errors.personas && <span>{errors.personas.message}</span>}
-                        </div>
-
-                        <div id='divpresupuestostop'>
-                            <h5>Presupuesto</h5>
-                            {/* Presupuesto Mínimo */}
-
-                            <div id='divpresupuestos'>
+                        <div id='divs-errores'>
                             <div id="inputformlista">
-                                <input id="input" placeholder="Mínimo" type='number'
-                                    {...register("pre_min", {
+                                {/* <span id="icons"><img src={usericon} alt='logo' width={"50px"}></img></span> */}
+                                <input id="input" placeholder="Destino" type='text'
+                                    {...register("destino", {
                                         required: {
                                             value: true,
-                                            message: "Mínimo requerido"
+                                            message: "Destino requerido"
                                         }
                                     })}
                                 ></input>
                             </div>
                             <div>
-                                {errors.pre_min && <span>{errors.pre_min.message}</span>}
+                                {errors.destino && <span>{errors.destino.message}</span>}
                             </div>
+                        </div>
 
-
-                            {/* Presupuesto Máximo */}
+                        {/* Dias */}
+                        <div id='divs-errores'>
                             <div id="inputformlista">
-                                <input id="input" placeholder="Máximo" type='number'
-                                    {...register("pre_max", {
+                                {/* <span id="icons"><img src={usericon} alt='logo' width={"50px"}></img></span> */}
+                                <input id="input" placeholder="Nº días" type='number'
+                                    {...register("dias", {
                                         required: {
                                             value: true,
-                                            message: "Máximo requerido"
+                                            message: "Nº días requerido"
                                         }
                                     })}
                                 ></input>
                             </div>
+                            <div>
+                                {errors.dias && <span>{errors.dias.message}</span>}
                             </div>
                         </div>
 
-                        <div>
-                            {errors.pre_max && <span>{errors.pre_max.message}</span>}
+                        {/* Personas */}
+                        <div id='divs-errores'>
+                            <div id="inputformlista">
+                                {/* <span id="icons"><img src={usericon} alt='logo' width={"50px"}></img></span> */}
+                                <input id="input" placeholder="Nº personas" type='number'
+                                    {...register("personas", {
+                                        required: {
+                                            value: true,
+                                            message: "Nº personas requerido"
+                                        }
+                                    })}
+                                ></input>
+                            </div>
+                            <div>
+                                {errors.personas && <span>{errors.personas.message}</span>}
+                            </div>
+                        </div>
+
+
+                        <div id='divpresupuestostop'>
+                            <h5>Presupuesto</h5>
+                            {/* Presupuesto Mínimo */}
+                            <div id='contenedorpresupuestos'>
+                                <div id='divs-errores'>
+                                    <div id='divpresupuestos'>
+                                        <div id="inputformlista">
+                                            <input id="input" placeholder="Mínimo" type='number'
+                                                {...register("pre_min", {
+                                                    required: {
+                                                        value: true,
+                                                        message: "Mínimo requerido"
+                                                    }
+                                                })}
+                                            ></input>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        {errors.pre_min && <span>{errors.pre_min.message}</span>}
+                                    </div>
+
+                                </div>
+
+                                <div id='divs-errores'>
+                                    {/* Presupuesto Máximo */}
+                                    <div id='divs-errores'>
+                                        <div id="inputformlista">
+                                            <input id="input" placeholder="Máximo" type='number'
+                                                {...register("pre_max", {
+                                                    required: {
+                                                        value: true,
+                                                        message: "Máximo requerido"
+                                                    }
+                                                })}
+                                            ></input>
+                                        </div>
+                                    </div>
+
+
+                                    <div>
+                                        {errors.pre_max && <span>{errors.pre_max.message}</span>}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
 
@@ -161,17 +182,35 @@ const ListasComponent = () => {
 
                 <button id='botonmapa' onClick={ir_mapa}>Ver mapa</button>
 
-                <div id='itinerarios'>
 
+                <div className="itinerarios-container">
+                    {itinerarios.map((itinerario, index) => (
+                        <div key={index} className="itinerario-card">
+                            {/* <img src={itinerario.foto} alt={itinerario.titulo} className="itinerario-imagen" /> */}
+                            <img
+              src={`${process.env.PUBLIC_URL}/fotos_itinerarios/${itinerario.foto.split('/').pop()}`}
+              alt={itinerario.titulo}
+              className="itinerario-imagen"
+            />
+                            <div className="itinerario-info">
+                                <h2 className="itinerario-titulo">{itinerario.titulo}</h2>
+                                <p>{itinerario.dias} días</p>
+                                <p>{itinerario.personas} personas</p>
+                                <p className="itinerario-precio">{itinerario.precio}€</p>
+                                <p className="itinerario-autor">{itinerario.autor_id}</p>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
+
 
 
             <div className='publicidad2'>
                 <img src={publi} alt='publi'></img>
 
             </div>
-        </div>
+        </div >
     )
 }
 

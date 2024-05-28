@@ -4,6 +4,7 @@ import cors from "cors"
 
 //IMPORTAMOS LAS RUTAS
 import usuarios_routes from "./routes/usuarios.routes.js"
+import itinerarios_routes from "./routes/itinerarios.routes.js"
 
 const app = express();
 app.use(express.json()); //PARA PODER INTERPRETAR LOS DATOS JSON
@@ -12,6 +13,7 @@ app.use(cors()); //ESTO ES IMPORTANTE PARA QUE DESDE EL CLIENTE SE PUEDA PEDIR S
 
 //USAMOS LAS RUTAS IMPORTADAS
 app.use(usuarios_routes)
+app.use(itinerarios_routes)
 // app.use("Nombre de archivo rutas")
 
 
