@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import '../CSS/header.css';
 import logo from '../images/logo.png';
 import user from '../images/User.png';
-import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useLocation, matchPath } from 'react-router-dom';
 
 
 import Container from 'react-bootstrap/Container';
@@ -14,7 +14,12 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 function HeaderComponent() {
     const location = useLocation(); //para saber la localización
 
+      // Extraer la propiedad pathname de location
+      const { pathname } = location;
 
+      // Verificar si la ruta coincide con uno de los patrones especificados
+      const isCuentaHeaderVisible = pathname === '/presupuesto' || pathname === '/listas' || pathname.startsWith('/itinerario/');
+  
 
 
     return (
@@ -22,7 +27,7 @@ function HeaderComponent() {
         <header>
             {location.pathname === '/' && <LandingHeader />}
             {location.pathname === '/login' && <LoginHeader />}
-            {(location.pathname === '/presupuesto' || location.pathname === '/listas') && <CuentaHeader />}
+            {isCuentaHeaderVisible && <CuentaHeader />}
         </header>
     );
 
