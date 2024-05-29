@@ -10,6 +10,7 @@ import publi from '../images/Publi.png';
 import { useForm } from "react-hook-form";
 
 
+
 const ListasComponent = () => {
 
     const ir_mapa = () => {
@@ -25,7 +26,6 @@ const ListasComponent = () => {
 
     const [orden, setOrden] = useState('');
 
-   
     const navigate = useNavigate();
     //FORMULARIO
     const { register, handleSubmit,
@@ -55,21 +55,38 @@ const ListasComponent = () => {
 
     }, []);
 
+    const handleItinerarioClick = (id) => {
+        // console.log(itinerarios);
+        // console.log(itinerarios.id);
 
+        navigate(`/itinerario/${id}`);
+    };
+
+    
 
     const onSubmit = handleSubmit(async (data) => {
         console.log(data);
-        var orden = "precio_asc";
+        var orden = "";
+
         try {
-            const response = await axios.post('http://localhost:3050/getItinerarios', {
-                orden: orden
-            });
+            const response = await axios.post('http://localhost:3050/ItinerariosConcretos', data);
             setItinerarios(response.data);
 
 
         } catch (error) {
             console.error('Error al obtener los itinerarios:', error);
         }
+
+        // try {
+        //     const response = await axios.post('http://localhost:3050/getItinerarios', {
+        //         orden: orden
+        //     });
+        //     setItinerarios(response.data);
+
+
+        // } catch (error) {
+        //     console.error('Error al obtener los itinerarios:', error);
+        // }
     })
 
 
@@ -198,8 +215,10 @@ const ListasComponent = () => {
 
                 <div className="itinerarios-container">
                     {itinerarios.map((itinerario, index) => (
-                        <div key={index} className="itinerario-card">
+                        <div key={itinerario.id}  className="itinerario-card" onClick={() => handleItinerarioClick(itinerario.id)}
+                        style={{ cursor: 'pointer' }}>
                             {/* <img src={itinerario.foto} alt={itinerario.titulo} className="itinerario-imagen" /> */}
+                            
                             <img
                                 src={`${process.env.PUBLIC_URL}/fotos_itinerarios/${itinerario.foto.split('/').pop()}`}
                                 alt={itinerario.titulo}
