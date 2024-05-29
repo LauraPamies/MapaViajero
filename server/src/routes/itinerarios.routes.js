@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import {getItinerarios,ItinerariosConcretos,itinerario} from "../controllers/itinerarios.controller.js"
+import {getItinerarios,ItinerariosConcretos,itinerario,textosItinerarioslimite} from "../controllers/itinerarios.controller.js"
 
 const router = Router()
 
@@ -8,6 +8,7 @@ const router = Router()
 router.post("/getItinerarios" , getItinerarios);
 router.post("/ItinerariosConcretos" , ItinerariosConcretos);
 router.get("/itinerario/:id" , itinerario);
+router.get("/textosItinerarioslimite/:id" , textosItinerarioslimite);
 
 
 

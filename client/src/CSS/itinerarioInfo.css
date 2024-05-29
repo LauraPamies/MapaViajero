@@ -1,0 +1,25 @@
+.itinerariosdiv{
+    display: flex;
+    flex-direction: row;
+}
+
+.publicidad1{
+    width: 196px;
+    height: 1008px;
+    flex: 1;
+
+}
+
+.publicidad2{
+    width: 196px;
+    height: 1008px;
+    flex: 1;
+    
+}
+
+.infoItinerario{
+    flex: 8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
