@@ -22,7 +22,7 @@ const LandingComponent = () => {
                     <h3>Juntos trazamos el mapa de tus aventuras</h3>
                 </div>
                 <div className='botoneslanding'>
-                <Link to="/registro"><button id='empieza'>Empieza</button></Link>
+                    <Link to="/registro"><button id='empieza'>Empieza</button></Link>
                     <img src={flecha} alt='logo' width={"20"}></img>
                     <a href="/contacto" id="info">Más info</a>
                 </div>
@@ -33,7 +33,7 @@ const LandingComponent = () => {
 
             </div>
             <div id='div2'><img src={imgcanoa} alt='logo' width={"350"} /></div>
-           
+
 
 
 

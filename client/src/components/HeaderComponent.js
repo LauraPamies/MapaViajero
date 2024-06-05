@@ -14,11 +14,10 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 function HeaderComponent() {
     const location = useLocation(); //para saber la localización
 
-      // Extraer la propiedad pathname de location
       const { pathname } = location;
 
-      // Verificar si la ruta coincide con uno de los patrones especificados
-      const isCuentaHeaderVisible = pathname === '/presupuesto' || pathname === '/listas' || pathname.startsWith('/itinerario/');
+      //HEADER PARA LA CUENTA INICIADA
+      const isCuentaHeaderVisible = pathname === '/presupuesto' || pathname === '/listas' || pathname.startsWith('/itinerario/') || pathname === '/misItinerarios';
   
 
 

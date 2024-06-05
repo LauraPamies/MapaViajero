@@ -38,7 +38,7 @@ const PredecirpresupuestoComponent = () => {
 
     return (
         <div className='Predecirdiv'>
-            <div className='publicidad1'>
+            <div className='publicidad'>
                 <img src={publi} alt='publi'></img>
             </div>
 
@@ -81,7 +81,7 @@ const PredecirpresupuestoComponent = () => {
                     </div>
                 </div>
             </div>
-            <div className='publicidad2'>
+            <div className='publicidad'>
                 <img src={publi} alt='publi'></img>
 
             </div>

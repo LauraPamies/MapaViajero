@@ -1,0 +1,83 @@
+.MisItinerariosdiv{
+    display: flex;
+    flex-direction: row;
+}
+
+.publicidad{
+    width: 196px;
+    height: auto;
+    flex: 1;
+
+}
+
+
+
+.contenidoMisItinerarios{
+    flex: 8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.itinerario-card {
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 16px;
+    max-width: 600px;
+
+  }
+
+  .itinerarios-container{
+    display: flex;
+    flex-direction: column;
+
+  }
+  
+
+.itinerario-imagen {
+    height: 100%;
+    width: 260px; 
+}
+  
+  .itinerario-info {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+  }
+
+ 
+  
+  .itinerario-titulo {
+    font-size: 35px;
+    color: #333;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  #iti-dias-precio, #iti-personas{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding:0 20px;
+    font-size: 24px;
+    margin-top: 10px;
+  }
+
+  .itinerario-precio {
+    color: #46AF12;
+    font-weight: bold;
+  }
+  
+  .itinerario-autor {
+    font-style: italic;
+    color: #777;
+  }
+
+  #botonItinerarios{
+    margin: 56px;
+  }

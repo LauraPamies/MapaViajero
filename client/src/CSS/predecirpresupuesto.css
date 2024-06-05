@@ -6,19 +6,14 @@
     flex-direction: row;
 }
 
-.publicidad1{
+.publicidad{
     width: 196px;
-    height: 1008px;
+    height: auto;
     flex: 1;
 
 }
 
-.publicidad2{
-    width: 196px;
-    height: 1008px;
-    flex: 1;
-    
-}
+
 
 
 .textospubli{

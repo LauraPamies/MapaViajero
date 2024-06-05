@@ -21,10 +21,17 @@ const ListasComponent = () => {
 
 
 
-    const [itinerarios, setItinerarios] = useState([]);
-
+    // const todasEtiquetas = ['Todo',...new Set(itinerarios.map(itinerario => itinerario.etiqueta))]
+    // console.log(todasEtiquetas);
 
     const [orden, setOrden] = useState('');
+
+    const [itinerarios, setItinerarios] = useState([]);
+    const [itinerariosPrincipio, SetitinerariosPrincipio] = useState([]);
+    
+    const [Etiquetas, setEtiquetas] = useState(['Todo']);
+
+   
 
     const navigate = useNavigate();
     //FORMULARIO
@@ -32,12 +39,7 @@ const ListasComponent = () => {
         formState: { errors },
         watch,
         reset
-    } = useForm({
-        // defaultValues: {
-        //     name : "Longa",
-        //     password :123456
-        // }
-    })
+    } = useForm()
 
 
     useEffect(() => {
@@ -53,16 +55,45 @@ const ListasComponent = () => {
 
         }
 
+        async function fetchData() {
+            try {
+                const response = await axios.post('http://localhost:3050/getItinerarios', {
+                    orden: ""
+                });
+                setItinerarios(response.data);
+                SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
+
+
+            } catch (error) {
+                console.error('Error al obtener los itinerarios:', error);
+            }
+        }
+
+        fetchData();
+
     }, []);
 
+    useEffect(() => {
+        const todasEtiquetas = ['Todo', ...new Set(itinerariosPrincipio.map(itinerario => itinerario.etiqueta))];
+        setEtiquetas(todasEtiquetas);
+    }, [itinerariosPrincipio]);
+
     const handleItinerarioClick = (id) => {
-        // console.log(itinerarios);
-        // console.log(itinerarios.id);
 
         navigate(`/itinerario/${id}`);
     };
 
-    
+    const filtrarEtiquetas = (etiqueta) =>{
+        if(etiqueta === 'Todo') {
+            const itinerariosFiltrados = itinerariosPrincipio.filter(itinerario => itinerario.etiqueta.trim() !== '');
+            setItinerarios(itinerariosFiltrados);
+            return 
+        }
+
+        const itinerariosFiltrados = itinerariosPrincipio.filter(itinerario => itinerario.etiqueta === etiqueta);
+        setItinerarios(itinerariosFiltrados);
+
+    }
 
     const onSubmit = handleSubmit(async (data) => {
         console.log(data);
@@ -71,28 +102,19 @@ const ListasComponent = () => {
         try {
             const response = await axios.post('http://localhost:3050/ItinerariosConcretos', data);
             setItinerarios(response.data);
-
+            SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
 
         } catch (error) {
             console.error('Error al obtener los itinerarios:', error);
         }
 
-        // try {
-        //     const response = await axios.post('http://localhost:3050/getItinerarios', {
-        //         orden: orden
-        //     });
-        //     setItinerarios(response.data);
+    });
 
-
-        // } catch (error) {
-        //     console.error('Error al obtener los itinerarios:', error);
-        // }
-    })
-
+    
 
     return (
         <div className='Listasdiv'>
-            <div className='publicidad1'>
+            <div className='publicidad'>
                 <img src={publi} alt='publi'></img>
             </div>
 
@@ -210,29 +232,54 @@ const ListasComponent = () => {
 
                 <button id='botonmapa' onClick={ir_mapa}>Ver mapa</button>
 
-                
+
+
+                <div className='etiquetas'>
+                    {Etiquetas.map(etiqueta=>(
+                        <label key={etiqueta}>
+                        <input 
+                        type="radio" 
+                        value={etiqueta} 
+                        name="etiqueta"
+                        onClick={()=> filtrarEtiquetas(etiqueta)}
+                        />
+                            {etiqueta}
+                            </label>
+                    ))}
+                </div>
 
 
                 <div className="itinerarios-container">
                     {itinerarios.map((itinerario, index) => (
-                        <div key={itinerario.id}  className="itinerario-card" onClick={() => handleItinerarioClick(itinerario.id)}
-                        style={{ cursor: 'pointer' }}>
+                        <div key={itinerario.id} className="itinerario-card" onClick={() => handleItinerarioClick(itinerario.id)}
+                            style={{ cursor: 'pointer' }}>
                             {/* <img src={itinerario.foto} alt={itinerario.titulo} className="itinerario-imagen" /> */}
-                            
-                            <img
-                                src={`${process.env.PUBLIC_URL}/fotos_itinerarios/${itinerario.foto.split('/').pop()}`}
-                                alt={itinerario.titulo}
-                                className="itinerario-imagen"
-                            />
+                            <div className="image-container">
+                                <img
+                                    src={`${process.env.PUBLIC_URL}/fotos_itinerarios/${itinerario.foto.split('/').pop()}`}
+                                    alt={itinerario.titulo}
+                                    className="itinerario-imagen" />
+                            </div>
                             <div className="itinerario-info">
-                                <h2 className="itinerario-titulo">{itinerario.titulo}</h2>
-                                <p>{itinerario.dias} días</p>
-                                <p>{itinerario.personas} personas</p>
-                                <p className="itinerario-precio">{itinerario.precio}€</p>
-                                <p className="itinerario-autor">{itinerario.name}</p>
-                                <p>{itinerario.etiquetas}</p>
+                                <div>
+                                    <h2 className="itinerario-titulo">{itinerario.titulo}</h2>
+                                </div>
+
+                                <div id='iti-dias-precio'>
+                                    <p>{itinerario.dias} días</p>
+                                    <p className="itinerario-precio">{itinerario.precio}€</p>
+
+                                </div>
+                                <div id='iti-personas'>
+                                    <p>{itinerario.personas} personas</p>
+                                    <p className="itinerario-autor">{itinerario.name}</p>
+
+
+                                </div>
+
 
                             </div>
+
                         </div>
                     ))}
                 </div>
@@ -240,7 +287,7 @@ const ListasComponent = () => {
 
 
 
-            <div className='publicidad2'>
+            <div className='publicidad'>
                 <img src={publi} alt='publi'></img>
 
             </div>
