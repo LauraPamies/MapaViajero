@@ -211,13 +211,42 @@ export const misItinerarios = async (req, res) => { //req = request, osea los va
 export const favoritos = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
     try { //MANEJO DE ERRORES
         console.log(req.body);
-        const { id_usuario } = req.body;
+        const { id_usuario, orden } = req.body;
+
         //SI RECIBE PRECIO ASCENDENTE
-        console.log("select * from itinerarios AS iti INNER JOIN favoritos AS fav ON iti.id = fav.id_itinerario WHERE fav.id_usuario = '" + id_usuario + "';");
-        const [result] = await pool.query("select * from itinerarios AS iti INNER JOIN favoritos AS fav ON iti.id = fav.id_itinerario WHERE fav.id_usuario = ?;", [id_usuario])
+        if (orden == "precio_asc") {
+            console.log("select * from itinerarios AS iti INNER JOIN favoritos AS fav ON iti.id = fav.id_itinerario WHERE fav.id_usuario = '" + id_usuario + "' order by precio ASC;");
+            const [result] = await pool.query("select * from itinerarios AS iti INNER JOIN favoritos AS fav ON iti.id = fav.id_itinerario WHERE fav.id_usuario = ? order by precio ASC;", [id_usuario])
+            res.send(result);
+        }
 
+        //SI RECIBE PRECIO DESCENDENTE
+        else if (orden == "precio_desc") {
+            console.log("select * from itinerarios AS iti INNER JOIN favoritos AS fav ON iti.id = fav.id_itinerario WHERE fav.id_usuario = '" + id_usuario + "' order by precio DESC;");
+            const [result] = await pool.query("select * from itinerarios AS iti INNER JOIN favoritos AS fav ON iti.id = fav.id_itinerario WHERE fav.id_usuario = ? order by precio DESC;", [id_usuario])
+            res.send(result);
+        }
 
-        res.send(result);
+        //SI RECIBE FECHA ASCENDENTE
+        else if (orden == "fecha_asc") {
+            console.log("select * from itinerarios AS iti INNER JOIN favoritos AS fav ON iti.id = fav.id_itinerario WHERE fav.id_usuario = '" + id_usuario + "' order by fecha ASC;");
+            const [result] = await pool.query("select * from itinerarios AS iti INNER JOIN favoritos AS fav ON iti.id = fav.id_itinerario WHERE fav.id_usuario = ? order by fecha ASC;", [id_usuario])
+            res.send(result);
+        }
+
+        //SI RECIBE FECHA DESCENDENTE
+        else if (orden == "fecha_desc") {
+            console.log("select * from itinerarios AS iti INNER JOIN favoritos AS fav ON iti.id = fav.id_itinerario WHERE fav.id_usuario = '" + id_usuario + "' order by fecha DESC;");
+            const [result] = await pool.query("select * from itinerarios AS iti INNER JOIN favoritos AS fav ON iti.id = fav.id_itinerario WHERE fav.id_usuario = ? order by fecha DESC;", [id_usuario])
+            res.send(result);
+        }
+
+        else{
+            console.log("select * from itinerarios AS iti INNER JOIN favoritos AS fav ON iti.id = fav.id_itinerario WHERE fav.id_usuario = '" + id_usuario + "';");
+            const [result] = await pool.query("select * from itinerarios AS iti INNER JOIN favoritos AS fav ON iti.id = fav.id_itinerario WHERE fav.id_usuario = ? ;", [id_usuario])
+            res.send(result);
+        }
+        
 
 
     } catch (error) {

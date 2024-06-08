@@ -7,6 +7,10 @@ import axios from "axios";
 import '../CSS/listas.css';
 import publi from '../images/Publi.png';
 
+//IMPORT NOTIFICACIONES
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
 import { useForm } from "react-hook-form";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -20,6 +24,9 @@ import people_img from '../images/People.png';
 import map_img from '../images/Map.png';
 
 const ListasComponent = () => {
+
+const noti = withReactContent(Swal)
+
 
     const ir_mapa = () => {
 
@@ -107,7 +114,26 @@ const ListasComponent = () => {
         navigate(`/itinerario/${id}`);
     };
 
-    const borrarFav = (async (id_itinerario) =>{
+    const borrarFav = (id_itinerario) =>{
+        Swal.fire({
+            title: "Confirmar",
+            text: "Eliminar de favoritos",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, eliminar",
+            cancelButtonText: "Cancelar"
+
+          }).then((result) => {
+            if (result.isConfirmed) {
+
+                borrarFavAceptado(id_itinerario);
+            }
+          });
+    };
+
+    const borrarFavAceptado = (async (id_itinerario) =>{
         var id_usuario = localStorage.getItem('userId');
 
         try {
@@ -182,7 +208,7 @@ const ListasComponent = () => {
                 personas: data.personas,
                 pre_min: data.pre_min,
                 pre_max: data.pre_max,
-                orden: ""
+                orden: "precio_asc"
             });
             setItinerarios(response.data);
             SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
@@ -441,8 +467,6 @@ const ListasComponent = () => {
                                         </div>
                                     </div>
                                     <div className="heart-container">
-                                        {/* <img src={calendar_img} alt="heart icon" className="heart-icon" /> */}
-
                                         {
                                             favoritos.some(fav => fav.id_itinerario === itinerario.id) ? (
                                                 <button onClick={()=>borrarFav(itinerario.id)} id='fav-icon-red'><FontAwesomeIcon icon={faHeartCircleMinus} /></button>

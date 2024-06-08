@@ -12,6 +12,7 @@ import Prespuesto from './components/PredecirpresupuestoComponent'
 import Listas from './components/ListasComponent'
 import IitinerarioInfo from './components/IitinerarioInfo'
 import MisItinerarios from './components/MisItinerariosComponent'
+import Favoritos from './components/FavoritosComponent'
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/listas" element={<Listas />} />
         <Route path="/itinerario/:id" element={<IitinerarioInfo />} />
         <Route path="/MisItinerarios" element={<MisItinerarios />} />
+        <Route path="/favoritos" element={<Favoritos />} />
       </Routes>
       <Footer />
 
