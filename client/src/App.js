@@ -13,6 +13,7 @@ import Listas from './components/ListasComponent'
 import IitinerarioInfo from './components/IitinerarioInfo'
 import MisItinerarios from './components/MisItinerariosComponent'
 import Favoritos from './components/FavoritosComponent'
+import SubirItinerario from './components/SubirComponent'
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path="/itinerario/:id" element={<IitinerarioInfo />} />
         <Route path="/MisItinerarios" element={<MisItinerarios />} />
         <Route path="/favoritos" element={<Favoritos />} />
+        <Route path="/subirItinerario" element={<SubirItinerario />} />
       </Routes>
       <Footer />
 

@@ -17,7 +17,7 @@ function HeaderComponent() {
       const { pathname } = location;
 
       //HEADER PARA LA CUENTA INICIADA
-      const isCuentaHeaderVisible = pathname === '/presupuesto' || pathname === '/listas' || pathname.startsWith('/itinerario/') || pathname === '/misItinerarios' || pathname === '/favoritos';
+      const isCuentaHeaderVisible = pathname === '/presupuesto' || pathname === '/listas' || pathname.startsWith('/itinerario/') || pathname === '/misItinerarios' || pathname === '/favoritos' || pathname === '/subirItinerario';
   
 
 
