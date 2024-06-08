@@ -58,6 +58,10 @@ const SubirComponent = () => {
 
     }, []);
 
+    const handleDeleteMarker = (id) => {
+        setMarkers(prevMarkers => prevMarkers.filter(marker => marker.id !== id));
+
+    };
 
     const handleMarkerTitleChange = (newTitle) => {
         setTempMarker(prevMarker => ({ ...prevMarker, title: newTitle }));
@@ -70,7 +74,7 @@ const SubirComponent = () => {
         };
         setTempMarker(newMarker);
     };
-    
+
     const handleSaveMarker = () => {
         setMarkers((prevMarkers) => {
             const newMarkers = [...prevMarkers, tempMarker];
@@ -272,11 +276,11 @@ const SubirComponent = () => {
                         ))}
                         <h5>Añade una etiqueta para completar tu itinerario</h5>
                         <input type='text'></input>
-                        
+
                     </div>
 
                 )}
-                  {HaBuscado && (
+                {HaBuscado && (
                     <MapContainer center={[40.40, -3.70]} zoom={13} id='map' ref={mapRef}>
                         <TileLayer
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -284,10 +288,11 @@ const SubirComponent = () => {
                         />
                         <MapClickHandler />
                         {markers.map(marker => (
-                            <Marker key={marker.id} position={marker.position} icon={MarkerIcon}>
+                            <Marker key={marker.id} position={marker.position} icon={MarkerIcon} onclick={() => handleDeleteMarker(marker.id)}>
                                 <Popup>
                                     <div>
                                         <p>{marker.title}</p>
+                                        <button onClick={() => handleDeleteMarker(marker.id)}>Borrar</button>
                                     </div>
                                 </Popup>
                             </Marker>
