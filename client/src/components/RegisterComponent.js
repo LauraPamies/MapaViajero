@@ -105,7 +105,7 @@ const RegisterComponent = () => {
                     {/* USUARIO */}
                     <div id="inputformreg">
                         <span id="icons"><img src={usericon} alt='logo' width={"50px"}></img></span>
-                        <input id="input" placeholder="Usuario ..." type='text'
+                        <input id="input-reg" placeholder="Usuario ..." type='text'
                             {...register("name", {
                                 required: {
                                     value: true,
@@ -129,7 +129,7 @@ const RegisterComponent = () => {
                     {/* CORREO */}
                     <div id="inputformreg">
                         <span id="icons"><img src={mailicon} alt='logo' width={"50px"}></img></span>
-                        <input id="input" placeholder="Email ..." type='email'
+                        <input id="input-reg" placeholder="Email ..." type='email'
                             {...register("email", {
                                 required: {
                                     value: true,
@@ -151,7 +151,7 @@ const RegisterComponent = () => {
                     {/* CONTRASEÑA */}
                     <div id="inputformreg">
                         <span id="icons"><img src={passicon} alt='logo' width={"50px"}></img></span>
-                        <input id="input" placeholder="Contraseña ..." 
+                        <input id="input-reg" placeholder="Contraseña ..." 
                         type={showPassword ? 'text' : 'password'} 
                             {...register("password", {
                                 required: {
@@ -176,7 +176,7 @@ const RegisterComponent = () => {
                     {/* CONFIRMAR CONTRASEÑA */}
                     <div id="inputformreg">
                         <span id="icons"><img src={passicon} alt='logo' width={"50px"}></img></span>
-                        <input id="input" placeholder="Confirmar contraseña ..." 
+                        <input id="input-reg" placeholder="Confirmar contraseña ..." 
                         type={showPassword ? 'text' : 'password'} 
                             {...register("confpassword", {
                                 required: {

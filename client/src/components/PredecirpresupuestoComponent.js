@@ -9,8 +9,8 @@ import imgizq from '../images/image5.png';
 import imgder from '../images/image2.png';
 
 import place from '../images/Place.png';
-import people from '../images/People.png';
-import calendar from '../images/Calendar.png';
+import people from '../images/People35.png';
+import Calendar35 from '../images/calendar35.png';
 
 
 
@@ -66,7 +66,7 @@ const PredecirpresupuestoComponent = () => {
 
                         {/* DIAS */}
                         <div id="inputform">
-                            <span id="iconform"><img src={calendar} alt='logo' width={"50px"}></img></span>
+                            <span id="iconform"><img src={Calendar35} alt='logo' width={"50px"}></img></span>
                             <input id="inputs" type="number" placeholder="Número de días ..." />
                         </div>
 

@@ -9,7 +9,15 @@ import publi from '../images/Publi.png';
 
 import { useForm } from "react-hook-form";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import { faHeart,faHeartCircleMinus ,faHeartCirclePlus} from '@fortawesome/free-solid-svg-icons'
+
+// IMPORT IMAGENES
+import destino_img from '../images/Location.png';
+import calendar_img from '../images/Calendar.png';
+import people_img from '../images/People.png';
+import map_img from '../images/Map.png';
 
 const ListasComponent = () => {
 
@@ -32,8 +40,9 @@ const ListasComponent = () => {
     const [itinerarios, setItinerarios] = useState([]);
     const [itinerariosPrincipio, SetitinerariosPrincipio] = useState([]);
 
-    const [Etiquetas, setEtiquetas] = useState(['Todo']);
+    const [favoritos, setFavoritos] = useState([]);
 
+    const [Etiquetas, setEtiquetas] = useState(['Todo']);
 
 
     const navigate = useNavigate();
@@ -44,8 +53,11 @@ const ListasComponent = () => {
         reset
     } = useForm()
 
+    const pre_min = watch('pre_min');
+    const pre_max = watch('pre_max');
 
-    useEffect(() => {
+
+    useEffect(() => {   //AL CARGAR LA PÁGINA
 
         if (localStorage.getItem('isLoggedIn') !== 'true') { //SI NO ESTÁ LOGUEADO
             navigate("/login");
@@ -53,9 +65,7 @@ const ListasComponent = () => {
 
         async function fetchData() {
             try {
-                const response = await axios.post('http://localhost:3050/getItinerarios', {
-                    orden: ""
-                });
+                const response = await axios.post('http://localhost:3050/getItinerariosRandom');
                 setItinerarios(response.data);
                 SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
 
@@ -65,7 +75,10 @@ const ListasComponent = () => {
             }
         }
 
+        
+
         fetchData();
+        cargarFavs();
 
     }, []);
 
@@ -74,43 +87,75 @@ const ListasComponent = () => {
         setEtiquetas(todasEtiquetas);
     }, [itinerariosPrincipio]);
 
+
+    async function cargarFavs() {
+        var id_usuario = localStorage.getItem('userId');
+        try {
+            const response = await axios.post('http://localhost:3050/favoritos', {
+                id_usuario: id_usuario
+            });
+            setFavoritos(response.data);
+            console.log(response.data);
+
+
+        } catch (error) {
+            console.error('Error al obtener los itinerarios:', error);
+        }
+    }
     const handleItinerarioClick = (id) => {
 
         navigate(`/itinerario/${id}`);
     };
 
+    const borrarFav = (async (id_itinerario) =>{
+        var id_usuario = localStorage.getItem('userId');
+
+        try {
+            const response = await axios.post('http://localhost:3050/borrarFav', {
+                id_itinerario: id_itinerario,
+                id_usuario: id_usuario
+            });
+        cargarFavs();
+
+
+        } catch (error) {
+            console.error('Error al borrar favorito:', error);
+        }
+    });
+
+    const addFav = (async (id_itinerario) =>{
+        var id_usuario = localStorage.getItem('userId');
+
+        try {
+            const response = await axios.post('http://localhost:3050/addFav', {
+                id_itinerario: id_itinerario,
+                id_usuario: id_usuario
+            });
+        cargarFavs();
+
+
+        } catch (error) {
+            console.error('Error al añadir a favorito:', error);
+        }
+    });
+
     const orden_cambiado = (async (event) => {
 
-        //Cada vez que el orden cambie hace otra petición
-        if (HaBuscado === true) {
-            try {
-                const response = await axios.post('http://localhost:3050/ItinerariosConcretos', {
-                    destino: datosBusqueda.destino,
-                    dias: datosBusqueda.dias,
-                    personas: datosBusqueda.personas,
-                    pre_min: datosBusqueda.pre_min,
-                    pre_max: datosBusqueda.pre_max,
-                    orden: event.target.value
-                });
-                setItinerarios(response.data);
-                SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
 
-            } catch (error) {
-                console.error('Error al obtener los itinerarios:', error);
-            }
-        }
-        else {
-            try {
-                const response = await axios.post('http://localhost:3050/getItinerarios', {
-                    orden: event.target.value
-                });
-                setItinerarios(response.data);
-                SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
+        try {
+            const response = await axios.post('http://localhost:3050/ItinerariosConcretos', {
+                destino: datosBusqueda.destino,
+                dias: datosBusqueda.dias,
+                personas: datosBusqueda.personas,
+                pre_min: datosBusqueda.pre_min,
+                pre_max: datosBusqueda.pre_max,
+                orden: event.target.value
+            });
+            setItinerarios(response.data);
+            SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
 
-
-            } catch (error) {
-                console.error('Error al obtener los itinerarios:', error);
-            }
+        } catch (error) {
+            console.error('Error al obtener los itinerarios:', error);
         }
 
     });
@@ -163,8 +208,8 @@ const ListasComponent = () => {
                         {/* Destino */}
                         <div id='divs-errores'>
                             <div id="inputformlista">
-                                {/* <span id="icons"><img src={usericon} alt='logo' width={"50px"}></img></span> */}
-                                <input id="input" placeholder="Destino" type='text'
+                                <span id="icon"><img src={destino_img} alt='logo' width={"25px"}></img></span>
+                                <input id="input" list="Provincias" placeholder="Destino" type='text'
                                     {...register("destino", {
                                         required: {
                                             value: true,
@@ -172,6 +217,63 @@ const ListasComponent = () => {
                                         }
                                     })}
                                 ></input>
+
+
+                                <datalist id='Provincias'>
+                                    <option value="">Elige Provincia</option>
+                                    <option value="Álava">Álava</option>
+                                    <option value="Albacete">Albacete</option>
+                                    <option value="Alicante">Alicante</option>
+                                    <option value="Almería">Almería</option>
+                                    <option value="Asturias">Asturias</option>
+                                    <option value="Ávila">Ávila</option>
+                                    <option value="Badajoz">Badajoz</option>
+                                    <option value="Baleares">Baleares</option>
+                                    <option value="Barcelona">Barcelona</option>
+                                    <option value="Burgos">Burgos</option>
+                                    <option value="Cáceres">Cáceres</option>
+                                    <option value="Cádiz">Cádiz</option>
+                                    <option value="Cantabria">Cantabria</option>
+                                    <option value="Castellón">Castellón</option>
+                                    <option value="Ceuta">Ceuta</option>
+                                    <option value="Ciudad Real">Ciudad Real</option>
+                                    <option value="Córdoba">Córdoba</option>
+                                    <option value="Cuenca">Cuenca</option>
+                                    <option value="Gerona">Gerona</option>
+                                    <option value="Granada">Granada</option>
+                                    <option value="Guadalajara">Guadalajara</option>
+                                    <option value="Guipúzcoa">Guipúzcoa</option>
+                                    <option value="Huelva">Huelva</option>
+                                    <option value="Huesca">Huesca</option>
+                                    <option value="Jaén">Jaén</option>
+                                    <option value="La Coruña">La Coruña</option>
+                                    <option value="La Rioja">La Rioja</option>
+                                    <option value="Las Palmas">Las Palmas</option>
+                                    <option value="León">León</option>
+                                    <option value="Lérida">Lérida</option>
+                                    <option value="Lugo">Lugo</option>
+                                    <option value="Madrid">Madrid</option>
+                                    <option value="Málaga">Málaga</option>
+                                    <option value="Melilla">Melilla</option>
+                                    <option value="Murcia">Murcia</option>
+                                    <option value="Navarra">Navarra</option>
+                                    <option value="Orense">Orense</option>
+                                    <option value="Palencia">Palencia</option>
+                                    <option value="Pontevedra">Pontevedra</option>
+                                    <option value="Salamanca">Salamanca</option>
+                                    <option value="Segovia">Segovia</option>
+                                    <option value="Sevilla">Sevilla</option>
+                                    <option value="Soria">Soria</option>
+                                    <option value="Tarragona">Tarragona</option>
+                                    <option value="Tenerife">Tenerife</option>
+                                    <option value="Teruel">Teruel</option>
+                                    <option value="Toledo">Toledo</option>
+                                    <option value="Valencia">Valencia</option>
+                                    <option value="Valladolid">Valladolid</option>
+                                    <option value="Vizcaya">Vizcaya</option>
+                                    <option value="Zamora">Zamora</option>
+                                    <option value="Zaragoza">Zaragoza</option>
+                                </datalist>
                             </div>
                             <div>
                                 {errors.destino && <span>{errors.destino.message}</span>}
@@ -181,7 +283,7 @@ const ListasComponent = () => {
                         {/* Dias */}
                         <div id='divs-errores'>
                             <div id="inputformlista">
-                                {/* <span id="icons"><img src={usericon} alt='logo' width={"50px"}></img></span> */}
+                                <span id="icon"><img src={calendar_img} alt='logo' width={"25px"}></img></span>
                                 <input id="input" placeholder="Nº días" type='number'
                                     {...register("dias", {
                                         required: {
@@ -199,7 +301,8 @@ const ListasComponent = () => {
                         {/* Personas */}
                         <div id='divs-errores'>
                             <div id="inputformlista">
-                                {/* <span id="icons"><img src={usericon} alt='logo' width={"50px"}></img></span> */}
+                                <span id="icon"><img src={people_img} alt='logo' width={"25px"}></img></span>
+
                                 <input id="input" placeholder="Nº personas" type='number'
                                     {...register("personas", {
                                         required: {
@@ -227,7 +330,9 @@ const ListasComponent = () => {
                                                     required: {
                                                         value: true,
                                                         message: "Mínimo requerido"
-                                                    }
+                                                    },
+                                                    validate: value =>
+                                                        value <= pre_max || "El valor no puede ser superior al máximo."
                                                 })}
                                             ></input>
                                         </div>
@@ -247,7 +352,10 @@ const ListasComponent = () => {
                                                     required: {
                                                         value: true,
                                                         message: "Máximo requerido"
-                                                    }
+                                                    },
+                                                    validate: value =>
+                                                        value >= pre_min || "El valor no puede ser inferior al mínimo."
+
                                                 })}
                                             ></input>
                                         </div>
@@ -268,66 +376,82 @@ const ListasComponent = () => {
                     </div>
                 </form>
 
-                <button id='botonmapa' onClick={ir_mapa}>Ver mapa</button>
+                <button id='botonmapa' onClick={ir_mapa}>
+                    <img src={map_img} alt='logo' width={"25px"}></img>
+                    Ver mapa
+                </button>
+
 
                 <div className='filtros_y_itinerarios'>
-
                     <div className='filtros_container'>
-                        <h4>Ordenar por</h4>
-                        <select className='orden_select' onChange={orden_cambiado}>
-                            {opciones_ordenar.map(opcion => (
-                                <option value={opcion.value}>{opcion.label}</option>
-                            ))}
-                        </select>
+
+                        {HaBuscado && (
+                            <div>
+
+                                <h4>Ordenar por</h4>
+                                <select className='orden_select' onChange={orden_cambiado}>
+                                    {opciones_ordenar.map(opcion => (
+                                        <option value={opcion.value}>{opcion.label}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
                         <div className='etiquetas'>
-                        <h4>Tipo de viaje</h4>
-                        <div >
-                            {Etiquetas.map(etiqueta => (
-                                <label key={etiqueta} style={{ display: "block" }}>
-                                    <input
-                                        type="radio"
-                                        value={etiqueta}
-                                        name="etiqueta"
-                                        onClick={() => filtrarEtiquetas(etiqueta)}
-                                    />
-                                    {etiqueta}
-                                </label>
-                            ))}
+                            <h4>Tipo de viaje</h4>
+                            <div >
+                                {Etiquetas.map(etiqueta => (
+                                    <label key={etiqueta} style={{ display: "block" }}>
+                                        <input
+                                            type="radio"
+                                            value={etiqueta}
+                                            name="etiqueta"
+                                            onClick={() => filtrarEtiquetas(etiqueta)}
+                                        />
+                                        {etiqueta}
+                                    </label>
+                                ))}
+                            </div>
                         </div>
-                        </div>
-                        
-                        
+
                     </div>
+
 
                     <div className="itinerarios-container">
                         {itinerarios.map((itinerario, index) => (
-                            <div key={itinerario.id} className="itinerario-card" onClick={() => handleItinerarioClick(itinerario.id)}
-                                style={{ cursor: 'pointer' }}>
-                                {/* <img src={itinerario.foto} alt={itinerario.titulo} className="itinerario-imagen" /> */}
-                                <div className="image-container">
-                                    <img
-                                        src={`${process.env.PUBLIC_URL}/fotos_itinerarios/${itinerario.foto.split('/').pop()}`}
-                                        alt={itinerario.titulo}
-                                        className="itinerario-imagen" />
-                                </div>
-                                <div className="itinerario-info">
-                                    <div>
-                                        <h2 className="itinerario-titulo">{itinerario.titulo}</h2>
+                            <div key={itinerario.id} id='itinerario-card-complete'>
+                                <div className="itinerario-card" >
+                                    <div className="image-container">
+                                        <img
+                                            src={`${process.env.PUBLIC_URL}/fotos_itinerarios/${itinerario.foto.split('/').pop()}`}
+                                            alt={itinerario.titulo}
+                                            className="itinerario-imagen"
+                                        />
                                     </div>
-
-                                    <div id='iti-dias-precio'>
-                                        <p>{itinerario.dias} días</p>
-                                        <p className="itinerario-precio">{itinerario.precio}€</p>
-
+                                    <div className="itinerario-info" onClick={() => handleItinerarioClick(itinerario.id)} style={{ cursor: 'pointer' }}>
+                                        <div>
+                                            <h2 className="itinerario-titulo">{itinerario.titulo}</h2>
+                                        </div>
+                                        <div id='iti-dias-precio'>
+                                            <p>{itinerario.dias} días</p>
+                                            <p className="itinerario-precio">{itinerario.precio}€</p>
+                                        </div>
+                                        <div id='iti-personas'>
+                                            <p>{itinerario.personas} personas</p>
+                                            <p className="itinerario-autor">{itinerario.etiqueta}</p>
+                                        </div>
                                     </div>
-                                    <div id='iti-personas'>
-                                        <p>{itinerario.personas} personas</p>
-                                        <p className="itinerario-autor">{itinerario.name}</p>
+                                    <div className="heart-container">
+                                        {/* <img src={calendar_img} alt="heart icon" className="heart-icon" /> */}
 
+                                        {
+                                            favoritos.some(fav => fav.id_itinerario === itinerario.id) ? (
+                                                <button onClick={()=>borrarFav(itinerario.id)} id='fav-icon-red'><FontAwesomeIcon icon={faHeartCircleMinus} /></button>
 
+                                            ) : (
+                                                <button onClick={()=>addFav(itinerario.id)} id='fav-icon' ><FontAwesomeIcon icon={faHeartCirclePlus} /></button>
+                                            )
+                                        }
                                     </div>
-
-
                                 </div>
 
                             </div>
