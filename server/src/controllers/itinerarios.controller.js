@@ -1,5 +1,11 @@
 import { pool } from "../db.js";
+import fs from 'fs';
+import path from "path";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 //TODOS LOS ITINERARIOS
 export const getItinerarios = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
@@ -11,40 +17,40 @@ export const getItinerarios = async (req, res) => { //req = request, osea los va
         const { orden } = req.body;
         //SI RECIBE PRECIO ASCENDENTE
         if (orden == "precio_asc") {
-            console.log("select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by precio ASC;");
-            const [result] = await pool.query("select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by precio ASC;")
+            console.log("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by precio ASC;");
+            const [result] = await pool.query("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by precio ASC;")
 
             res.send(result);
         }
 
         //SI RECIBE PRECIO DESCENDENTE
         else if (orden == "precio_desc") {
-            console.log("select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by precio DESC;");
-            const [result] = await pool.query("select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by precio DESC;")
+            console.log("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by precio DESC;");
+            const [result] = await pool.query("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by precio DESC;")
 
             res.send(result);
         }
 
         //SI RECIBE FECHA ASCENDENTE
         else if (orden == "fecha_asc") {
-            console.log("select iti.id,titulo,fecha,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by fecha ASC;");
-            const [result] = await pool.query("select iti.id,titulo,fecha,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by fecha ASC;")
+            console.log("select iti.id,titulo,fecha,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by fecha ASC;");
+            const [result] = await pool.query("select iti.id,titulo,fecha,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by fecha ASC;")
 
             res.send(result);
         }
 
         //SI RECIBE FECHA DESCENDENTE
         else if (orden == "fecha_desc") {
-            console.log("select iti.id,titulo,fecha,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by fecha DESC;");
-            const [result] = await pool.query("select iti.id,titulo,fecha,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by fecha DESC;")
+            console.log("select iti.id,titulo,fecha,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by fecha DESC;");
+            const [result] = await pool.query("select iti.id,titulo,fecha,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by fecha DESC;")
 
             res.send(result);
         }
 
         else {
-            console.log("select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id;");
+            console.log("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id;");
 
-            const [result] = await pool.query("select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id;")
+            const [result] = await pool.query("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id;")
 
             res.send(result);
         }
@@ -67,9 +73,9 @@ export const getItinerariosRandom = async (req, res) => { //req = request, osea 
 
 
 
-        console.log("select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id ORDER BY RAND() LIMIT 3;");
+        console.log("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id ORDER BY RAND() LIMIT 3;");
 
-        const [result] = await pool.query("select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id ORDER BY RAND() LIMIT 3;")
+        const [result] = await pool.query("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id ORDER BY RAND() LIMIT 3;")
 
         res.send(result);
 
@@ -91,8 +97,8 @@ export const ItinerariosConcretos = async (req, res) => { //req = request, osea 
         const { destino, dias, personas, pre_min, pre_max, orden } = req.body;
         //SI RECIBE PRECIO ASCENDENTE
         if (orden == "precio_asc") {
-            console.log("Select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = '" + destino + "' AND dias = '" + dias + "' AND personas = '" + personas + "' AND precio between '" + pre_min + "' AND '" + pre_max + "' order by precio ASC;");
-            const [result] = await pool.query("Select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? order by precio ASC;", [destino, dias, personas, pre_min, pre_max])
+            console.log("Select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = '" + destino + "' AND dias = '" + dias + "' AND personas = '" + personas + "' AND precio between '" + pre_min + "' AND '" + pre_max + "' order by precio ASC;");
+            const [result] = await pool.query("Select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? order by precio ASC;", [destino, dias, personas, pre_min, pre_max])
 
 
             res.send(result);
@@ -100,8 +106,8 @@ export const ItinerariosConcretos = async (req, res) => { //req = request, osea 
 
         //SI RECIBE PRECIO DESCENDENTE
         else if (orden == "precio_desc") {
-            console.log("Select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = '" + destino + "' AND dias = '" + dias + "' AND personas = '" + personas + "' AND precio between '" + pre_min + "' AND '" + pre_max + "' order by precio DESC;");
-            const [result] = await pool.query("Select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? order by precio DESC;", [destino, dias, personas, pre_min, pre_max])
+            console.log("Select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = '" + destino + "' AND dias = '" + dias + "' AND personas = '" + personas + "' AND precio between '" + pre_min + "' AND '" + pre_max + "' order by precio DESC;");
+            const [result] = await pool.query("Select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? order by precio DESC;", [destino, dias, personas, pre_min, pre_max])
 
 
             res.send(result);
@@ -109,8 +115,8 @@ export const ItinerariosConcretos = async (req, res) => { //req = request, osea 
 
         //SI RECIBE FECHA ASCENDENTE
         else if (orden == "fecha_asc") {
-            console.log("Select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = '" + destino + "' AND dias = '" + dias + "' AND personas = '" + personas + "' AND precio between '" + pre_min + "' AND '" + pre_max + "' order by fecha ASC;");
-            const [result] = await pool.query("Select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? order by fecha ASC;", [destino, dias, personas, pre_min, pre_max])
+            console.log("Select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = '" + destino + "' AND dias = '" + dias + "' AND personas = '" + personas + "' AND precio between '" + pre_min + "' AND '" + pre_max + "' order by fecha ASC;");
+            const [result] = await pool.query("Select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? order by fecha ASC;", [destino, dias, personas, pre_min, pre_max])
 
 
             res.send(result);
@@ -118,15 +124,15 @@ export const ItinerariosConcretos = async (req, res) => { //req = request, osea 
 
         //SI RECIBE FECHA DESCENDENTE
         else if (orden == "fecha_desc") {
-            console.log("Select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = '" + destino + "' AND dias = '" + dias + "' AND personas = '" + personas + "' AND precio between '" + pre_min + "' AND '" + pre_max + "' order by fecha DESC;");
-            const [result] = await pool.query("Select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? order by fecha DESC;", [destino, dias, personas, pre_min, pre_max])
+            console.log("Select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = '" + destino + "' AND dias = '" + dias + "' AND personas = '" + personas + "' AND precio between '" + pre_min + "' AND '" + pre_max + "' order by fecha DESC;");
+            const [result] = await pool.query("Select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? order by fecha DESC;", [destino, dias, personas, pre_min, pre_max])
 
 
             res.send(result);
         }
         else {
-            console.log("Select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = '" + destino + "' AND dias = '" + dias + "' AND personas = '" + personas + "' AND precio between '" + pre_min + "' AND '" + pre_max + "' ;");
-            const [result] = await pool.query("Select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? ;", [destino, dias, personas, pre_min, pre_max])
+            console.log("Select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = '" + destino + "' AND dias = '" + dias + "' AND personas = '" + personas + "' AND precio between '" + pre_min + "' AND '" + pre_max + "' ;");
+            const [result] = await pool.query("Select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? ;", [destino, dias, personas, pre_min, pre_max])
 
 
             res.send(result);
@@ -148,8 +154,8 @@ export const itinerario = async (req, res) => { //req = request, osea los valore
         const id = req.params.id;
         console.log(id);
 
-        console.log("select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE iti.id = " + id + ";");
-        const [result] = await pool.query("select iti.id,titulo,foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE iti.id = ?;", [id])
+        console.log("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE iti.id = " + id + ";");
+        const [result] = await pool.query("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE iti.id = ?;", [id])
 
         console.log(result[0]);
         res.send(result[0]);
@@ -298,6 +304,39 @@ export const borrarFav = async (req, res) => { //req = request, osea los valores
     }
 
 }
+
+export const subirItinerario = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
+    try {
+    
+        const { destino, fecha,dias,personas,precio,autor_id,etiqueta } = req.body;
+
+
+        if (!req.file) {
+            return res.status(400).json({ message: "No se ha recibido ningún archivo de imagen" });
+        }
+
+        // Procesa y guarda el archivo de imagen en el servidor
+        const tipo = req.file.mimetype;
+        const nombre = req.file.originalname;
+        const data = fs.readFileSync(path.join(__dirname, '../images/' + req.file.filename));
+
+        //SI RECIBE PRECIO ASCENDENTE
+        console.log("INSERT INTO itinerarios (titulo, fecha, dias, personas, precio, autor_id, etiqueta, tipo_foto, nombre_foto, data) VALUES ('" + destino + "', '" + fecha + "', '" + dias + "', '" + personas + "', '" + precio + "', '" + autor_id + "', '" + etiqueta + "', '" + tipo + "', '" + nombre + "', '" + data + "');");
+
+
+        const [result] = await pool.query("INSERT INTO itinerarios (titulo, fecha, dias, personas, precio, autor_id, etiqueta, tipo_foto, nombre_foto, data) VALUES (?, ? ,? ,?, ?, ?, ?, ?, ?, ?);", [destino,fecha,dias,personas,precio,autor_id,etiqueta,tipo,nombre,data]);
+
+
+        res.send(result);
+
+        
+
+    } catch (error) {
+        console.error('Error al subir el itinerario:', error);
+        return res.status(500).json({ message: "Algo fue mal al subir el itinerario" });
+    }
+}
+
 
 
 

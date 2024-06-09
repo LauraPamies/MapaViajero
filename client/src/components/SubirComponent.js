@@ -50,6 +50,7 @@ const SubirComponent = () => {
     const [tempMarker, setTempMarker] = useState(null);
     const [file, setFile] = useState(null);
     const [listaimagenes, setListaimagenes] = useState([]);
+    const [etiqueta, setEtiqueta] = useState('');
 
     useEffect(() => {   //AL CARGAR LA PÁGINA
 
@@ -57,20 +58,20 @@ const SubirComponent = () => {
             navigate("/login");
         }
 
-       
+
         cargarImagenes();
 
     }, []);
 
-    const cargarImagenes=async()=>{
-        try {
-            const response = await axios.get('http://localhost:3050/sacarImagen');
-            // response.json();
-            setListaimagenes(response.data);
-        } catch (error) {
-            console.error('Error al subir la imagen:', error);
-            
-        }
+    const cargarImagenes = async () => {
+        // try {
+        //     const response = await axios.get('http://localhost:3050/sacarImagen');
+        //     // response.json();
+        //     setListaimagenes(response.data);
+        // } catch (error) {
+        //     console.error('Error al subir la imagen:', error);
+
+        // }
     }
 
     const handleDeleteMarker = (id) => {
@@ -120,20 +121,88 @@ const SubirComponent = () => {
         setHaBuscado(true);
     });
 
-    const elegirFoto = e=>{
-        console.log(e.target.files[0]);
+    const elegirFoto = e => {
+        // console.log(e.target.files[0]);
         setFile(e.target.files[0]);
     }
+
+    const subirItinerario = async () => {
+        console.log(etiqueta);
+        console.log(file);
+        console.log(markers);
+
+        // Comprobar si hay campos obligatorios vacíos
+        // if (!datosItinerario.destino || !datosItinerario.dias || !datosItinerario.personas || !datosItinerario.precio || markers.length === 0 || !etiqueta || !file) {
+        //     alert('Debes completar todos los campos');
+        //     return;
+        // }
+        const currentDate = new Date();
+
+        // Obtenemos el año, mes y día por separado
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Sumamos 1 al mes ya que los meses van de 0 a 11
+        const day = String(currentDate.getDate()).padStart(2, '0');
+
+        // Formateamos la fecha en el formato YYYY-MM-DD
+        const formattedDate = `${year}-${month}-${day}`;
+
+        // Crear un objeto con los datos a enviar
+        // const datosEnviar = {
+        //     destino: datosItinerario.destino,
+        //     fecha: formattedDate,
+        //     dias: datosItinerario.dias,
+        //     personas: datosItinerario.personas,
+        //     precio: datosItinerario.precio,
+        //     autor_id: localStorage.getItem('userId'),
+        //     etiqueta: etiqueta,
+        //     file: file
+        //     // diasInfo: Array.from({ length: datosItinerario.dias }).map((_, index) => ({
+        //     //     titulo: document.getElementById(`titulo-dia-${index}`).value,
+        //     //     texto: document.getElementById(`texto-dia-${index}`).value
+        //     // }))
+        // };
+
+        const formData = new FormData();
+        formData.append('destino', datosItinerario.destino);
+        formData.append('fecha', formattedDate);
+        formData.append('dias', datosItinerario.dias);
+        formData.append('personas', datosItinerario.personas);
+        formData.append('precio', datosItinerario.precio);
+        formData.append('autor_id', localStorage.getItem('userId'));
+        formData.append('etiqueta', etiqueta);
+        formData.append('image', file);
+
+
+        try {
+            // Realizar la petición para enviar los datos del itinerario
+            const responseItinerario = await axios.post('http://localhost:3050/subirItinerario', formData);
+
+            const itinerarioId = responseItinerario.data.id; // Obtener el ID del itinerario insertado
+
+
+            alert('Itinerario subido con éxito');
+        } catch (error) {
+            // Si ocurre un error, mostrar un mensaje de error
+            console.error('Error al subir el itinerario:', error);
+            alert('Error al subir el itinerario');
+        }
+        document.getElementById('fileinput').value = null;
+        setFile(null);
+    }
+
+    const handleEtiquetaChange = (e) => {
+        setEtiqueta(e.target.value); // Actualizar el estado de etiqueta con el valor del input
+    };
 
     const enviarFoto = async () => {
         if (!file) {
             alert('Debes seleccionar una foto');
             return;
         }
-    
+
         const formdata = new FormData();
         formdata.append('image', file);
-    
+
         try {
             const response = await axios.post('http://localhost:3050/subirImagen', formdata);
             console.log(response.data);
@@ -142,7 +211,7 @@ const SubirComponent = () => {
             console.error('Error al subir la imagen:', error);
             alert('Error al subir la imagen');
         }
-    
+
         document.getElementById('fileinput').value = null;
         setFile(null);
     };
@@ -280,11 +349,11 @@ const SubirComponent = () => {
                             <div id='divs-errores'>
                                 <div id='divpresupuestos'>
                                     <div id="inputformlista">
-                                        <input id="input" placeholder="Mínimo" type='number'
+                                        <input id="input" placeholder="Precio" type='number'
                                             {...register("precio", {
                                                 required: {
                                                     value: true,
-                                                    message: "Mínimo requerido"
+                                                    message: "Precio requerido"
                                                 }
                                             })}
                                         ></input>
@@ -306,72 +375,78 @@ const SubirComponent = () => {
 
                 {HaBuscado && (
                     <div className='CrearContainer'>
-
                         {Array.from({ length: datosItinerario.dias }).map((_, index) => (
                             <div key={index} className='day-input'>
-                                <input type='text' placeholder={`Título día ${index + 1}`} />
-                                <textarea name="textarea" rows="10" cols="50" placeholder='Escribir...'></textarea>
-
+                                <input type='text' placeholder={`Título día ${index + 1}`} id={`titulo-dia-${index}`} />
+                                <textarea name="textarea" rows="10" cols="50" placeholder='Escribir...' id={`texto-dia-${index}`}></textarea>
                             </div>
                         ))}
-                        
-
                     </div>
 
                 )}
                 {HaBuscado && (
                     <div>
-                    <MapContainer center={[40.40, -3.70]} zoom={13} id='map' ref={mapRef}>
-                        <TileLayer
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        <MapContainer center={[40.40, -3.70]} zoom={13} id='map' ref={mapRef}>
+                            <TileLayer
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            />
+                            <MapClickHandler />
+                            {markers.map(marker => (
+                                <Marker key={marker.id} position={marker.position} icon={MarkerIcon} onclick={() => handleDeleteMarker(marker.id)}>
+                                    <Popup>
+                                        <div>
+                                            <p>{marker.title}</p>
+                                            <button onClick={() => handleDeleteMarker(marker.id)}>Borrar</button>
+                                        </div>
+                                    </Popup>
+                                </Marker>
+                            ))}
+                            {tempMarker && (
+                                <Marker position={tempMarker.position} icon={tempMarkerIcon}>
+                                    <Popup>
+                                        <div>
+                                            <input
+                                                type="text"
+                                                value={tempMarker.title}
+                                                onChange={(e) => handleMarkerTitleChange(e.target.value)}
+                                                placeholder='Título del marcador'
+                                            />
+                                            <button onClick={handleSaveMarker}>Guardar</button>
+                                        </div>
+                                    </Popup>
+                                </Marker>
+                            )}
+                        </MapContainer>
+                        <h5>Añade una etiqueta para completar tu itinerario</h5>
+                        <input
+                            type="text"
+                            value={etiqueta}
+                            onChange={handleEtiquetaChange}
                         />
-                        <MapClickHandler />
-                        {markers.map(marker => (
-                            <Marker key={marker.id} position={marker.position} icon={MarkerIcon} onclick={() => handleDeleteMarker(marker.id)}>
-                                <Popup>
-                                    <div>
-                                        <p>{marker.title}</p>
-                                        <button onClick={() => handleDeleteMarker(marker.id)}>Borrar</button>
-                                    </div>
-                                </Popup>
-                            </Marker>
-                        ))}
-                        {tempMarker && (
-                            <Marker position={tempMarker.position} icon={tempMarkerIcon}>
-                                <Popup>
-                                    <div>
-                                        <input
-                                            type="text"
-                                            value={tempMarker.title}
-                                            onChange={(e) => handleMarkerTitleChange(e.target.value)}
-                                            placeholder='Título del marcador'
-                                        />
-                                        <button onClick={handleSaveMarker}>Guardar</button>
-                                    </div>
-                                </Popup>
-                            </Marker>
-                        )}
-                    </MapContainer>
-                    <h5>Añade una etiqueta para completar tu itinerario</h5>
-                    <input type='text'></input>
+                        <h5>Añade una foto</h5>
+
+                        <input id='fileinput' onChange={elegirFoto} type='file'></input>
+
+                        <button onClick={subirItinerario} id='boton-subir'>Subir itinerario</button>
+
                     </div>
                 )}
 
                 <div>
-                    <input id='fileinput' onChange={elegirFoto} type='file'></input>
-                    <button onClick={enviarFoto} type='button'>Upload</button>
+
+                    {/* <button onClick={enviarFoto} type='button'>Subir</button> */}
                 </div>
 
-                <div>
+                {/* <div>
                     {listaimagenes.map(image =>(
                         <div key={image}>
                         <img src={'http://localhost:3050/' + image} style={{height: "200px",width:"300px"}}></img>
                     </div>
                     ))}
                     
-                </div>
-                
+                </div> */}
+
             </div >
 
 

@@ -59,10 +59,10 @@ const MisItinerariosComponent = () => {
                     {itinerarios.map((itinerario, index) => (
                         <div key={itinerario.id} className="itinerario-card" >
                             <div className="image-container">
-                                <img
+                                {/* <img
                                     src={`${process.env.PUBLIC_URL}/fotos_itinerarios/${itinerario.foto.split('/').pop()}`}
                                     alt={itinerario.titulo}
-                                    className="itinerario-imagen" />
+                                    className="itinerario-imagen" /> */}
                             </div>
                             <div className="itinerario-info">
                                 <div>
