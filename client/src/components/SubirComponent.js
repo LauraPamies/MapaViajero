@@ -22,7 +22,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { useForm } from "react-hook-form";
 
-import { faHeartCircleMinus } from '@fortawesome/free-solid-svg-icons'
+import { faHeartCircleMinus, faL } from '@fortawesome/free-solid-svg-icons'
 
 // IMPORT IMAGENES
 import destino_img from '../images/Location.png';
@@ -42,12 +42,14 @@ const SubirComponent = () => {
         iconSize: [40, 40]
     });
 
-    const [HaBuscado, setHaBuscado] = useState(true);
+    const [HaBuscado, setHaBuscado] = useState(false);
     const navigate = useNavigate();
     const [datosItinerario, setDatosItinerario] = useState([]);
     const mapRef = useRef(null);
     const [markers, setMarkers] = useState([]);
     const [tempMarker, setTempMarker] = useState(null);
+    const [file, setFile] = useState(null);
+    const [listaimagenes, setListaimagenes] = useState([]);
 
     useEffect(() => {   //AL CARGAR LA PÁGINA
 
@@ -55,8 +57,21 @@ const SubirComponent = () => {
             navigate("/login");
         }
 
+       
+        cargarImagenes();
 
     }, []);
+
+    const cargarImagenes=async()=>{
+        try {
+            const response = await axios.get('http://localhost:3050/sacarImagen');
+            // response.json();
+            setListaimagenes(response.data);
+        } catch (error) {
+            console.error('Error al subir la imagen:', error);
+            
+        }
+    }
 
     const handleDeleteMarker = (id) => {
         setMarkers(prevMarkers => prevMarkers.filter(marker => marker.id !== id));
@@ -105,7 +120,32 @@ const SubirComponent = () => {
         setHaBuscado(true);
     });
 
+    const elegirFoto = e=>{
+        console.log(e.target.files[0]);
+        setFile(e.target.files[0]);
+    }
 
+    const enviarFoto = async () => {
+        if (!file) {
+            alert('Debes seleccionar una foto');
+            return;
+        }
+    
+        const formdata = new FormData();
+        formdata.append('image', file);
+    
+        try {
+            const response = await axios.post('http://localhost:3050/subirImagen', formdata);
+            console.log(response.data);
+            alert('Imagen subida con éxito');
+        } catch (error) {
+            console.error('Error al subir la imagen:', error);
+            alert('Error al subir la imagen');
+        }
+    
+        document.getElementById('fileinput').value = null;
+        setFile(null);
+    };
 
     return (
         <div className='Listasdiv'>
@@ -274,13 +314,13 @@ const SubirComponent = () => {
 
                             </div>
                         ))}
-                        <h5>Añade una etiqueta para completar tu itinerario</h5>
-                        <input type='text'></input>
+                        
 
                     </div>
 
                 )}
                 {HaBuscado && (
+                    <div>
                     <MapContainer center={[40.40, -3.70]} zoom={13} id='map' ref={mapRef}>
                         <TileLayer
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -313,7 +353,25 @@ const SubirComponent = () => {
                             </Marker>
                         )}
                     </MapContainer>
+                    <h5>Añade una etiqueta para completar tu itinerario</h5>
+                    <input type='text'></input>
+                    </div>
                 )}
+
+                <div>
+                    <input id='fileinput' onChange={elegirFoto} type='file'></input>
+                    <button onClick={enviarFoto} type='button'>Upload</button>
+                </div>
+
+                <div>
+                    {listaimagenes.map(image =>(
+                        <div key={image}>
+                        <img src={'http://localhost:3050/' + image} style={{height: "200px",width:"300px"}}></img>
+                    </div>
+                    ))}
+                    
+                </div>
+                
             </div >
 
 
