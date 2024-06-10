@@ -5,7 +5,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 // LEAFLET
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polygon } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import * as L from "leaflet";
 import 'leaflet/dist/leaflet.css';
@@ -51,9 +51,6 @@ const SubirComponent = () => {
     const [file, setFile] = useState(null);
     const [listaimagenes, setListaimagenes] = useState([]);
     const [etiqueta, setEtiqueta] = useState('');
-    // Estado para almacenar las coordenadas del polígono
-    const [coordenadasPoligono, setCoordenadasPoligono] = useState([]);
-
 
     useEffect(() => {   //AL CARGAR LA PÁGINA
 
@@ -62,8 +59,52 @@ const SubirComponent = () => {
         }
 
 
+        cargarImagenes();
+
     }, []);
 
+    const cargarImagenes = async () => {
+        // try {
+        //     const response = await axios.get('http://localhost:3050/sacarImagen');
+        //     // response.json();
+        //     setListaimagenes(response.data);
+        // } catch (error) {
+        //     console.error('Error al subir la imagen:', error);
+
+        // }
+    }
+
+    const handleDeleteMarker = (id) => {
+        setMarkers(prevMarkers => prevMarkers.filter(marker => marker.id !== id));
+
+    };
+
+    const handleMarkerTitleChange = (newTitle) => {
+        setTempMarker(prevMarker => ({ ...prevMarker, title: newTitle }));
+    };
+    const handleMapClick = (e) => {
+        const newMarker = {
+            id: Date.now(),
+            position: e.latlng,
+            title: ""
+        };
+        setTempMarker(newMarker);
+    };
+
+    const handleSaveMarker = () => {
+        setMarkers((prevMarkers) => {
+            const newMarkers = [...prevMarkers, tempMarker];
+            console.log("Marcadores guardados:", newMarkers);
+            return newMarkers;
+        });
+        setTempMarker(null);
+    };
+    const MapClickHandler = () => {
+        useMapEvents({
+            click: handleMapClick,
+        });
+        return null;
+    };
 
     //FORMULARIO
     const { register, handleSubmit,
@@ -80,13 +121,18 @@ const SubirComponent = () => {
         setHaBuscado(true);
     });
 
+    const elegirFoto = e => {
+        // console.log(e.target.files[0]);
+        setFile(e.target.files[0]);
+    }
+
     const subirItinerario = async () => {
         console.log(etiqueta);
         console.log(file);
-        console.log(coordenadasPoligono);
+        console.log(markers);
 
         // Comprobar si hay campos obligatorios vacíos
-        // if (!datosItinerario.destino || !datosItinerario.dias || !datosItinerario.personas || !datosItinerario.precio || markers.length === 0 || !etiqueta || !file || (coordenadasPoligono.length === 0)) {
+        // if (!datosItinerario.destino || !datosItinerario.dias || !datosItinerario.personas || !datosItinerario.precio || markers.length === 0 || !etiqueta || !file) {
         //     alert('Debes completar todos los campos');
         //     return;
         // }
@@ -99,7 +145,7 @@ const SubirComponent = () => {
 
         // Formateamos la fecha en el formato YYYY-MM-DD
         const formattedDate = `${year}-${month}-${day}`;
-        const coordenadasWKT = convertirACoordenadasWKT(coordenadasPoligono);
+
         // Crear un objeto con los datos a enviar
         // const datosEnviar = {
         //     destino: datosItinerario.destino,
@@ -123,9 +169,8 @@ const SubirComponent = () => {
         formData.append('personas', datosItinerario.personas);
         formData.append('precio', datosItinerario.precio);
         formData.append('autor_id', localStorage.getItem('userId'));
-        formData.append('etiqueta', etiqueta.toLowerCase());
+        formData.append('etiqueta', etiqueta);
         formData.append('image', file);
-        formData.append('coordenadas', coordenadasWKT);
 
 
         try {
@@ -133,25 +178,23 @@ const SubirComponent = () => {
             const responseItinerario = await axios.post('http://localhost:3050/subirItinerario', formData);
             const itinerarioId = responseItinerario.data.insertId; // Obtener el ID del itinerario insertado
 
-            {
-                Array.from({ length: datosItinerario.dias }).map(async (_, index) => {
-                    try {
-                        const tituloDia = document.getElementById(`titulo-dia-${index}`).value;
-                        const textoDia = document.getElementById(`texto-dia-${index}`).value;
-
-                        const responseItinerario = await axios.post('http://localhost:3050/subirTextoItinerario', {
-                            num_dia: index + 1,
-                            titulo_dia: tituloDia,
-                            texto_dia: textoDia,
-                            id_itinerario: itinerarioId
-                        });
-
-                    } catch (error) {
-                        console.error('Error al subir el texto:', error);
-                        alert('Error al subir el texto');
-                    }
-                })
-            }
+            {Array.from({ length: datosItinerario.dias }).map(async (_, index) => {
+                try {
+                    const tituloDia = document.getElementById(`titulo-dia-${index}`).value;
+                    const textoDia = document.getElementById(`texto-dia-${index}`).value;
+            
+                    const responseItinerario = await axios.post('http://localhost:3050/subirTextoItinerario', {
+                        num_dia: index+1,
+                        titulo_dia: tituloDia,
+                        texto_dia: textoDia,
+                        id_itinerario: itinerarioId
+                    });
+            
+                } catch (error) {
+                    console.error('Error al subir el texto:', error);
+                    alert('Error al subir el texto');
+                }
+            })}
 
             alert('Itinerario subido con éxito');
         } catch (error) {
@@ -167,45 +210,27 @@ const SubirComponent = () => {
         setEtiqueta(e.target.value); // Actualizar el estado de etiqueta con el valor del input
     };
 
-    const elegirFoto = e => {
-        // console.log(e.target.files[0]);
-        setFile(e.target.files[0]);
-    }
+    const enviarFoto = async () => {
+        if (!file) {
+            alert('Debes seleccionar una foto');
+            return;
+        }
 
+        const formdata = new FormData();
+        formdata.append('image', file);
 
-    const MapClickHandler = () => {
-        useMapEvents({
-            click: handleClickMapa,
-        });
-        return null;
+        try {
+            const response = await axios.post('http://localhost:3050/subirImagen', formdata);
+            console.log(response.data);
+            alert('Imagen subida con éxito');
+        } catch (error) {
+            console.error('Error al subir la imagen:', error);
+            alert('Error al subir la imagen');
+        }
+
+        document.getElementById('fileinput').value = null;
+        setFile(null);
     };
-    // Función para manejar el clic en el mapa cuando se está dibujando el polígono
-    const handleClickMapa = (e) => {
-            // Agrega la posición del clic a las coordenadas del polígono
-            setCoordenadasPoligono([...coordenadasPoligono, e.latlng]);
-            // Si se han agregado cuatro puntos, detén el dibujo del polígono
-            if (coordenadasPoligono.length === 4) {
-                resetPoligono();
-            }
-        
-    };
-
-    // Función para dibujar el polígono en el mapa
-    const dibujarPoligono = () => {
-        return (
-            <Polygon positions={coordenadasPoligono} color="red" />
-        );
-    };
-
-    const resetPoligono = () => {
-        setCoordenadasPoligono([]);
-    };
-
-    const convertirACoordenadasWKT = (coordenadas) => {
-        const wkt = `POLYGON((${coordenadas.map(coordenada => `${coordenada.lng} ${coordenada.lat}`).join(',')},${coordenadas[0].lng} ${coordenadas[0].lat}))`;
-        return wkt;
-    };
-
 
     return (
         <div className='Listasdiv'>
@@ -300,7 +325,7 @@ const SubirComponent = () => {
                         <div id='divs-errores'>
                             <div id="inputformlista">
                                 <span id="icon"><img src={calendar_img} alt='logo' width={"25px"}></img></span>
-                                <input id="input" placeholder="Nº días" type='number' min="1"
+                                <input id="input" placeholder="Nº días" type='number'
                                     {...register("dias", {
                                         required: {
                                             value: true,
@@ -319,7 +344,7 @@ const SubirComponent = () => {
                             <div id="inputformlista">
                                 <span id="icon"><img src={people_img} alt='logo' width={"25px"}></img></span>
 
-                                <input id="input" placeholder="Nº personas" type='number' min="1"
+                                <input id="input" placeholder="Nº personas" type='number'
                                     {...register("personas", {
                                         required: {
                                             value: true,
@@ -335,11 +360,12 @@ const SubirComponent = () => {
 
 
                         <div id='divpresupuestostop'>
+                            <h5>Presupuesto</h5>
                             {/* Presupuesto Mínimo */}
                             <div id='divs-errores'>
                                 <div id='divpresupuestos'>
                                     <div id="inputformlista">
-                                        <input id="input" placeholder="Precio" type='number' min="1"
+                                        <input id="input" placeholder="Precio" type='number'
                                             {...register("precio", {
                                                 required: {
                                                     value: true,
@@ -364,37 +390,54 @@ const SubirComponent = () => {
                 </form>
 
                 {HaBuscado && (
-                    <div className='diasContainer'>
+                    <div className='CrearContainer'>
                         {Array.from({ length: datosItinerario.dias }).map((_, index) => (
                             <div key={index} className='day-input'>
                                 <input type='text' placeholder={`Título día ${index + 1}`} id={`titulo-dia-${index}`} />
-                                <textarea name="textarea" rows="10" cols="100" placeholder='Escribir...' id={`texto-dia-${index}`}></textarea>
+                                <textarea name="textarea" rows="10" cols="50" placeholder='Escribir...' id={`texto-dia-${index}`}></textarea>
                             </div>
                         ))}
                     </div>
 
                 )}
                 {HaBuscado && (
-                    <div id='segundapartesubir'>
-                        <button onClick={resetPoligono} id='resetearPoligono'>
-                            Resetear polígono
-                        </button>
-                        <p>Haz click en el mapa para crear un polígono de 4 puntos de tu zona</p>
-                        <MapContainer center={[40.40, -3.70]} zoom={13} id='map' ref={mapRef} >
-                        <MapClickHandler />
-
+                    <div>
+                        <MapContainer center={[40.40, -3.70]} zoom={13} id='map' ref={mapRef}>
                             <TileLayer
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             />
-                            {dibujarPoligono()}
-
+                            <MapClickHandler />
+                            {markers.map(marker => (
+                                <Marker key={marker.id} position={marker.position} icon={MarkerIcon} onclick={() => handleDeleteMarker(marker.id)}>
+                                    <Popup>
+                                        <div>
+                                            <p>{marker.title}</p>
+                                            <button onClick={() => handleDeleteMarker(marker.id)}>Borrar</button>
+                                        </div>
+                                    </Popup>
+                                </Marker>
+                            ))}
+                            {tempMarker && (
+                                <Marker position={tempMarker.position} icon={tempMarkerIcon}>
+                                    <Popup>
+                                        <div>
+                                            <input
+                                                type="text"
+                                                value={tempMarker.title}
+                                                onChange={(e) => handleMarkerTitleChange(e.target.value)}
+                                                placeholder='Título del marcador'
+                                            />
+                                            <button onClick={handleSaveMarker}>Guardar</button>
+                                        </div>
+                                    </Popup>
+                                </Marker>
+                            )}
                         </MapContainer>
                         <h5>Añade una etiqueta para completar tu itinerario</h5>
                         <input
                             type="text"
                             value={etiqueta}
-                            id='input-etiqueta'
                             onChange={handleEtiquetaChange}
                         />
                         <h5>Añade una foto</h5>

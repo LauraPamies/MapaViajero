@@ -37,6 +37,8 @@ const noti = withReactContent(Swal)
     const [itinerariosfav, setItinerariosfav] = useState([]);
     const [itinerariosfavPrincipio, SetitinerariosfavPrincipio] = useState([]);
     const [Etiquetas, setEtiquetas] = useState(['Todo']);
+    const [imagenes, setImagenes] = useState([]);
+    const [imagenesFiltradas, setImagenesFiltradas] = useState([]);
 
 
     useEffect(() => {   //AL CARGAR LA PÁGINA
@@ -59,14 +61,28 @@ const noti = withReactContent(Swal)
                 id_usuario: id_usuario,
                 orden: "precio_asc"
             });
-            setItinerariosfav(response.data);
-            SetitinerariosfavPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
-            console.log(response.data);
+
+            setItinerariosfav(response.data.itinerarios);
+            SetitinerariosfavPrincipio(response.data.itinerarios);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
+            setImagenes(response.data.imagenes);
+
 
         } catch (error) {
             console.error('Error al obtener los itinerarios:', error);
         }
     }
+
+    useEffect(() => {
+        // Crea una nueva lista de imágenes filtradas basada en los itinerarios filtrados
+        const imagenesNuevas = itinerariosfav.map(itinerario => {
+            // Encuentra la imagen correspondiente a cada itinerario
+            const index = itinerariosfavPrincipio.findIndex(item => item.id_itinerario === itinerario.id_itinerario);
+            // Devuelve la imagen correspondiente o una cadena vacía si no se encuentra
+            return index !== -1 ? imagenes[index] : '';
+        });
+        // Actualiza el estado de las imágenes filtradas
+        setImagenesFiltradas(imagenesNuevas);
+    }, [itinerariosfav, itinerariosfavPrincipio, imagenes]);
 
     useEffect(() => {
         const todasEtiquetas = ['Todo', ...new Set(itinerariosfavPrincipio.map(itinerario => itinerario.etiqueta))];
@@ -85,8 +101,9 @@ const noti = withReactContent(Swal)
                 orden: event.target.value,
                 id_usuario: id_usuario
             });
-            setItinerariosfav(response.data);
-            SetitinerariosfavPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
+            setItinerariosfav(response.data.itinerarios);
+            SetitinerariosfavPrincipio(response.data.itinerarios);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
+            setImagenes(response.data.imagenes);
 
         } catch (error) {
             console.error('Error al obtener los itinerarios:', error);
@@ -163,7 +180,7 @@ const noti = withReactContent(Swal)
                             <h4>Ordenar por</h4>
                             <select className='orden_select' onChange={orden_cambiado}>
                                 {opciones_ordenar.map(opcion => (
-                                    <option value={opcion.value}>{opcion.label}</option>
+                                    <option key={opcion.value} value={opcion.value}>{opcion.label}</option>
                                 ))}
                             </select>
                         </div>
@@ -188,14 +205,14 @@ const noti = withReactContent(Swal)
                     </div>
                     <div className="itinerarios-container">
                         {itinerariosfav.map((itinerario, index) => (
-                            <div key={itinerario.id} id='itinerario-card-complete'>
+                            <div key={itinerario.id_itinerario} id='itinerario-card-complete'>
                                 <div className="itinerario-card" >
                                     <div className="image-container">
-                                        {/* <img
-                                            src={`${process.env.PUBLIC_URL}/fotos_itinerarios/${itinerario.foto.split('/').pop()}`}
-                                            alt={itinerario.titulo}
+                                    <img
+                                            src={`http://localhost:3050/${imagenesFiltradas[index]}`}
+                                            alt={imagenes.titulo}
                                             className="itinerario-imagen"
-                                        /> */}
+                                        />
                                     </div>
                                     <div className="itinerario-info" onClick={() => handleItinerarioClick(itinerario.id_itinerario)} style={{ cursor: 'pointer' }}>
                                         <div>

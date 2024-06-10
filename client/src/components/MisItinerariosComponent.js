@@ -18,6 +18,8 @@ const MisItinerariosComponent = () => {
 
 
     const [itinerarios, setItinerarios] = useState([]);
+    const [imagenes, setImagenes] = useState([]);
+
 
     useEffect(() => {
 
@@ -30,8 +32,9 @@ const MisItinerariosComponent = () => {
                 const response = await axios.post('http://localhost:3050/misItinerarios', {
                     autor_id: localStorage.getItem('userId')
                 });
-                setItinerarios(response.data);
-
+                setItinerarios(response.data.itinerarios);
+                setImagenes(response.data.imagenes);
+                console.log(response.data);
 
             } catch (error) {
                 console.error('Error al obtener los itinerarios:', error);
@@ -59,10 +62,11 @@ const MisItinerariosComponent = () => {
                     {itinerarios.map((itinerario, index) => (
                         <div key={itinerario.id} className="itinerario-card" >
                             <div className="image-container">
-                                {/* <img
-                                    src={`${process.env.PUBLIC_URL}/fotos_itinerarios/${itinerario.foto.split('/').pop()}`}
-                                    alt={itinerario.titulo}
-                                    className="itinerario-imagen" /> */}
+                                <img
+                                    src={`http://localhost:3050/${imagenes[index]}`}
+                                    alt={imagenes.titulo}
+                                    className="itinerario-imagen"
+                                />
                             </div>
                             <div className="itinerario-info">
                                 <div>

@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { faHeart,faHeartCircleMinus ,faHeartCirclePlus} from '@fortawesome/free-solid-svg-icons'
+import { faHeart, faHeartCircleMinus, faHeartCirclePlus } from '@fortawesome/free-solid-svg-icons'
 
 // IMPORT IMAGENES
 import destino_img from '../images/Location.png';
@@ -25,7 +25,7 @@ import map_img from '../images/Map.png';
 
 const ListasComponent = () => {
 
-const noti = withReactContent(Swal)
+    const noti = withReactContent(Swal)
 
 
     const ir_mapa = () => {
@@ -46,6 +46,8 @@ const noti = withReactContent(Swal)
     const [datosBusqueda, setDatosBusqueda] = useState([]);
     const [itinerarios, setItinerarios] = useState([]);
     const [itinerariosPrincipio, SetitinerariosPrincipio] = useState([]);
+    const [imagenes, setImagenes] = useState([]);
+    
 
     const [favoritos, setFavoritos] = useState([]);
 
@@ -73,16 +75,14 @@ const noti = withReactContent(Swal)
         async function fetchData() {
             try {
                 const response = await axios.post('http://localhost:3050/getItinerariosRandom');
-                setItinerarios(response.data);
-                SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
-
+                setItinerarios(response.data.itinerarios);
+                SetitinerariosPrincipio(response.data.itinerarios);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
+                setImagenes(response.data.imagenes);
 
             } catch (error) {
                 console.error('Error al obtener los itinerarios:', error);
             }
         }
-
-        
 
         fetchData();
         cargarFavs();
@@ -101,8 +101,7 @@ const noti = withReactContent(Swal)
             const response = await axios.post('http://localhost:3050/favoritos', {
                 id_usuario: id_usuario
             });
-            setFavoritos(response.data);
-            console.log(response.data);
+            setFavoritos(response.data.itinerarios);
 
 
         } catch (error) {
@@ -114,7 +113,7 @@ const noti = withReactContent(Swal)
         navigate(`/itinerario/${id}`);
     };
 
-    const borrarFav = (id_itinerario) =>{
+    const borrarFav = (id_itinerario) => {
         Swal.fire({
             title: "Confirmar",
             text: "Eliminar de favoritos",
@@ -125,15 +124,15 @@ const noti = withReactContent(Swal)
             confirmButtonText: "Si, eliminar",
             cancelButtonText: "Cancelar"
 
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
 
                 borrarFavAceptado(id_itinerario);
             }
-          });
+        });
     };
 
-    const borrarFavAceptado = (async (id_itinerario) =>{
+    const borrarFavAceptado = (async (id_itinerario) => {
         var id_usuario = localStorage.getItem('userId');
 
         try {
@@ -141,7 +140,7 @@ const noti = withReactContent(Swal)
                 id_itinerario: id_itinerario,
                 id_usuario: id_usuario
             });
-        cargarFavs();
+            cargarFavs();
 
 
         } catch (error) {
@@ -149,7 +148,7 @@ const noti = withReactContent(Swal)
         }
     });
 
-    const addFav = (async (id_itinerario) =>{
+    const addFav = (async (id_itinerario) => {
         var id_usuario = localStorage.getItem('userId');
 
         try {
@@ -157,7 +156,7 @@ const noti = withReactContent(Swal)
                 id_itinerario: id_itinerario,
                 id_usuario: id_usuario
             });
-        cargarFavs();
+            cargarFavs();
 
 
         } catch (error) {
@@ -177,9 +176,9 @@ const noti = withReactContent(Swal)
                 pre_max: datosBusqueda.pre_max,
                 orden: event.target.value
             });
-            setItinerarios(response.data);
-            SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
-
+            setItinerarios(response.data.itinerarios);
+            SetitinerariosPrincipio(response.data.itinerarios);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
+            setImagenes(response.data.imagenes);
         } catch (error) {
             console.error('Error al obtener los itinerarios:', error);
         }
@@ -210,9 +209,9 @@ const noti = withReactContent(Swal)
                 pre_max: data.pre_max,
                 orden: "precio_asc"
             });
-            setItinerarios(response.data);
-            SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
-
+            setItinerarios(response.data.itinerarios);
+            SetitinerariosPrincipio(response.data.itinerarios);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
+            setImagenes(response.data.imagenes);
         } catch (error) {
             console.error('Error al obtener los itinerarios:', error);
         }
@@ -310,7 +309,7 @@ const noti = withReactContent(Swal)
                         <div id='divs-errores'>
                             <div id="inputformlista">
                                 <span id="icon"><img src={calendar_img} alt='logo' width={"25px"}></img></span>
-                                <input id="input" placeholder="Nº días" type='number'
+                                <input id="input" placeholder="Nº días" type='number' min="1"
                                     {...register("dias", {
                                         required: {
                                             value: true,
@@ -329,7 +328,7 @@ const noti = withReactContent(Swal)
                             <div id="inputformlista">
                                 <span id="icon"><img src={people_img} alt='logo' width={"25px"}></img></span>
 
-                                <input id="input" placeholder="Nº personas" type='number'
+                                <input id="input" placeholder="Nº personas" type='number' min="1"
                                     {...register("personas", {
                                         required: {
                                             value: true,
@@ -351,7 +350,7 @@ const noti = withReactContent(Swal)
                                 <div id='divs-errores'>
                                     <div id='divpresupuestos'>
                                         <div id="inputformlista">
-                                            <input id="input" placeholder="Mínimo" type='number'
+                                            <input id="input" placeholder="Mínimo" type='number' min="1"
                                                 {...register("pre_min", {
                                                     required: {
                                                         value: true,
@@ -373,7 +372,7 @@ const noti = withReactContent(Swal)
                                     {/* Presupuesto Máximo */}
                                     <div id='divs-errores'>
                                         <div id="inputformlista">
-                                            <input id="input" placeholder="Máximo" type='number'
+                                            <input id="input" placeholder="Máximo" type='number' min="1"
                                                 {...register("pre_max", {
                                                     required: {
                                                         value: true,
@@ -447,11 +446,11 @@ const noti = withReactContent(Swal)
                             <div key={itinerario.id} id='itinerario-card-complete'>
                                 <div className="itinerario-card" >
                                     <div className="image-container">
-                                        {/* <img
-                                            src={`${process.env.PUBLIC_URL}/fotos_itinerarios/${itinerario.foto.split('/').pop()}`}
-                                            alt={itinerario.titulo}
+                                        <img
+                                            src={`http://localhost:3050/${imagenes[index]}`}
+                                            alt={imagenes.titulo}
                                             className="itinerario-imagen"
-                                        /> */}
+                                        />
                                     </div>
                                     <div className="itinerario-info" onClick={() => handleItinerarioClick(itinerario.id)} style={{ cursor: 'pointer' }}>
                                         <div>
@@ -469,10 +468,10 @@ const noti = withReactContent(Swal)
                                     <div className="heart-container">
                                         {
                                             favoritos.some(fav => fav.id_itinerario === itinerario.id) ? (
-                                                <button onClick={()=>borrarFav(itinerario.id)} id='fav-icon-red'><FontAwesomeIcon icon={faHeartCircleMinus} /></button>
+                                                <button onClick={() => borrarFav(itinerario.id)} id='fav-icon-red'><FontAwesomeIcon icon={faHeartCircleMinus} /></button>
 
                                             ) : (
-                                                <button onClick={()=>addFav(itinerario.id)} id='fav-icon' ><FontAwesomeIcon icon={faHeartCirclePlus} /></button>
+                                                <button onClick={() => addFav(itinerario.id)} id='fav-icon' ><FontAwesomeIcon icon={faHeartCirclePlus} /></button>
                                             )
                                         }
                                     </div>

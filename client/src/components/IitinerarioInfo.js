@@ -86,7 +86,7 @@ const IitinerarioInfo = () => {
                         <div key={texto.num_dia} className="texto-card">
 
                             <h2 id='titulos_dia'>{texto.num_dia} - {texto.titulo_dia}</h2>
-                            <p>{texto.texto_dia} días</p>
+                            <p>{texto.texto_dia}</p>
 
                         </div>
                     ))}

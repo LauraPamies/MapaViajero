@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import {getItinerarios,ItinerariosConcretos,itinerario,textosItinerarioslimite, misItinerarios,getItinerariosRandom,favoritos,addFav,borrarFav,subirItinerario} from "../controllers/itinerarios.controller.js"
+import {ItinerariosConcretos,itinerario,textosItinerarioslimite, misItinerarios,getItinerariosRandom,favoritos,addFav,borrarFav,subirItinerario, subirTextoItinerario} from "../controllers/itinerarios.controller.js"
 
 
 import multer from "multer";
@@ -30,7 +30,7 @@ const fileUpload = multer({
 }).single('image');
 
 //DEFINIMOS LOS ENDPOINTS
-router.post("/getItinerarios" , getItinerarios);
+// router.post("/getItinerarios" , getItinerarios);
 router.post("/getItinerariosRandom" , getItinerariosRandom);
 router.post("/ItinerariosConcretos" , ItinerariosConcretos);
 router.get("/itinerario/:id" , itinerario);
@@ -40,6 +40,7 @@ router.post("/favoritos" , favoritos);
 router.post("/addFav" , addFav);
 router.post("/borrarFav" , borrarFav);
 router.post("/subirItinerario" ,fileUpload, subirItinerario);
+router.post("/subirTextoItinerario", subirTextoItinerario);
 
 
 
