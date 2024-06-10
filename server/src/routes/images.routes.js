@@ -30,6 +30,6 @@ const router = Router();
 // DEFINIMOS LOS ENDPOINTS
 router.post("/subirImagen", fileUpload, subirImagen);
 
-router.get("/sacarImagen", sacarImagen);
+router.post("/sacarImagen", sacarImagen);
 
 export default router;

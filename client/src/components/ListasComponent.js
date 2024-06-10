@@ -46,7 +46,7 @@ const ListasComponent = () => {
     const [datosBusqueda, setDatosBusqueda] = useState([]);
     const [itinerarios, setItinerarios] = useState([]);
     const [itinerariosPrincipio, SetitinerariosPrincipio] = useState([]);
-    const [imagenes, setImagenes] = useState([]);
+    // const [imagenes, setImagenes] = useState([]);
     
 
     const [favoritos, setFavoritos] = useState([]);
@@ -75,9 +75,10 @@ const ListasComponent = () => {
         async function fetchData() {
             try {
                 const response = await axios.post('http://localhost:3050/getItinerariosRandom');
-                setItinerarios(response.data.itinerarios);
-                SetitinerariosPrincipio(response.data.itinerarios);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
-                setImagenes(response.data.imagenes);
+                console.log(response.data);
+                setItinerarios(response.data);
+                SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
+                // setImagenes(response.data.imagenes);
 
             } catch (error) {
                 console.error('Error al obtener los itinerarios:', error);
@@ -178,7 +179,7 @@ const ListasComponent = () => {
             });
             setItinerarios(response.data.itinerarios);
             SetitinerariosPrincipio(response.data.itinerarios);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
-            setImagenes(response.data.imagenes);
+            // setImagenes(response.data.imagenes);
         } catch (error) {
             console.error('Error al obtener los itinerarios:', error);
         }
@@ -211,7 +212,7 @@ const ListasComponent = () => {
             });
             setItinerarios(response.data.itinerarios);
             SetitinerariosPrincipio(response.data.itinerarios);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
-            setImagenes(response.data.imagenes);
+            // setImagenes(response.data.imagenes);
         } catch (error) {
             console.error('Error al obtener los itinerarios:', error);
         }
@@ -444,11 +445,12 @@ const ListasComponent = () => {
                     <div className="itinerarios-container">
                         {itinerarios.map((itinerario, index) => (
                             <div key={itinerario.id} id='itinerario-card-complete'>
+                                
                                 <div className="itinerario-card" >
                                     <div className="image-container">
                                         <img
-                                            src={`http://localhost:3050/${imagenes[index]}`}
-                                            alt={imagenes.titulo}
+                                            src={`http://localhost:3050/${itinerario.nombre_foto}`}
+                                            alt={itinerario.nombre_foto}
                                             className="itinerario-imagen"
                                         />
                                     </div>

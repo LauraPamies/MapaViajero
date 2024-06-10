@@ -78,33 +78,32 @@ export const getItinerariosRandom = async (req, res) => { //req = request, osea 
         const [result] = await pool.query("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name,tipo_foto, nombre_foto, data from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id ORDER BY RAND() LIMIT 3;")
 
 
-        if (result.length === 0) {
-            // No se encontraron resultados, devolver arreglos vacíos
-            return res.json({ itinerarios: [], imagenes: [] });
-        }
+        result.map(img => {
+            fs.writeFileSync(path.join(__dirname, '../dbimagenes/' + img.nombre_foto), img.data)
 
-        // Array para almacenar los nombres de archivo de las imágenes asociadas a los itinerarios
-        let imagenesdir = [];
+        })
+
+        res.send(result);
+
+        // if (result.length === 0) {
+        //     // No se encontraron resultados, devolver arreglos vacíos
+        //     return res.json({ itinerarios: [], imagenes: [] });
+        // }
+
+        // // Array para almacenar los nombres de archivo de las imágenes asociadas a los itinerarios
+        // let imagenesdir = [];
 
         // Iterar sobre los itinerarios recuperados
-        for (const itinerario of result) {
-            // Escribe el archivo de imagen
-            const imageFileName = itinerario.nombre_foto + '.png';
-            const imageData = itinerario.data;
-            fs.writeFileSync(path.join(__dirname, '../dbimagenes/', imageFileName), imageData);
 
-            // Agregar el nombre del archivo de imagen al array de imágenes
-            imagenesdir.push(imageFileName);
-        }
 
-        // Respuesta con los itinerarios y las imágenes asociadas
-        const response = {
-            itinerarios: result,
-            imagenes: imagenesdir
-        };
+        // // Respuesta con los itinerarios y las imágenes asociadas
+        // const response = {
+        //     itinerarios: result,
+        //     imagenes: imagenesdir
+        // };
 
-        // Envía la respuesta con la información combinada
-        res.json(response);
+        // // Envía la respuesta con la información combinada
+        // res.json(response);
 
 
     } catch (error) {
@@ -388,9 +387,6 @@ export const subirItinerario = async (req, res) => { //req = request, osea los v
         const tipo = req.file.mimetype;
         const nombre = req.file.originalname;
         const data = fs.readFileSync(path.join(__dirname, '../images/' + req.file.filename));
-
-
-        //console.log("INSERT INTO itinerarios (titulo, fecha, dias, personas, precio, autor_id, etiqueta, tipo_foto, nombre_foto, data) VALUES ('" + destino + "', '" + fecha + "', '" + dias + "', '" + personas + "', '" + precio + "', '" + autor_id + "', '" + etiqueta + "', '" + tipo + "', '" + nombre + "', '" + data + "');");
 
 
         const [result] = await pool.query("INSERT INTO itinerarios (titulo, fecha, dias, personas, precio, autor_id, etiqueta, tipo_foto, nombre_foto, data,coordenadas) VALUES (?, ? ,? ,?, ?, ?, ?, ?, ?, ?, ST_GeomFromText(?));", [destino, fecha, dias, personas, precio, autor_id, etiqueta, tipo, nombre, data, coordenadas]);
