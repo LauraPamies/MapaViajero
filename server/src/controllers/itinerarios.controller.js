@@ -141,33 +141,12 @@ export const ItinerariosConcretos = async (req, res) => { //req = request, osea 
 
         const [result] = await pool.query(query, params);
 
-        if (result.length === 0) {
-            // No se encontraron resultados, devolver arreglos vacíos
-            return res.json({ itinerarios: [], imagenes: [] });
-        }
+        result.map(img => {
+            fs.writeFileSync(path.join(__dirname, '../dbimagenes/' + img.nombre_foto), img.data)
 
-        // Array para almacenar los nombres de archivo de las imágenes asociadas a los itinerarios
-        let imagenesdir = [];
+        })
 
-        // Iterar sobre los itinerarios recuperados
-        for (const itinerario of result) {
-            // Escribe el archivo de imagen
-            const imageFileName = itinerario.nombre_foto + '.png';
-            const imageData = itinerario.data;
-            fs.writeFileSync(path.join(__dirname, '../dbimagenes/', imageFileName), imageData);
-
-            // Agregar el nombre del archivo de imagen al array de imágenes
-            imagenesdir.push(imageFileName);
-        }
-
-        // Respuesta con los itinerarios y las imágenes asociadas
-        const response = {
-            itinerarios: result,
-            imagenes: imagenesdir
-        };
-
-        // Envía la respuesta con la información combinada
-        res.json(response);
+        res.send(result);
 
     } catch (error) {
         console.error('Error en la consulta:', error);
@@ -232,33 +211,12 @@ export const misItinerarios = async (req, res) => { //req = request, osea los va
         console.log("Select * itinerarios  WHERE autor_id = '" + autor_id + "';");
         const [result] = await pool.query("Select * from itinerarios WHERE autor_id = ?;", [autor_id])
 
-        if (result.length === 0) {
-            // No se encontraron resultados, devolver arreglos vacíos
-            return res.json({ itinerarios: [], imagenes: [] });
-        }
+        result.map(img => {
+            fs.writeFileSync(path.join(__dirname, '../dbimagenes/' + img.nombre_foto), img.data)
 
-        // Array para almacenar los nombres de archivo de las imágenes asociadas a los itinerarios
-        let imagenesdir = [];
+        })
 
-        // Iterar sobre los itinerarios recuperados
-        for (const itinerario of result) {
-            // Escribe el archivo de imagen
-            const imageFileName = itinerario.nombre_foto + '.png';
-            const imageData = itinerario.data;
-            fs.writeFileSync(path.join(__dirname, '../dbimagenes/', imageFileName), imageData);
-
-            // Agregar el nombre del archivo de imagen al array de imágenes
-            imagenesdir.push(imageFileName);
-        }
-
-        // Respuesta con los itinerarios y las imágenes asociadas
-        const response = {
-            itinerarios: result,
-            imagenes: imagenesdir
-        };
-
-        // Envía la respuesta con la información combinada
-        res.json(response);
+        res.send(result);
 
     } catch (error) {
         return res.status(500).json({
@@ -296,33 +254,12 @@ export const favoritos = async (req, res) => { //req = request, osea los valores
 
         const [result] = await pool.query(query, params);
 
-        if (result.length === 0) {
-            // No se encontraron resultados, devolver arreglos vacíos
-            return res.json({ itinerarios: [], imagenes: [] });
-        }
+        result.map(img => {
+            fs.writeFileSync(path.join(__dirname, '../dbimagenes/' + img.nombre_foto), img.data)
 
-        // Array para almacenar los nombres de archivo de las imágenes asociadas a los itinerarios
-        let imagenesdir = [];
+        })
 
-        // Iterar sobre los itinerarios recuperados
-        for (const itinerario of result) {
-            // Escribe el archivo de imagen
-            const imageFileName = itinerario.nombre_foto + '.png';
-            const imageData = itinerario.data;
-            fs.writeFileSync(path.join(__dirname, '../dbimagenes/', imageFileName), imageData);
-
-            // Agregar el nombre del archivo de imagen al array de imágenes
-            imagenesdir.push(imageFileName);
-        }
-
-        // Respuesta con los itinerarios y las imágenes asociadas
-        const response = {
-            itinerarios: result,
-            imagenes: imagenesdir
-        };
-
-        // Envía la respuesta con la información combinada
-        res.json(response);
+        res.send(result);
 
     } catch (error) {
         console.error('Error en la consulta:', error);

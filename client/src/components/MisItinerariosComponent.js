@@ -18,7 +18,6 @@ const MisItinerariosComponent = () => {
 
 
     const [itinerarios, setItinerarios] = useState([]);
-    const [imagenes, setImagenes] = useState([]);
 
 
     useEffect(() => {
@@ -32,9 +31,7 @@ const MisItinerariosComponent = () => {
                 const response = await axios.post('http://localhost:3050/misItinerarios', {
                     autor_id: localStorage.getItem('userId')
                 });
-                setItinerarios(response.data.itinerarios);
-                setImagenes(response.data.imagenes);
-                console.log(response.data);
+                setItinerarios(response.data);
 
             } catch (error) {
                 console.error('Error al obtener los itinerarios:', error);
@@ -58,13 +55,13 @@ const MisItinerariosComponent = () => {
                 {/* BOTON */}
                 <button type='submit' id='botonItinerarios'>Añadir itinerario</button>
 
-                <div className="itinerarios-container">
+                <div className="mis-itinerarios-container">
                     {itinerarios.map((itinerario, index) => (
                         <div key={itinerario.id} className="itinerario-card" >
                             <div className="image-container">
                                 <img
-                                    src={`http://localhost:3050/${imagenes[index]}`}
-                                    alt={imagenes.titulo}
+                                    src={`http://localhost:3050/${itinerario.nombre_foto}`}
+                                    alt={itinerario.nombre_foto}
                                     className="itinerario-imagen"
                                 />
                             </div>

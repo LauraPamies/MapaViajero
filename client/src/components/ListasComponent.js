@@ -46,7 +46,6 @@ const ListasComponent = () => {
     const [datosBusqueda, setDatosBusqueda] = useState([]);
     const [itinerarios, setItinerarios] = useState([]);
     const [itinerariosPrincipio, SetitinerariosPrincipio] = useState([]);
-    // const [imagenes, setImagenes] = useState([]);
     
 
     const [favoritos, setFavoritos] = useState([]);
@@ -102,7 +101,7 @@ const ListasComponent = () => {
             const response = await axios.post('http://localhost:3050/favoritos', {
                 id_usuario: id_usuario
             });
-            setFavoritos(response.data.itinerarios);
+            setFavoritos(response.data);
 
 
         } catch (error) {
@@ -177,8 +176,8 @@ const ListasComponent = () => {
                 pre_max: datosBusqueda.pre_max,
                 orden: event.target.value
             });
-            setItinerarios(response.data.itinerarios);
-            SetitinerariosPrincipio(response.data.itinerarios);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
+            setItinerarios(response.data);
+            SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
             // setImagenes(response.data.imagenes);
         } catch (error) {
             console.error('Error al obtener los itinerarios:', error);
@@ -210,8 +209,8 @@ const ListasComponent = () => {
                 pre_max: data.pre_max,
                 orden: "precio_asc"
             });
-            setItinerarios(response.data.itinerarios);
-            SetitinerariosPrincipio(response.data.itinerarios);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
+            setItinerarios(response.data);
+            SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
             // setImagenes(response.data.imagenes);
         } catch (error) {
             console.error('Error al obtener los itinerarios:', error);
