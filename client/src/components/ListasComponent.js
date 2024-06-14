@@ -27,12 +27,33 @@ const ListasComponent = () => {
 
     const noti = withReactContent(Swal)
 
-
     const ir_mapa = () => {
+        if (HaBuscado) {
+            const destino = datosBusqueda.destino;
+            const dias = datosBusqueda.dias;
+            const personas = datosBusqueda.personas;
+            const min = datosBusqueda.pre_min;
+            const max = datosBusqueda.pre_max;
 
-        navigate("/mapa");
+            // Construye la URL con los parámetros opcionales
+            const queryParams = new URLSearchParams({
+                destino,
+                dias,
+                personas,
+                min,
+                max,
+            }).toString();
+
+            navigate(`/mapa?${queryParams}`);
+        }
+        else {
+            navigate(`/mapa`);
+
+        }
+
 
     };
+
 
     const opciones_ordenar = [
         { label: "Mas barato primero", value: "precio_asc" },
@@ -46,7 +67,7 @@ const ListasComponent = () => {
     const [datosBusqueda, setDatosBusqueda] = useState([]);
     const [itinerarios, setItinerarios] = useState([]);
     const [itinerariosPrincipio, SetitinerariosPrincipio] = useState([]);
-    
+
 
     const [favoritos, setFavoritos] = useState([]);
 
@@ -74,7 +95,7 @@ const ListasComponent = () => {
         async function fetchData() {
             try {
                 const response = await axios.post('http://localhost:3050/getItinerariosRandom');
-                console.log(response.data);
+                // console.log(response.data);
                 setItinerarios(response.data);
                 SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
                 // setImagenes(response.data.imagenes);
@@ -444,7 +465,7 @@ const ListasComponent = () => {
                     <div className="itinerarios-container">
                         {itinerarios.map((itinerario, index) => (
                             <div key={itinerario.id} id='itinerario-card-complete'>
-                                
+
                                 <div className="itinerario-card" >
                                     <div className="image-container">
                                         <img
