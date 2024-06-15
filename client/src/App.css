@@ -5,3 +5,22 @@
 
 }
 
+.publicidad{
+  width: 196px;
+  height: auto;
+  flex: 1;
+
+}
+
+#fav-icon-red {
+  font-size: 25px;
+  color:red;
+  border: none;
+  background-color: transparent;
+}
+
+#fav-icon {
+  font-size: 25px;
+  border: none;
+  background-color: transparent;
+}

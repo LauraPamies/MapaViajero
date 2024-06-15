@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import moment from 'moment';
 
 import '../CSS/register.css';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
@@ -99,21 +100,21 @@ const MisItinerariosComponent = () => {
             <div className='contenidoMisItinerarios'>
                 {/* BOTON */}
                 <button type='submit' id='botonItinerarios'>Añadir itinerario</button>
-                <div className='filtros_y_itinerarios'>
-                    <div className='filtros_container'>
+                <div className='filtros_y_itinerarios-mis'>
+                    <div className='filtros_container-mis'>
 
 
                         <div>
 
                             <h4>Ordenar por</h4>
-                            <select className='orden_select' onChange={orden_cambiado}>
+                            <select className='orden_select-mis' onChange={orden_cambiado}>
                                 {opciones_ordenar.map(opcion => (
                                     <option value={opcion.value}>{opcion.label}</option>
                                 ))}
                             </select>
                         </div>
 
-                        <div className='etiquetas'>
+                        <div className='etiquetas-mis'>
                             <h4>Tipo de viaje</h4>
                             <div >
                                 {Etiquetas.map(etiqueta => (
@@ -132,38 +133,40 @@ const MisItinerariosComponent = () => {
 
                     </div>
 
-                    <div className="itinerarios-container">
+                    <div className="itinerarios-container-mis">
                         {itinerarios.map((itinerario, index) => (
-                            <div key={itinerario.id} className="itinerario-card" >
+                            <div key={itinerario.id} className="itinerario-card-mis" >
                                 <div className="image-container">
                                     <img
                                         src={`http://localhost:3050/${itinerario.nombre_foto}`}
                                         alt={itinerario.nombre_foto}
-                                        className="itinerario-imagen"
+                                        className="itinerario-imagen-mis"
                                     />
                                 </div>
-                                <div className="itinerario-info">
+                                <div className="itinerario-info-mis">
                                     <div>
-                                        <h2 className="itinerario-titulo">{itinerario.titulo}</h2>
+                                        <h2 className="itinerario-titulo-mis">{itinerario.titulo}</h2>
                                     </div>
 
-                                    <div id='iti-dias-precio'>
+                                    <div id='iti-dias-precio-mis'>
                                         <p>{itinerario.dias} días</p>
-                                        <p className="itinerario-precio">{itinerario.precio}€</p>
-
+                                        <p className="itinerario-precio-mis">{itinerario.precio}€</p>
                                     </div>
-                                    <div id='iti-personas'>
+                                    <div id='iti-personas-mis'>
                                         <p>{itinerario.personas} personas</p>
+                                        <p>{moment(itinerario.fecha).format('DD/MM/YYYY')}</p>
+                                    </div>
+                                </div>
+
+                                <div className='acciones-mis'>
+                                    <div className='acciones-1-mis'>
                                         <img id="chat" src={View_img} alt='chat'></img>
-                                        <img id="chat" src={View_img} alt='chat'></img>
-                                        {/* <img id="chat" src={View_img} alt='chat'></img> */}
+                                        <img id="chat" src={Edit_img} alt='chat'></img>
+                                    </div>
+                                    <div className='acciones-2-mis'>
+                                        <img id="chat" src={Delete_img} alt='chat'></img>
 
                                     </div>
-
-
-                                </div>
-                                <div>
-                                    <img id="chat" src={View_img} alt='chat'></img>
 
                                 </div>
 

@@ -154,24 +154,24 @@ const noti = withReactContent(Swal)
                 <img src={publi} alt='publi'></img>
             </div>
 
-            <div className='contenidoListas'>
+            <div className='contenidoListas-favs'>
 
                 <button onClick={() => {
                     navigate("/listas");
                 }} id='boton-explorar'>Explorar</button>
 
-                <div className='filtros_y_itinerarios'>
-                    <div className='filtros_container'>
+                <div className='filtros_y_itinerarios-favs'>
+                    <div className='filtros_container-favs'>
                         <div>
                             <h4>Ordenar por</h4>
-                            <select className='orden_select' onChange={orden_cambiado}>
+                            <select className='orden_select-favs' onChange={orden_cambiado}>
                                 {opciones_ordenar.map(opcion => (
                                     <option key={opcion.value} value={opcion.value}>{opcion.label}</option>
                                 ))}
                             </select>
                         </div>
 
-                        <div className='etiquetas'>
+                        <div className='etiquetas-favs'>
                             <h4>Tipo de viaje</h4>
                             <div >
                                 {Etiquetas.map(etiqueta => (
@@ -189,28 +189,28 @@ const noti = withReactContent(Swal)
                         </div>
 
                     </div>
-                    <div className="itinerarios-container">
+                    <div className="itinerarios-container-favs">
                         {itinerariosfav.map((itinerario, index) => (
-                            <div key={itinerario.id_itinerario} id='itinerario-card-complete'>
-                                <div className="itinerario-card" >
+                            <div key={itinerario.id_itinerario} id='itinerario-card-complete-favs'>
+                                <div className="itinerario-card-favs" >
                                     <div className="image-container">
                                     <img
                                             src={`http://localhost:3050/${itinerario.nombre_foto}`}
                                             alt={itinerario.nombre_foto}
-                                            className="itinerario-imagen"
+                                            className="itinerario-imagen-favs"
                                         />
                                     </div>
-                                    <div className="itinerario-info" onClick={() => handleItinerarioClick(itinerario.id_itinerario)} style={{ cursor: 'pointer' }}>
+                                    <div className="itinerario-info-favs" onClick={() => handleItinerarioClick(itinerario.id_itinerario)} style={{ cursor: 'pointer' }}>
                                         <div>
-                                            <h2 className="itinerario-titulo">{itinerario.titulo}</h2>
+                                            <h2 className="itinerario-titulo-favs">{itinerario.titulo}</h2>
                                         </div>
-                                        <div id='iti-dias-precio'>
+                                        <div id='iti-dias-precio-favs'>
                                             <p>{itinerario.dias} días</p>
-                                            <p className="itinerario-precio">{itinerario.precio}€</p>
+                                            <p className="itinerario-precio-favs">{itinerario.precio}€</p>
                                         </div>
-                                        <div id='iti-personas'>
+                                        <div id='iti-personas-favs'>
                                             <p>{itinerario.personas} personas</p>
-                                            <p className="itinerario-autor">{itinerario.etiqueta}</p>
+                                            <p className="itinerario-autor-favs">{itinerario.etiqueta}</p>
                                         </div>
                                     </div>
                                     <div className="heart-container">

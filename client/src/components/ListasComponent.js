@@ -429,21 +429,21 @@ const ListasComponent = () => {
                 </button>
 
 
-                <div className='filtros_y_itinerarios'>
-                    <div className='filtros_container'>
+                <div className='filtros_y_itinerarios-listas'>
+                    <div className='filtros_container-listas'>
 
                         {HaBuscado && (
                             <div>
 
                                 <h4>Ordenar por</h4>
-                                <select className='orden_select' onChange={orden_cambiado}>
+                                <select className='orden_select-listas' onChange={orden_cambiado}>
                                     {opciones_ordenar.map(opcion => (
                                         <option value={opcion.value}>{opcion.label}</option>
                                     ))}
                                 </select>
                             </div>
                         )}
-                        <div className='etiquetas'>
+                        <div className='etiquetas-listas'>
                             <h4>Tipo de viaje</h4>
                             <div >
                                 {Etiquetas.map(etiqueta => (
@@ -463,29 +463,29 @@ const ListasComponent = () => {
                     </div>
 
 
-                    <div className="itinerarios-container">
+                    <div className="itinerarios-container-listas">
                         {itinerarios.map((itinerario, index) => (
-                            <div key={itinerario.id} id='itinerario-card-complete'>
+                            <div key={itinerario.id} id='itinerario-card-complete-listas'>
 
-                                <div className="itinerario-card" >
-                                    <div className="image-container">
+                                <div className="itinerario-card-listas" >
+                                    <div className="image-container-listas">
                                         <img
                                             src={`http://localhost:3050/${itinerario.nombre_foto}`}
                                             alt={itinerario.nombre_foto}
-                                            className="itinerario-imagen"
+                                            className="itinerario-imagen-listas"
                                         />
                                     </div>
-                                    <div className="itinerario-info" onClick={() => handleItinerarioClick(itinerario.id)} style={{ cursor: 'pointer' }}>
+                                    <div className="itinerario-info-listas" onClick={() => handleItinerarioClick(itinerario.id)} style={{ cursor: 'pointer' }}>
                                         <div>
-                                            <h2 className="itinerario-titulo">{itinerario.titulo}</h2>
+                                            <h2 className="itinerario-titulo-listas">{itinerario.titulo}</h2>
                                         </div>
-                                        <div id='iti-dias-precio'>
+                                        <div id='iti-dias-precio-listas'>
                                             <p>{itinerario.dias} días</p>
-                                            <p className="itinerario-precio">{itinerario.precio}€</p>
+                                            <p className="itinerario-precio-listas">{itinerario.precio}€</p>
                                         </div>
-                                        <div id='iti-personas'>
+                                        <div id='iti-personas-listas'>
                                             <p>{itinerario.personas} personas</p>
-                                            <p className="itinerario-autor">{itinerario.etiqueta}</p>
+                                            <p className="itinerario-autor-listas">{itinerario.etiqueta}</p>
                                         </div>
                                     </div>
                                     <div className="heart-container">

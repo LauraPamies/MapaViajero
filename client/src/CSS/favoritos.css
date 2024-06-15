@@ -2,16 +2,117 @@
 
 
 #boton-explorar {
-    padding: 10px 30px;
-    border: none;
-    border-radius: 40px;
-    font-size: 25px;
-    font-family: "Jost", sans-serif;
-    margin-right: 30px;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    background-color: #46AF12;
-    color: white;
-    cursor: pointer;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  }
+  padding: 10px 30px;
+  border: none;
+  border-radius: 40px;
+  font-size: 25px;
+  font-family: "Jost", sans-serif;
+  margin-right: 30px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  background-color: #46AF12;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.contenidoListas-favs {
+  flex: 8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.filtros_y_itinerarios-favs {
+  display: flex;
+  align-items: flex-start;
+  width: 90%;
+}
+
+.filtros_container-favs {
+  flex: 1;
+  margin-left: 70px;
+}
+
+.orden_select-favs {
+  background-color: #D9E1E7;
+  border: none;
+  height: 50px;
+  width: 200px;
+  padding-left: 10px;
+  border-radius: 18px;
+}
+
+.etiquetas-favs {
+  margin-top: 30px;
+  width: 100px;
+
+}
+
+.itinerarios-container-favs {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  flex: 3;
+
+}
+
+.itinerario-card-favs {
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 16px;
+  /* max-width: 600px; */
+  height: 180px;
+
+}
+
+.itinerario-imagen-favs {
+  height: 100%;
+  width: 260px;
+  border-radius: 8px;
+}
+
+.itinerario-info-favs {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+#itinerario-card-complete-favs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+
+.itinerario-titulo-favs {
+  font-size: 35px;
+  color: #333;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.itinerario-precio-favs {
+  color: #46AF12;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.itinerario-autor-favs {
+  font-style: italic;
+  color: #777;
+}
+
+#iti-dias-precio-favs,
+#iti-personas-favs {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  font-size: 24px;
+}

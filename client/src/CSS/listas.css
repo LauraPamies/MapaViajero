@@ -4,23 +4,6 @@
   background-color: #F0F3F5;
 }
 
-
-
-
-.orden_select {
-  background-color: #D9E1E7;
-  border: none;
-  height: 50px;
-  width: 200px;
-  padding-left: 10px;
-  border-radius: 18px;
-}
-
-.etiquetas {
-  margin-top: 30px;
-}
-
-
 .contenidoListas {
   flex: 8;
   display: flex;
@@ -28,6 +11,9 @@
   align-items: center;
 }
 
+/*  */
+/* FORMULARIO */
+/*  */
 #contenedorformulario {
   display: flex;
   flex-direction: row;
@@ -127,85 +113,107 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.filtros_y_itinerarios {
+/*  */
+/* FIN FORMULARIO */
+/*  */
+
+
+
+
+
+
+.filtros_y_itinerarios-listas {
   display: flex;
   align-items: flex-start;
   width: 90%;
 }
 
-.filtros_container {
+.filtros_container-listas {
   flex: 1;
   margin-left: 70px;
   /* margin-top: 30px; */
 }
 
-/*ITINERARIOS*/
-.itinerarios-container {
-  display: flex;
-  flex: 4;
-  flex-wrap: wrap;
-  margin-left: 50px;
-  justify-content: center;
+.orden_select-listas {
+  background-color: #D9E1E7;
+  border: none;
+  height: 50px;
+  width: 200px;
+  padding-left: 10px;
+  border-radius: 18px;
+}
+
+.etiquetas-listas {
+  margin-top: 30px;
+  width: 100px;
 
 }
 
-/* .itinerario-card {
+/*ITINERARIOS*/
+.itinerarios-container-listas {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  flex: 3;
+
+}
+
+
+#itinerario-card-complete-listas {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.itinerario-card-listas {
+  display: flex;
+  flex-direction: row;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin: 16px;
-  padding: 16px;
-  max-width: 800px;
-  width: 100%;
-} */
+  height: 180px;
 
-
-#itinerario-card-complete {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 }
 
-#fav-icon-red {
-  font-size: 25px;
-  color:red;
-  border: none;
-  background-color: transparent;
-}
-
-#fav-icon {
-  font-size: 25px;
-  border: none;
-  background-color: transparent;
-}
-
-.itinerario-imagen {
+.itinerario-imagen-listas {
+  height: 100%;
+  width: 260px; 
   border-radius: 8px;
-  width: 150px;
-  height: auto;
-  margin-right: 16px;
+
 }
 
-.itinerario-info {
-  text-align: left;
+ 
+.itinerario-info-listas {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
 }
 
-.itinerario-titulo {
-  margin: 0;
-  font-size: 24px;
+.itinerario-titulo-listas {
+  font-size: 35px;
   color: #333;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
-.itinerario-precio {
+.itinerario-precio-listas {
   color: #46AF12;
   font-size: 24px;
   font-weight: bold;
 }
 
-.itinerario-autor {
+.itinerario-autor-listas {
   font-style: italic;
   color: #777;
+}
+
+#iti-dias-precio-listas, #iti-personas-listas{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding:0 20px;
+  font-size: 24px;
 }
