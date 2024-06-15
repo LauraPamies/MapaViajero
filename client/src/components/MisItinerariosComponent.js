@@ -36,6 +36,20 @@ const MisItinerariosComponent = () => {
         { label: "Mas antiguos primero", value: "fecha_asc" }
     ]
 
+    const editarItinerario = (id) => {
+       
+            const id_itinerario = id;
+
+            // Construye la URL con los parámetros opcionales
+            const queryParams = new URLSearchParams({
+                id_itinerario
+            }).toString();
+
+            navigate(`/subirItinerario?${queryParams}`);
+        
+
+    };
+
     useEffect(() => {
 
         if (localStorage.getItem('isLoggedIn') !== 'true') { //SI NO ESTÁ LOGUEADO
@@ -200,7 +214,7 @@ const MisItinerariosComponent = () => {
                                 <div className='acciones-mis'>
                                     <div className='acciones-1-mis'>
                                         <img onClick={() => navigate(`/itinerario/${itinerario.id}`)} id="chat" src={View_img} alt='chat' style={{ cursor: 'pointer' }}></img>
-                                        <img id="chat" src={Edit_img} alt='chat' style={{ cursor: 'pointer' }}></img>
+                                        <img onClick={() => editarItinerario(itinerario.id)} id="chat" src={Edit_img} alt='chat' style={{ cursor: 'pointer' }}></img>
                                     </div>
                                     <div className='acciones-2-mis'>
                                         <img onClick={() => borrarItinerario(itinerario.id)} id="chat" src={Delete_img} alt='chat' style={{ cursor: 'pointer' }}></img>

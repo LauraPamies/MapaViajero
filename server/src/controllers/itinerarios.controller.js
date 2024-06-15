@@ -167,7 +167,7 @@ export const itinerario = async (req, res) => { //req = request, osea los valore
         console.log("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name,autor_id from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE iti.id = " + id + ";");
         const [result] = await pool.query("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name, autor_id from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE iti.id = ?;", [id])
 
-        console.log(result[0]);
+        // console.log(result[0]);
         res.send(result[0]);
 
 
@@ -420,6 +420,37 @@ export const borrarItinerario = async (req, res) => { //req = request, osea los 
 
 }
 
+
+export const comprobarIti_Usuario = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
+    try { //MANEJO DE ERRORES
+
+        console.log(req.body);
+        let query = "";
+        let params = [];
+        const { id_itinerario, autor_id } = req.body;
+
+        query = "select * from itinerarios WHERE id = ? AND autor_id = ?;"
+
+        params = [id_itinerario, autor_id];
+
+
+        const [result] = await pool.query(query, params);
+
+        if (result.length > 0) {
+            res.send(true);
+        }
+        else {
+            res.send(false);
+
+        }
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Algo fue mal"
+        })
+    }
+
+}
 
 
 
