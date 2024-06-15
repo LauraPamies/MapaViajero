@@ -13,6 +13,7 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 const IitinerarioInfo = () => {
     const { id } = useParams(); //Accede a los parámetros de la url
     const [itinerario, setItinerario] = useState(null);
+    const [EsAutor, setEsAutor] = useState(false);
     const [textosItinerario, setTextoItinerario] = useState([]);
 
     const navigate = useNavigate();
@@ -21,37 +22,56 @@ const IitinerarioInfo = () => {
     axios.defaults.baseURL = 'http://localhost:3050';
 
     useEffect(() => {
+        const fetchData = async () => {
+            if (localStorage.getItem('isLoggedIn') !== 'true') { // Si no está logueado
+                navigate("/login");
+            } else {
+                try {
+                    const itinerarioResponse = await axios.get(`/itinerario/${id}`);
+                    setItinerario(itinerarioResponse.data);
+                    comprobarCreador(itinerarioResponse.data);
 
-        if (localStorage.getItem('isLoggedIn') !== 'true') { //SI NO ESTÁ LOGUEADO
-            navigate("/login");
-        } else {
-            //SI ESTÁ LOGUEADO
-            console.log(localStorage.getItem('userId'));
-            console.log(localStorage.getItem('userName'));
-            console.log(localStorage.getItem('userEmail'));
-            console.log(localStorage.getItem('isLoggedIn'));
+                    if (EsAutor) {
+                        await obtenerTextosComoAutor(id);
+                    } else {
+                        await obtenerTextosComoUsuario(id);
+                    }
+                } catch (error) {
+                    console.error('Error mostrando itinerario:', error);
+                }
+            }
+        };
 
+        fetchData();
+    }, [id, navigate, EsAutor]);
+
+    const comprobarCreador = (itinerarioData) => {
+        var user_id = localStorage.getItem('userId');
+        if (user_id == itinerarioData.autor_id) {
+            setEsAutor(true);
         }
+    };
 
-        axios.get(`/itinerario/${id}`)
-            .then(response => {
-                setItinerario(response.data);
+    const obtenerTextosComoAutor = async (id) => {
+        try {
+            const response = await axios.get(`/textosItinerarios_sin_limite/${id}`);
 
-                axios.get(`/textosItinerarioslimite/${id}`)
-                    .then(response => {
-                        console.log(response.data);
-                        setTextoItinerario(response.data);
-                    })
-                    .catch(error => {
-                        console.error('Error mostrando itinerario:', error);
-                    });
-            })
-            .catch(error => {
-                console.error('Error mostrando itinerario:', error);
-            });
-    }, [id]);
+            console.log(response.data);
+            setTextoItinerario(response.data);
+        } catch (error) {
+            console.error('Error mostrando textos como autor:', error);
+        }
+    };
 
-
+    const obtenerTextosComoUsuario = async (id) => {
+        try {
+            const response = await axios.get(`/textosItinerarioslimite/${id}`);
+            console.log(response.data);
+            setTextoItinerario(response.data);
+        } catch (error) {
+            console.error('Error mostrando textos como usuario:', error);
+        }
+    };
 
     if (!itinerario) {
         return <div>Cargando...</div>;
@@ -59,9 +79,11 @@ const IitinerarioInfo = () => {
 
     return (
         <div className='itinerariosdiv'>
+
             <div className='publicidad1'>
                 <img src={publi} alt='publi'></img>
             </div>
+
 
             <div className='infoItinerario'>
                 <div id='resumen-chat'>
@@ -92,12 +114,15 @@ const IitinerarioInfo = () => {
                     ))}
                 </div>
 
-                <img src={publi_hori} alt='publi' style={{ filter: 'blur(3px)' }}></img>
+                {!EsAutor && (
+                    <img src={publi_hori} alt='publi' style={{ filter: 'blur(3px)' }}></img>
+                )}
             </div>
-            <div className='publicidad2'>
-                <img src={publi} alt='publi'></img>
 
+            <div className='publicidad1'>
+                <img src={publi} alt='publi'></img>
             </div>
+
 
         </div>
 

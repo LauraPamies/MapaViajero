@@ -164,8 +164,8 @@ export const itinerario = async (req, res) => { //req = request, osea los valore
         const id = req.params.id;
         console.log(id);
 
-        console.log("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE iti.id = " + id + ";");
-        const [result] = await pool.query("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE iti.id = ?;", [id])
+        console.log("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name,autor_id from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE iti.id = " + id + ";");
+        const [result] = await pool.query("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name, autor_id from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE iti.id = ?;", [id])
 
         console.log(result[0]);
         res.send(result[0]);
@@ -187,7 +187,28 @@ export const textosItinerarioslimite = async (req, res) => { //req = request, os
         console.log(id);
 
         console.log("select num_dia,titulo_dia,texto_dia from itinerarios AS iti INNER JOIN textositinerarios AS textos ON iti.id=textos.id_itinerario WHERE iti.id = " + id + " ORDER BY num_dia LIMIT 2;");
-        const [result] = await pool.query("select num_dia,titulo_dia,texto_dia from itinerarios AS iti INNER JOIN textositinerarios AS textos ON iti.id=textos.id_itinerario WHERE iti.id = ? ORDER BY num_dia LIMIT 2;", [id])
+        const [result] = await pool.query("select num_dia,titulo_dia,texto_dia from itinerarios AS iti INNER JOIN textositinerarios AS textos ON iti.id=textos.id_itinerario WHERE iti.id = ? ORDER BY num_dia LIMIT 1;", [id])
+
+        res.send(result);
+
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Algo fue mal"
+        })
+    }
+
+}
+
+export const textosItinerarios_sin_limite = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
+    try { //MANEJO DE ERRORES
+
+        // throw new Error('sample') //MANDAR ERRORES DE PRUEBA
+        const id = req.params.id;
+        console.log(id);
+
+        console.log("select num_dia,titulo_dia,texto_dia from itinerarios AS iti INNER JOIN textositinerarios AS textos ON iti.id=textos.id_itinerario WHERE iti.id = " + id + " ORDER BY num_dia;");
+        const [result] = await pool.query("select num_dia,titulo_dia,texto_dia from itinerarios AS iti INNER JOIN textositinerarios AS textos ON iti.id=textos.id_itinerario WHERE iti.id = ? ORDER BY num_dia;", [id])
 
         res.send(result);
 

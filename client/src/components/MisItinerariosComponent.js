@@ -199,7 +199,7 @@ const MisItinerariosComponent = () => {
 
                                 <div className='acciones-mis'>
                                     <div className='acciones-1-mis'>
-                                        <img id="chat" src={View_img} alt='chat' style={{ cursor: 'pointer' }}></img>
+                                        <img onClick={() => navigate(`/itinerario/${itinerario.id}`)} id="chat" src={View_img} alt='chat' style={{ cursor: 'pointer' }}></img>
                                         <img id="chat" src={Edit_img} alt='chat' style={{ cursor: 'pointer' }}></img>
                                     </div>
                                     <div className='acciones-2-mis'>

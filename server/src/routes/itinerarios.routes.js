@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import {ItinerariosConcretos,itinerario,textosItinerarioslimite, misItinerarios,getItinerariosRandom,favoritos,addFav,borrarFav,subirItinerario, subirTextoItinerario,borrarItinerario} from "../controllers/itinerarios.controller.js"
+import {ItinerariosConcretos,itinerario,textosItinerarioslimite, misItinerarios,getItinerariosRandom,favoritos,addFav,borrarFav,subirItinerario, subirTextoItinerario,borrarItinerario,textosItinerarios_sin_limite} from "../controllers/itinerarios.controller.js"
 
 
 import multer from "multer";
@@ -35,6 +35,7 @@ router.post("/getItinerariosRandom" , getItinerariosRandom);
 router.post("/ItinerariosConcretos" , ItinerariosConcretos);
 router.get("/itinerario/:id" , itinerario);
 router.get("/textosItinerarioslimite/:id" , textosItinerarioslimite);
+router.get("/textosItinerarios_sin_limite/:id" , textosItinerarios_sin_limite);
 router.post("/misItinerarios" , misItinerarios);
 router.post("/favoritos" , favoritos);
 router.post("/addFav" , addFav);
