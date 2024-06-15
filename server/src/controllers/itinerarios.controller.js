@@ -219,7 +219,7 @@ export const misItinerarios = async (req, res) => { //req = request, osea los va
             query = "Select * from itinerarios  WHERE autor_id = ? order by fecha ASC;"
             params = [autor_id];
         } else if (orden === "fecha_desc") {
-            query =  "Select * from itinerarios  WHERE autor_id = ? order by fecha DESC;"
+            query = "Select * from itinerarios  WHERE autor_id = ? order by fecha DESC;"
             params = [autor_id];
         } else {
             query = "Select * from itinerarios  WHERE autor_id = ?;"
@@ -374,6 +374,30 @@ export const subirTextoItinerario = async (req, res) => { //req = request, osea 
     }
 }
 
+
+export const borrarItinerario = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
+    try { //MANEJO DE ERRORES
+
+        console.log(req.body);
+        let query = "";
+        let params = [];
+        const { id_itinerario } = req.body;
+
+        query = "delete from itinerarios where id = ?;"
+        params = [id_itinerario];
+
+
+        const [result] = await pool.query(query, params);
+
+        res.send(result);
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Algo fue mal"
+        })
+    }
+
+}
 
 
 

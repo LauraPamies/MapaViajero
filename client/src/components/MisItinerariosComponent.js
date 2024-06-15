@@ -8,6 +8,10 @@ import axios from "axios";
 import '../CSS/misitinerarios.css';
 import publi from '../images/Publi.png';
 
+//IMPORT NOTIFICACIONES
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
 import { useForm } from "react-hook-form";
 import View_img from '../images/View.png';
 import Edit_img from '../images/edit.png';
@@ -18,6 +22,7 @@ import Delete_img from '../images/Delete.png';
 const MisItinerariosComponent = () => {
 
     const navigate = useNavigate();
+    const noti = withReactContent(Swal)
 
 
     const [itinerarios, setItinerarios] = useState([]);
@@ -36,23 +41,22 @@ const MisItinerariosComponent = () => {
         if (localStorage.getItem('isLoggedIn') !== 'true') { //SI NO ESTÁ LOGUEADO
             navigate("/login");
         }
-
-        async function fetchData() {
-            try {
-                const response = await axios.post('http://localhost:3050/misItinerarios', {
-                    autor_id: localStorage.getItem('userId')
-                });
-                setItinerarios(response.data);
-                SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
-
-
-            } catch (error) {
-                console.error('Error al obtener los itinerarios:', error);
-            }
-        }
-
-        fetchData();
+        cargarItinerarios();
     }, []);
+
+    async function cargarItinerarios() {
+        try {
+            const response = await axios.post('http://localhost:3050/misItinerarios', {
+                autor_id: localStorage.getItem('userId')
+            });
+            setItinerarios(response.data);
+            SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
+
+
+        } catch (error) {
+            console.error('Error al obtener los itinerarios:', error);
+        }
+    }
 
 
     useEffect(() => {
@@ -91,6 +95,39 @@ const MisItinerariosComponent = () => {
     }
 
 
+    const borrarItinerario = (id_itinerario) => {
+        Swal.fire({
+            title: "Confirmar",
+            text: "Eliminar itinerario",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, eliminar",
+            cancelButtonText: "Cancelar"
+
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                borrarItinerarioAceptado(id_itinerario);
+            }
+        });
+    };
+
+    const borrarItinerarioAceptado = (async (id_itinerario) => {
+
+        try {
+            const response = await axios.post('http://localhost:3050/borrarItinerario', {
+                id_itinerario: id_itinerario
+            });
+            cargarItinerarios();
+
+
+        } catch (error) {
+            console.error('Error al borrar favorito:', error);
+        }
+    });
+
     return (
         <div className='MisItinerariosdiv'>
             <div className='publicidad'>
@@ -99,7 +136,9 @@ const MisItinerariosComponent = () => {
 
             <div className='contenidoMisItinerarios'>
                 {/* BOTON */}
-                <button type='submit' id='botonItinerarios'>Añadir itinerario</button>
+                <button type='submit' id='botonItinerarios' onClick={() => {
+                    navigate("/subirItinerario");
+                }}>Añadir itinerario</button>
                 <div className='filtros_y_itinerarios-mis'>
                     <div className='filtros_container-mis'>
 
@@ -160,11 +199,11 @@ const MisItinerariosComponent = () => {
 
                                 <div className='acciones-mis'>
                                     <div className='acciones-1-mis'>
-                                        <img id="chat" src={View_img} alt='chat'></img>
-                                        <img id="chat" src={Edit_img} alt='chat'></img>
+                                        <img id="chat" src={View_img} alt='chat' style={{ cursor: 'pointer' }}></img>
+                                        <img id="chat" src={Edit_img} alt='chat' style={{ cursor: 'pointer' }}></img>
                                     </div>
                                     <div className='acciones-2-mis'>
-                                        <img id="chat" src={Delete_img} alt='chat'></img>
+                                        <img onClick={() => borrarItinerario(itinerario.id)} id="chat" src={Delete_img} alt='chat' style={{ cursor: 'pointer' }}></img>
 
                                     </div>
 
