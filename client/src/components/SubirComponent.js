@@ -85,11 +85,10 @@ const SubirComponent = () => {
         console.log(file);
         console.log(coordenadasPoligono);
 
-        // Comprobar si hay campos obligatorios vacíos
-        // if (!datosItinerario.destino || !datosItinerario.dias || !datosItinerario.personas || !datosItinerario.precio || markers.length === 0 || !etiqueta || !file || (coordenadasPoligono.length === 0)) {
-        //     alert('Debes completar todos los campos');
-        //     return;
-        // }
+        if (!datosItinerario.destino || !datosItinerario.dias || !datosItinerario.personas || !datosItinerario.precio || !etiqueta || !file || (coordenadasPoligono.length === 0)) {
+            alert('Debes completar todos los campos');
+            return;
+        }
         const currentDate = new Date();
 
         // Obtenemos el año, mes y día por separado

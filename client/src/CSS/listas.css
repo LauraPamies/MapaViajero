@@ -4,12 +4,7 @@
   background-color: #F0F3F5;
 }
 
-.publicidad {
-  width: 196px;
-  height: auto;
-  flex: 1;
 
-}
 
 
 .orden_select {
@@ -154,7 +149,7 @@
 
 }
 
-.itinerario-card {
+/* .itinerario-card {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -165,7 +160,7 @@
   padding: 16px;
   max-width: 800px;
   width: 100%;
-}
+} */
 
 
 #itinerario-card-complete {

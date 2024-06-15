@@ -5,6 +5,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 import '../CSS/listas.css';
+import '../App.css';
 import publi from '../images/Publi.png';
 
 //IMPORT NOTIFICACIONES
