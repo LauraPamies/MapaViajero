@@ -55,18 +55,16 @@ const SubirComponent = () => {
     const navigate = useNavigate();
     const [datosItinerario, setDatosItinerario] = useState([]);
     const mapRef = useRef(null);
-    const [markers, setMarkers] = useState([]);
-    const [tempMarker, setTempMarker] = useState(null);
     const [file, setFile] = useState(null);
-    const [listaimagenes, setListaimagenes] = useState([]);
     const [etiqueta, setEtiqueta] = useState('');
     // Estado para almacenar las coordenadas del polígono
     const [coordenadasPoligono, setCoordenadasPoligono] = useState([]);
 
 
     //EDITAR
-    // const [datosEditar, setDatosEditar] = useState([]);
     const [editaItinerario, setEditaItinerario] = useState(false);
+    const [textosItinerario, setTextoItinerario] = useState([]);
+
 
     useEffect(() => {   //AL CARGAR LA PÁGINA
 
@@ -84,8 +82,7 @@ const SubirComponent = () => {
                 id_itinerario: id_itinerario
             });
             if (response.data == true) {
-                setEditaItinerario(true);
-                setHaBuscado(true);
+
                 sacarDatosItinerario(id_itinerario);
 
             } else {
@@ -104,6 +101,16 @@ const SubirComponent = () => {
             // setDatosEditar(itinerarioResponse.data);
             setDatosItinerario(itinerarioResponse.data)
             console.log(itinerarioResponse.data);
+            try {
+                const response = await axios.get(`http://localhost:3050/textosItinerarios_sin_limite/${id}`);
+
+                console.log(response.data);
+                setTextoItinerario(response.data);
+                setEditaItinerario(true);
+                setHaBuscado(true);
+            } catch (error) {
+                console.error('Error mostrando textos como autor:', error);
+            }
         } catch (error) {
             console.error('Error mostrando itinerario:', error);
         }
@@ -124,6 +131,33 @@ const SubirComponent = () => {
         setDatosItinerario(data);
         setHaBuscado(true);
     });
+
+    const actualizarItinerario = async () => {
+
+        {
+            Array.from({ length: datosItinerario.dias }).map(async (_, index) => {
+                try {
+                    const tituloDia = document.getElementById(`titulo-dia-${index}`).value;
+                    const textoDia = document.getElementById(`texto-dia-${index}`).value;
+
+                    const responseItinerario = await axios.post('http://localhost:3050/updateTextoItinerario', {
+                        num_dia: index + 1,
+                        titulo_dia: tituloDia,
+                        texto_dia: textoDia,
+                        id_itinerario: datosItinerario.id
+                    });
+
+                } catch (error) {
+                    console.error('Error al actualizar el texto:', error);
+                    alert('Error al actualizar el texto');
+                }
+            })
+        }
+        alert('Itinerario actualizado con éxito');
+
+        navigate("/misItinerarios");
+
+    }
 
     const subirItinerario = async () => {
         console.log(etiqueta);
@@ -180,8 +214,10 @@ const SubirComponent = () => {
                     }
                 })
             }
-
             alert('Itinerario subido con éxito');
+
+            navigate("/misItinerarios");
+
         } catch (error) {
             // Si ocurre un error, mostrar un mensaje de error
             console.error('Error al subir el itinerario:', error);
@@ -243,7 +279,15 @@ const SubirComponent = () => {
 
             <div className='contenidoListas'>
 
-                <h2 id='subir-text'>SUBIR ITINERARIO</h2>
+
+                {editaItinerario ? (
+                    <h2 id='subir-text'>EDITAR ITINERARIO</h2>
+
+                ) : (
+                    <h2 id='subir-text'>SUBIR ITINERARIO</h2>
+
+                )}
+
                 <h3 id='plantilla'>Recomendación plantilla itinerario</h3>
 
                 <datalist id='Provincias'>
@@ -493,49 +537,33 @@ const SubirComponent = () => {
 
                 )}
 
+
                 {HaBuscado && editaItinerario && (
-                    <div className='diasContainer'>
-                        {Array.from({ length: datosItinerario.dias }).map((_, index) => (
+                    <div>
+
+                        {textosItinerario.map((texto, index) => (
                             <div key={index} className='day-input'>
-                                <input type='text' placeholder={`Título día ${index + 1}`} id={`titulo-dia-${index}`} />
-                                <textarea name="textarea" rows="10" cols="100" placeholder='Escribir...' id={`texto-dia-${index}`}></textarea>
+                                <input
+                                    id={`titulo-dia-${index}`}
+                                    defaultValue={texto.titulo_dia}
+                                />
+                                <textarea
+                                    name="textarea" rows="10" cols="100"
+                                    id={`texto-dia-${index}`}
+                                    defaultValue={texto.texto_dia}
+                                />
                             </div>
                         ))}
                     </div>
-
                 )}
+
+
                 {HaBuscado && editaItinerario && (
                     <div id='segundapartesubir'>
-                        <button onClick={resetPoligono} id='resetearPoligono'>
-                            Resetear polígono
-                        </button>
-                        <p>Haz click en el mapa para crear un polígono de 4 puntos de tu zona</p>
-                        <MapContainer center={[40.40, -3.70]} zoom={13} id='map' ref={mapRef} >
-                            <MapClickHandler />
-
-                            <TileLayer
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                            />
-                            {dibujarPoligono()}
-
-                        </MapContainer>
-                        <h5>Añade una etiqueta para completar tu itinerario</h5>
-                        <input
-                            type="text"
-                            value={etiqueta}
-                            id='input-etiqueta'
-                            onChange={handleEtiquetaChange}
-                        />
-                        <h5>Añade una foto</h5>
-
-                        <input id='fileinput' onChange={elegirFoto} type='file'></input>
-
-                        <button onClick={subirItinerario} id='boton-subir'>Subir itinerario</button>
+                        <button onClick={actualizarItinerario} id='boton-subir'>Actualizar itinerario</button>
 
                     </div>
                 )}
-
 
                 {/* TERMINA EL SI ESTÁ EDITANDO */}
 

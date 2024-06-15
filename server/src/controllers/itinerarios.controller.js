@@ -164,8 +164,8 @@ export const itinerario = async (req, res) => { //req = request, osea los valore
         const id = req.params.id;
         console.log(id);
 
-        console.log("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name,autor_id from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE iti.id = " + id + ";");
-        const [result] = await pool.query("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name, autor_id from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE iti.id = ?;", [id])
+        console.log("select iti.id,titulo,nombre_foto,data,etiqueta,dias,personas,precio,name,autor_id from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE iti.id = " + id + ";");
+        const [result] = await pool.query("select iti.id,titulo,nombre_foto,data,etiqueta,dias,personas,precio,name, autor_id from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE iti.id = ?;", [id])
 
         // console.log(result[0]);
         res.send(result[0]);
@@ -371,6 +371,25 @@ export const subirItinerario = async (req, res) => { //req = request, osea los v
         return res.status(500).json({ message: "Algo fue mal al subir el itinerario" });
     }
 }
+
+
+export const updateTextoItinerario = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
+    try {
+
+        const {texto_dia, titulo_dia, id_itinerario, num_dia } = req.body;
+
+        const [result] = await pool.query("UPDATE textositinerarios set texto_dia = ? , titulo_dia = ? WHERE id_itinerario = ? and num_dia = ?;", [texto_dia, titulo_dia, id_itinerario,num_dia]);
+
+        res.send(result);
+
+
+
+    } catch (error) {
+        console.error('Error al actualizar el texto:', error);
+        return res.status(500).json({ message: "Algo fue mal al actualizar el texto" });
+    }
+}
+
 
 
 export const subirTextoItinerario = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor

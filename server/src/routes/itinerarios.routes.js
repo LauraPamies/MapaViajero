@@ -2,7 +2,8 @@ import { Router } from "express";
 
 import {ItinerariosConcretos,itinerario,textosItinerarioslimite,
 misItinerarios,getItinerariosRandom,favoritos,addFav,borrarFav,subirItinerario, 
-subirTextoItinerario,borrarItinerario,textosItinerarios_sin_limite,comprobarIti_Usuario} from "../controllers/itinerarios.controller.js"
+subirTextoItinerario,borrarItinerario,textosItinerarios_sin_limite,comprobarIti_Usuario,
+updateTextoItinerario} from "../controllers/itinerarios.controller.js"
 
 
 import multer from "multer";
@@ -46,6 +47,7 @@ router.post("/subirItinerario" ,fileUpload, subirItinerario);
 router.post("/subirTextoItinerario", subirTextoItinerario);
 router.post("/borrarItinerario", borrarItinerario);
 router.post("/comprobarIti_Usuario", comprobarIti_Usuario);
+router.post("/updateTextoItinerario", updateTextoItinerario);
 
 
 
