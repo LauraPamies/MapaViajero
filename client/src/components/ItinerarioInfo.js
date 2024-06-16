@@ -18,7 +18,7 @@ const IitinerarioInfo = () => {
     const [itinerario, setItinerario] = useState(null);
     const [EsAutor, setEsAutor] = useState(false);
     const [textosItinerario, setTextoItinerario] = useState([]);
-    const [puntoMedio, setPuntoMedio] = useState([]);
+    const [puntoMedio, setPuntoMedio] = useState({ x: 0, y: 0 });
     const [coordenadas, setCoordenadas] = useState([]);
     const mapRef = useRef(null);
 
@@ -48,9 +48,11 @@ const IitinerarioInfo = () => {
             }
         };
 
-        cargarCoordenadas();
 
         fetchData();
+
+        cargarCoordenadas();
+
     }, [id, navigate, EsAutor]);
 
 
@@ -59,6 +61,7 @@ const IitinerarioInfo = () => {
                 const response = await axios.post('http://localhost:3050/calcularCentroPoligono_y_coordenadas', {
                     id_itinerario: id
                 });
+                console.log('Coordenadas response:', response.data);
                 setPuntoMedio(response.data.puntoMedio);
                 setCoordenadas(response.data.coordenadas);
             } catch (error) {
@@ -97,6 +100,11 @@ const IitinerarioInfo = () => {
         return <div>Comprueba si el enlace es válido...</div>;
     }
 
+    const handleBotonDescargar = () => {
+
+        navigate(`/infoPDF/${id}`);
+    };
+
     return (
         <div className='itinerariosdiv'>
 
@@ -113,25 +121,23 @@ const IitinerarioInfo = () => {
                         <p id='personas_dias'>{itinerario.personas} personas</p>
                         <p className='itinerario-precio'>{itinerario.precio}€</p>
                     </div>
-
-
-                    <img id="chat" src={chat} alt='chat'></img>
                 </div>
 
 
 
-                <Link to=""><button id='empieza'>Descargar</button></Link>
+                <button id='empieza' onClick={() => handleBotonDescargar()}>Descargar</button>
 
-                <MapContainer center={[puntoMedio.y, puntoMedio.x]} zoom={13} id='map-info' ref={mapRef} >
-                    {/* <MapClickHandler /> */}
-
-                    <TileLayer
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    />
-                    <Polygon positions={coordenadas.map(coord => [coord.y, coord.x])} />
-
-                </MapContainer>
+                {puntoMedio && coordenadas.length > 0 ? (
+                    <MapContainer center={[puntoMedio.y, puntoMedio.x]} zoom={13} id='map-info' ref={mapRef}>
+                        <TileLayer
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        />
+                        <Polygon positions={coordenadas.map(coord => [coord.y, coord.x])} />
+                    </MapContainer>
+                ) : (
+                    <div>Loading map...</div>
+                )}
 
 
                 <div className="textos-container">

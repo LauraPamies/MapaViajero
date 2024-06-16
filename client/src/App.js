@@ -15,6 +15,7 @@ import MisItinerarios from './components/MisItinerariosComponent'
 import Favoritos from './components/FavoritosComponent'
 import SubirItinerario from './components/SubirComponent'
 import Mapa from './components/MapaComponent'
+import InfoPDF from './components/InfoPDF'
 
 
 function App() {
@@ -34,6 +35,8 @@ function App() {
         <Route path="/favoritos" element={<Favoritos />} />
         <Route path="/subirItinerario" element={<SubirItinerario />} />
         <Route path="/mapa" element={<Mapa />} />
+        <Route path="/infoPDF/:id" element={<InfoPDF />} />
+
       </Routes>
       <Footer />
 
