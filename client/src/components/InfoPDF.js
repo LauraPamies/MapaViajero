@@ -19,8 +19,8 @@ const InfoPDF = () => {
                 } else {
                     const itinerarioResponse = await axios.get(`http://localhost:3050/itinerario/${id}`);
                     setItinerario(itinerarioResponse.data);
-                    const tituloItinerario = itinerarioResponse.data.titulo;
-                    setPdfFileName(`${tituloItinerario}.pdf`);
+                    // const tituloItinerario = itinerarioResponse.data.titulo;
+                    // setPdfFileName(`${tituloItinerario}.pdf`);
                     await obtenerTextosComoAutor(id);
 
                 }
@@ -46,8 +46,9 @@ const InfoPDF = () => {
         return <div>Cargando...</div>;
     }
 
+    
     return (
-        <PDFViewer style={{ width: '100%', height: '95vh' }} fileName={pdfFileName}>
+        <PDFViewer style={{ width: '100%', height: '100vh' }} fileName={"hola"}>
             <Document>
                 <Page size='A4'>
                     <View >
