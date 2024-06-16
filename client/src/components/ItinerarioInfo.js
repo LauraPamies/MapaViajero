@@ -1,10 +1,12 @@
-import React, { useEffect, useState ,useRef} from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from "axios";
 import publi_hori from '../images/publi_horizontal.png';
 import publi from '../images/Publi.png';
 import '../CSS/itinerarioInfo.css';
 import chat from '../images/chat_icon.png';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
+import { pdf, Document, Page, Text, View, Image, PDFViewer } from '@react-pdf/renderer';
+import { saveAs } from 'file-saver';
 
 // LEAFLET
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polygon } from 'react-leaflet';
@@ -21,6 +23,7 @@ const IitinerarioInfo = () => {
     const [puntoMedio, setPuntoMedio] = useState({ x: 0, y: 0 });
     const [coordenadas, setCoordenadas] = useState([]);
     const mapRef = useRef(null);
+    const [pdfFileName, setPdfFileName] = useState('nombre_archivo.pdf');
 
     const navigate = useNavigate();
 
@@ -57,16 +60,16 @@ const IitinerarioInfo = () => {
 
 
     const cargarCoordenadas = async () => {
-            try {
-                const response = await axios.post('http://localhost:3050/calcularCentroPoligono_y_coordenadas', {
-                    id_itinerario: id
-                });
-                console.log('Coordenadas response:', response.data);
-                setPuntoMedio(response.data.puntoMedio);
-                setCoordenadas(response.data.coordenadas);
-            } catch (error) {
-                console.error('Error mostrando coordenadas:', error);
-            }
+        try {
+            const response = await axios.post('http://localhost:3050/calcularCentroPoligono_y_coordenadas', {
+                id_itinerario: id
+            });
+            console.log('Coordenadas response:', response.data);
+            setPuntoMedio(response.data.puntoMedio);
+            setCoordenadas(response.data.coordenadas);
+        } catch (error) {
+            console.error('Error mostrando coordenadas:', error);
+        }
     };
 
     const comprobarCreador = (itinerarioData) => {
@@ -105,6 +108,90 @@ const IitinerarioInfo = () => {
         navigate(`/infoPDF/${id}`);
     };
 
+    const handleDownload = async () => {
+        const doc = (
+            <Document>
+                <Page size='A4'>
+                    <View>
+                        <View className='infoItinerario'>
+                            <View
+                                className='itinerario-card'
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-around',
+                                    backgroundColor: 'lightgray',
+                                    borderRadius: '8px',
+                                    padding: '20px 0',
+                                    marginBottom: '20px',
+                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                                }}
+                            >
+                                <Text id='titulo'
+                                    style={{
+                                        fontSize: '30px',
+                                        fontWeight: 'bold',
+                                        textTransform: 'uppercase',
+                                        padding: '10px 30px 0 0'
+                                    }}
+                                >{itinerario.titulo}</Text>
+                                <Text style={{
+                                    fontSize: '25px',
+                                    fontWeight: '500',
+                                    padding: '10px 20px 0 0'
+                                }}
+                                >{itinerario.dias} días</Text>
+                                <Text style={{
+                                    fontSize: '25px',
+                                    fontWeight: '500',
+                                    padding: '10px 20px 0 0'
+                                }}
+                                >{itinerario.personas} personas</Text>
+                                <Text
+                                    style={{
+                                        color: '#46AF12',
+                                        fontSize: '25px',
+                                        fontWeight: '500',
+                                        paddingLeft: '20px',
+                                        paddingTop: '10px'
+                                    }}
+                                >{itinerario.precio}€</Text>
+                            </View>
+
+                            <View className='textos-container'>
+                                {textosItinerario.map((texto, index) => (
+                                    <View key={index}
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            padding: '30px'
+                                        }}>
+
+                                        <Text
+                                            style={{
+                                                fontSize: '25px',
+                                                fontWeight: 'bold',
+                                                textDecoration: 'underline',
+                                                marginBottom: '20px'
+                                            }}
+                                        >
+                                            {texto.num_dia} - {texto.titulo_dia}
+                                        </Text>
+                                        <Text>{texto.texto_dia}</Text>
+                                    </View>
+                                ))}
+                            </View>
+                        </View>
+                    </View>
+                </Page>
+            </Document>
+        );
+
+        const asPdf = pdf(doc);
+        const blob = await asPdf.toBlob();
+        saveAs(blob, pdfFileName);
+    };
+
     return (
         <div className='itinerariosdiv'>
 
@@ -114,18 +201,18 @@ const IitinerarioInfo = () => {
 
 
             <div className='infoItinerario'>
-                <div id='resumen-chat'>
-                    <div className="itinerario-card">
-                        <p id='titulo'>{itinerario.titulo}</p>
-                        <p id='personas_dias'>{itinerario.dias} días</p>
-                        <p id='personas_dias'>{itinerario.personas} personas</p>
-                        <p className='itinerario-precio'>{itinerario.precio}€</p>
-                    </div>
+                <div className="itinerario-card-info">
+                    <p id='titulo-info'>{itinerario.titulo}</p>
+                    <p id='personas_dias-info'>{itinerario.dias} días</p>
+                    <p id='personas_dias-info'>{itinerario.personas} personas</p>
+                    <p className='itinerario-precio-info'>{itinerario.precio}€</p>
                 </div>
 
 
 
-                <button id='empieza' onClick={() => handleBotonDescargar()}>Descargar</button>
+
+                {/* <button id='empieza' onClick={() => handleBotonDescargar()}>Descargar</button> */}
+                <button id='empieza' onClick={handleDownload}>Descargar</button>
 
                 {puntoMedio && coordenadas.length > 0 ? (
                     <MapContainer center={[puntoMedio.y, puntoMedio.x]} zoom={13} id='map-info' ref={mapRef}>

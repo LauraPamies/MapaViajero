@@ -1,6 +1,8 @@
 .itinerariosdiv {
     display: flex;
     flex-direction: row;
+    background-color: #F0F3F5;
+
 }
 
 .publicidad1 {
@@ -45,48 +47,48 @@
 
 /*ITINERARIOS*/
 
-.itinerario-card {
+.itinerario-card-info {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
     background-color: white;
-    border-radius: 8px;
+    width: 600px;
+    border-radius: 18px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 30px 0;
+
 }
 
-.itinerario-precio {
+.itinerario-precio-info {
     color: #46AF12;
     font-size: 25px;
     font-weight: 500;
     padding-left: 20px;
+    padding-top: 10px;
 }
 
-#personas_dias{
+#personas_dias-info {
     font-size: 25px;
     font-weight: 500;
-    padding: 0 20px 0 0;
+    padding: 10px 20px 0 0;
+
 }
 
-#titulo{
+#titulo-info {
     font-size: 30px;
     font-weight: bold;
     text-transform: uppercase;
-    padding: 0 30px 0 0;
+    padding: 10px 30px 0 0;
 }
 
-#resumen-chat{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin: 30px 0;
-}
 
-#chat{
+#chat {
     width: 40px;
     height: 40px;
 }
 
-#map-info{
+#map-info {
     height: 400px;
     width: 400px;
     border: 1px solid;

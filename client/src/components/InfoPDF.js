@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {pdf, Document, Page, Text, View, Image, PDFViewer } from '@react-pdf/renderer';
+import { pdf, Document, Page, Text, View, Image, PDFViewer } from '@react-pdf/renderer';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const InfoPDF = () => {
@@ -22,7 +22,7 @@ const InfoPDF = () => {
                     const tituloItinerario = itinerarioResponse.data.titulo;
                     setPdfFileName(`${tituloItinerario}.pdf`);
                     await obtenerTextosComoAutor(id);
-                    
+
                 }
             } catch (error) {
                 console.error('Error mostrando itinerario:', error);
@@ -50,7 +50,7 @@ const InfoPDF = () => {
         <PDFViewer style={{ width: '100%', height: '95vh' }} fileName={pdfFileName}>
             <Document>
                 <Page size='A4'>
-                    <View className='itinerariosdiv' style={{ backgroundColor: 'lightgray' }}>
+                    <View >
                         <View className='infoItinerario'>
                             <View
                                 className='itinerario-card'
@@ -58,21 +58,63 @@ const InfoPDF = () => {
                                     display: 'flex',
                                     flexDirection: 'row',
                                     justifyContent: 'space-around',
-                                    backgroundColor: 'white',
+                                    backgroundColor: 'lightgray',
                                     borderRadius: '8px',
+                                    padding: '20px 0',
+                                    marginBottom: '20px',
                                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
                                 }}
                             >
-                                <Text id='titulo'>{itinerario.titulo}</Text>
-                                <Text id='personas_dias'>{itinerario.dias} días</Text>
-                                <Text id='personas_dias'>{itinerario.personas} personas</Text>
-                                <Text className='itinerario-precio'>{itinerario.precio}€</Text>
+                                <Text id='titulo'
+                                    style={{
+                                        fontSize: '30px',
+                                        fontWeight: 'bold',
+                                        textTransform: 'uppercase',
+                                        padding: '10px 30px 0 0'
+                                    }}
+                                >{itinerario.titulo}</Text>
+                                <Text style={{
+                                    fontSize: '25px',
+                                    fontWeight: '500',
+                                    padding: '10px 20px 0 0'
+                                }}
+                                >{itinerario.dias} días</Text>
+                                <Text style={{
+                                    fontSize: '25px',
+                                    fontWeight: '500',
+                                    padding: '10px 20px 0 0'
+                                }}
+                                >{itinerario.personas} personas</Text>
+                                <Text
+                                    style={{
+                                        color: '#46AF12',
+                                        fontSize: '25px',
+                                        fontWeight: '500',
+                                        paddingLeft: '20px',
+                                        paddingTop: '10px'
+                                    }}
+                                >{itinerario.precio}€</Text>
                             </View>
-                            
+
                             <View className='textos-container'>
                                 {textosItinerario.map((texto, index) => (
-                                    <View key={index} className='texto-card'>
-                                        <Text id='titulos_dia'>{texto.num_dia} - {texto.titulo_dia}</Text>
+                                    <View key={index}
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            padding: '30px'
+                                        }}>
+
+                                        <Text
+                                            style={{
+                                                fontSize: '25px',
+                                                fontWeight: 'bold',
+                                                textDecoration: 'underline',
+                                                marginBottom: '20px'
+                                            }}
+                                        >
+                                            {texto.num_dia} - {texto.titulo_dia}
+                                        </Text>
                                         <Text>{texto.texto_dia}</Text>
                                     </View>
                                 ))}
@@ -81,7 +123,7 @@ const InfoPDF = () => {
                     </View>
                 </Page>
             </Document>
-        </PDFViewer>
+        </PDFViewer >
     );
 };
 
