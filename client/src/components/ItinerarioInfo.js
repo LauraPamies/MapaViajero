@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState ,useRef} from 'react';
 import axios from "axios";
 import publi_hori from '../images/publi_horizontal.png';
 import publi from '../images/Publi.png';
@@ -6,15 +6,21 @@ import '../CSS/itinerarioInfo.css';
 import chat from '../images/chat_icon.png';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 
-
-
-
+// LEAFLET
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polygon } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import * as L from "leaflet";
+import 'leaflet/dist/leaflet.css';
+import "leaflet.heat";
 
 const IitinerarioInfo = () => {
     const { id } = useParams(); //Accede a los parámetros de la url
     const [itinerario, setItinerario] = useState(null);
     const [EsAutor, setEsAutor] = useState(false);
     const [textosItinerario, setTextoItinerario] = useState([]);
+    const [puntoMedio, setPuntoMedio] = useState([]);
+    const [coordenadas, setCoordenadas] = useState([]);
+    const mapRef = useRef(null);
 
     const navigate = useNavigate();
 
@@ -42,8 +48,23 @@ const IitinerarioInfo = () => {
             }
         };
 
+        cargarCoordenadas();
+
         fetchData();
     }, [id, navigate, EsAutor]);
+
+
+    const cargarCoordenadas = async () => {
+            try {
+                const response = await axios.post('http://localhost:3050/calcularCentroPoligono_y_coordenadas', {
+                    id_itinerario: id
+                });
+                setPuntoMedio(response.data.puntoMedio);
+                setCoordenadas(response.data.coordenadas);
+            } catch (error) {
+                console.error('Error mostrando coordenadas:', error);
+            }
+    };
 
     const comprobarCreador = (itinerarioData) => {
         var user_id = localStorage.getItem('userId');
@@ -66,7 +87,6 @@ const IitinerarioInfo = () => {
     const obtenerTextosComoUsuario = async (id) => {
         try {
             const response = await axios.get(`/textosItinerarioslimite/${id}`);
-            console.log(response.data);
             setTextoItinerario(response.data);
         } catch (error) {
             console.error('Error mostrando textos como usuario:', error);
@@ -74,7 +94,7 @@ const IitinerarioInfo = () => {
     };
 
     if (!itinerario) {
-        return <div>Cargando...</div>;
+        return <div>Comprueba si el enlace es válido...</div>;
     }
 
     return (
@@ -101,6 +121,17 @@ const IitinerarioInfo = () => {
 
 
                 <Link to=""><button id='empieza'>Descargar</button></Link>
+
+                <MapContainer center={[puntoMedio.y, puntoMedio.x]} zoom={13} id='map-info' ref={mapRef} >
+                    {/* <MapClickHandler /> */}
+
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    <Polygon positions={coordenadas.map(coord => [coord.y, coord.x])} />
+
+                </MapContainer>
 
 
                 <div className="textos-container">

@@ -187,7 +187,7 @@ export const textosItinerarioslimite = async (req, res) => { //req = request, os
         console.log(id);
 
         console.log("select num_dia,titulo_dia,texto_dia from itinerarios AS iti INNER JOIN textositinerarios AS textos ON iti.id=textos.id_itinerario WHERE iti.id = " + id + " ORDER BY num_dia LIMIT 2;");
-        const [result] = await pool.query("select num_dia,titulo_dia,texto_dia from itinerarios AS iti INNER JOIN textositinerarios AS textos ON iti.id=textos.id_itinerario WHERE iti.id = ? ORDER BY num_dia LIMIT 1;", [id])
+        const [result] = await pool.query("select num_dia,titulo_dia,texto_dia from itinerarios AS iti INNER JOIN textositinerarios AS textos ON iti.id=textos.id_itinerario WHERE iti.id = ? ORDER BY num_dia LIMIT 2;", [id])
 
         res.send(result);
 
@@ -376,9 +376,9 @@ export const subirItinerario = async (req, res) => { //req = request, osea los v
 export const updateTextoItinerario = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
     try {
 
-        const {texto_dia, titulo_dia, id_itinerario, num_dia } = req.body;
+        const { texto_dia, titulo_dia, id_itinerario, num_dia } = req.body;
 
-        const [result] = await pool.query("UPDATE textositinerarios set texto_dia = ? , titulo_dia = ? WHERE id_itinerario = ? and num_dia = ?;", [texto_dia, titulo_dia, id_itinerario,num_dia]);
+        const [result] = await pool.query("UPDATE textositinerarios set texto_dia = ? , titulo_dia = ? WHERE id_itinerario = ? and num_dia = ?;", [texto_dia, titulo_dia, id_itinerario, num_dia]);
 
         res.send(result);
 
@@ -470,6 +470,54 @@ export const comprobarIti_Usuario = async (req, res) => { //req = request, osea 
     }
 
 }
+
+export const calcularCentroPoligono_y_coordenadas = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
+    try {
+
+        console.log(req.body);
+        let query = "";
+        let params = [];
+        const { id_itinerario } = req.body;
+
+        query = "select coordenadas from itinerarios WHERE id = ?;"
+
+        params = [id_itinerario];
+
+
+        const [result] = await pool.query(query, params);
+
+        var puntos = result[0]["coordenadas"][0];
+
+        let sumaX = 0;
+        let sumaY = 0;
+        let numeroDePuntos = puntos.length;
+
+        for (let i = 0; i < numeroDePuntos; i++) {
+            sumaX += puntos[i].x;
+            sumaY += puntos[i].y;
+        }
+
+        let puntoMedio = {
+            x: sumaX / numeroDePuntos,
+            y: sumaY / numeroDePuntos
+        };
+
+        let respuesta = {
+            coordenadas: puntos,
+            puntoMedio: puntoMedio
+        };
+
+        res.send(respuesta);
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Algo fue mal"
+        })
+    }
+
+}
+
+
 
 
 

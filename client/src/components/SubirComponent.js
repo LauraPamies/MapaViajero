@@ -41,15 +41,6 @@ const SubirComponent = () => {
     const query = useQuery();
     const id_itinerario = query.get('id_itinerario');
 
-    const tempMarkerIcon = L.icon({
-        iconUrl: tempIcon,
-        iconSize: [30, 40]
-    });
-
-    const MarkerIcon = L.icon({
-        iconUrl: destino_img,
-        iconSize: [40, 40]
-    });
 
     const [HaBuscado, setHaBuscado] = useState(false);
     const navigate = useNavigate();
