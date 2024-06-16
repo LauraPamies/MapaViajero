@@ -61,25 +61,19 @@ const LoginComponent = () => {
         console.log("Datos del formulario: " + JSON.stringify(data));
         try {
             const res = await axios.post("http://localhost:3050/login", data);
-            if (res.data.length > 0) {
-                // Guarda los datos de sesión en el almacenamiento local
+            console.log(res.data);
+            //     // Guarda los datos de sesión en el almacenamiento local
                 localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('userId', res.data[0].id);
-                localStorage.setItem('userName', res.data[0].name);
-                localStorage.setItem('userEmail', res.data[0].email);
+                localStorage.setItem('userId', res.data.id);
+                localStorage.setItem('userName', res.data.name);
+                localStorage.setItem('userEmail', res.data.email);
                 navigate("/listas");
-            } else {
-                noti.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "El correo o la contraseña no son válidos."
-                });
-            }
+           
         } catch (error) {
             noti.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Ocurrió un error al intentar iniciar sesión. Por favor, inténtalo de nuevo más tarde."
+                text: "El correo o la contraseña no son válidos."
             });
         }
     });
