@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler
 import json
 
 # Función para cargar el modelo y hacer predicciones
-def predict(destination, days, travelers):
+def predict(destino, dias, viajeros):
     # Obtener la ruta absoluta del archivo modelo_entrenado.pkl
     model_path = os.path.join(os.path.dirname(__file__), 'modelo_entrenado.pkl')
     
@@ -19,9 +19,9 @@ def predict(destination, days, travelers):
 
     # Crear un DataFrame con los datos de entrada
     input_data = pd.DataFrame({
-        'destination': [destination],
-        'days': [days],
-        'travelers': [travelers]
+        'destino': [destino],
+        'dias': [dias],
+        'viajeros': [viajeros]
     })
 
     # Escalar los datos de entrada usando el escalador cargado
@@ -42,12 +42,12 @@ if __name__ == "__main__":
         sys.exit(1)
     
     # Extraer los valores de destino, días y viajeros del diccionario
-    destination = float(input_data['destination'])
-    days = float(input_data['days'])
-    travelers = float(input_data['travelers'])
+    destino = float(input_data['destino'])
+    dias = float(input_data['dias'])
+    viajeros = float(input_data['viajeros'])
 
     # Llamar a la función de predicción con los argumentos
-    results = predict(destination, days, travelers)
+    results = predict(destino, dias, viajeros)
 
     # Crear un diccionario con las predicciones
     predictions_dict = {'predictions': results}

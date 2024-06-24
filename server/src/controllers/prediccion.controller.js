@@ -10,23 +10,23 @@ const __dirname = dirname(__filename);
 
 export const preddicion = async (req, res) => {
     try {
-        const { destination, days, travelers } = req.body;
+        const { destino, dias, viajeros } = req.body;
 
         // Validar que se recibieron los parámetros necesarios
-        if (destination === undefined || days === undefined || travelers === undefined) {
+        if (destino === undefined || dias === undefined || viajeros === undefined) {
             return res.status(400).json({
-                message: "Los parámetros 'destination', 'days' y 'travelers' son requeridos"
+                message: "Los parámetros 'destino', 'dias' y 'viajeros' son requeridos"
             });
         }
 
         // Crear objeto con los datos de entrada para la predicción
         const inputData = {
-            destination: Number(destination), // Convertir a número si es necesario
-            days: Number(days),
-            travelers: Number(travelers)
+            destino: Number(destino), // Convertir a número si es necesario
+            dias: Number(dias),
+            viajeros: Number(viajeros)
         };
 
-        console.log(`Received request with data: destination=${inputData.destination}, days=${inputData.days}, travelers=${inputData.travelers}`);
+        console.log(`Received request with data: destino=${inputData.destino}, dias=${inputData.dias}, viajeros=${inputData.viajeros}`);
 
         // Ruta del script de Python y el modelo
         const scriptPath = path.resolve(__dirname, '../modelo_prueba/script_de_prediccion.py');
