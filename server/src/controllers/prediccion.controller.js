@@ -11,6 +11,7 @@ const __dirname = dirname(__filename);
 export const preddicion = async (req, res) => {
     try {
         const { destino, dias, viajeros } = req.body;
+        console.log(req.body);
 
         // Validar que se recibieron los parámetros necesarios
         if (destino === undefined || dias === undefined || viajeros === undefined) {
@@ -26,32 +27,10 @@ export const preddicion = async (req, res) => {
             viajeros: Number(viajeros)
         };
 
-        console.log(`Received request with data: destino=${inputData.destino}, dias=${inputData.dias}, viajeros=${inputData.viajeros}`);
 
         // Ruta del script de Python y el modelo
         const scriptPath = path.resolve(__dirname, '../modelo_prueba/script_de_prediccion.py');
         const modelPath = path.resolve(__dirname, '../modelo_prueba/modelo_entrenado.pkl');
-
-        // Verificar si el script y el modelo existen
-        try {
-            await fs.access(scriptPath);
-            console.log('Python script exists');
-        } catch (err) {
-            console.error('Python script does not exist');
-            return res.status(500).json({
-                message: "El archivo de script de Python no existe"
-            });
-        }
-
-        try {
-            await fs.access(modelPath);
-            console.log('Model file exists');
-        } catch (err) {
-            console.error('Model file does not exist');
-            return res.status(500).json({
-                message: "El archivo del modelo no existe"
-            });
-        }
 
         // Convertir objeto JavaScript a cadena JSON
         const inputDataJSON = JSON.stringify(inputData);
@@ -59,16 +38,14 @@ export const preddicion = async (req, res) => {
         // Configuración de la ejecución del script de Python
         const pythonProcess = spawn('python', [scriptPath, inputDataJSON]);
 
-        let predictions = []; // Variable para almacenar las predicciones
+        let prediccion = []; // Variable para almacenar las predicciones
 
         // Capturar la salida estándar del proceso de Python
         pythonProcess.stdout.on('data', (data) => {
-            console.log(`Salida de Python: ${data}`);
             try {
-                predictions = JSON.parse(data.toString().trim()).predictions; // Parsear la respuesta JSON
-                console.log('Predicciones:', predictions);
+                prediccion = JSON.parse(data.toString().trim()).prediccion; // Parsear la respuesta JSON
                 // Aquí puedes enviar las predicciones de vuelta al cliente si es necesario
-                res.json({ predictions });
+                res.json({ prediccion });
             } catch (error) {
                 console.error('Error al parsear las predicciones:', error);
                 res.status(500).json({
@@ -87,10 +64,7 @@ export const preddicion = async (req, res) => {
             });
         });
 
-        // Manejar el cierre del proceso de Python
-        pythonProcess.on('close', (code) => {
-            console.log(`Proceso de Python finalizado con código ${code}`);
-        });
+      
 
     } catch (error) {
         console.error('Error en la predicción:', error);

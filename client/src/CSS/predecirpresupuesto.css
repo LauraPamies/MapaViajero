@@ -1,82 +1,102 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
 
 
-.Predecirdiv{
+.Predecirdiv {
     display: flex;
     flex-direction: row;
 }
 
-.publicidad{
-    width: 196px;
-    height: auto;
-    flex: 1;
-
-}
 
 
-
-
-.textospubli{
+.textospredecir {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 50px 0;
 }
 
-.textospubli h1{
+#predecirform {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#contenedorformulariopred {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+}
+
+#inputformpred {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+
+#inputpred {
+    padding-left: 4rem;
+    margin: 10px;
+    margin-bottom: 30px;
+    height: 60px;
+    width: 400px;
+    font-size: 20px;
+    border: none;
+    border-radius: 18px;
+    color: black;
+    font-family: "Jost", sans-serif;
+    background-color: #D9E1E7;
+}
+
+#iconpred {
+    position: absolute;
+    display: block;
+    bottom: 3rem;
+    left: 2rem;
+    user-select: none;
+}
+
+.textospredecir h1 {
     font-size: 90px;
     font-family: "Jost", sans-serif;
 }
 
-.textospubli h3{
+.textospredecir h3 {
     font-size: 25px;
     font-family: "Jost", sans-serif;
 }
 
 
-.contenidopubli{
+.contenidopubli {
     flex: 8;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: red 3px dashed;
 }
 
-.formpublidiv{
+.formpublidiv {
     display: flex;
     flex-direction: row;
 }
-#formpubli{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
 
-#iconform {
-    position: absolute;
-    display: block;
-    bottom: 1.1rem;
-    left: .7rem;
-    user-select: none;
-}
 
-#botonpredecir{
-    padding: 5px 20px; /* Ajusta el padding para el tamaño del botón */
+
+#botonpredecir {
+    padding: 5px 20px;
+    /* Ajusta el padding para el tamaño del botón */
     border: none;
-    border-radius: 40px; /* Añade bordes redondeados */
+    border-radius: 40px;
+    /* Añade bordes redondeados */
     font-size: 36px;
-    background-color: #46AF12; /* Color de fondo */
-    color: white; /* Color del texto */
-    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    background-color: #46AF12;
+    /* Color de fondo */
+    color: white;
+    /* Color del texto */
+    cursor: pointer;
+    /* Cambia el cursor al pasar sobre el botón */
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     height: 64px;
     width: 236px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+    margin-top: 60px;
 }
-
-
-
-
-
-
-

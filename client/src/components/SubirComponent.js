@@ -5,6 +5,9 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { useLocation } from 'react-router-dom';
 
+//IMPORT NOTIFICACIONES
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 // LEAFLET
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polygon } from 'react-leaflet';
@@ -16,9 +19,6 @@ import "leaflet.heat";
 import '../CSS/subir.css';
 import publi from '../images/Publi.png';
 
-//IMPORT NOTIFICACIONES
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -33,6 +33,9 @@ import people_img from '../images/People.png';
 import tempIcon from '../images/tempMarkerIcon.png';
 
 const SubirComponent = () => {
+
+    const noti = withReactContent(Swal)
+
 
     const useQuery = () => {
         return new URLSearchParams(useLocation().search);
@@ -138,13 +141,23 @@ const SubirComponent = () => {
                         id_itinerario: datosItinerario.id
                     });
 
+                    noti.fire({
+                        title: <strong>Exito!!</strong>,
+                        text: "Itinerario actualizado con éxito",
+                        icon: 'success',
+                        timer: 2000
+                    });
                 } catch (error) {
                     console.error('Error al actualizar el texto:', error);
-                    alert('Error al actualizar el texto');
+                    noti.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "No se pudo actualizar el itinerario",
+                        footer: "Pruebe de nuevo más tarde"
+                    })
                 }
             })
         }
-        alert('Itinerario actualizado con éxito');
 
         navigate("/misItinerarios");
 
@@ -201,11 +214,21 @@ const SubirComponent = () => {
 
                     } catch (error) {
                         console.error('Error al subir el texto:', error);
-                        alert('Error al subir el texto');
+                        noti.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "No se pudo subir el itinerario",
+                            footer: "Pruebe de nuevo más tarde"
+                        })
                     }
                 })
             }
-            alert('Itinerario subido con éxito');
+            noti.fire({
+                title: <strong>Exito!!</strong>,
+                text: "Itinerario subido con éxito",
+                icon: 'success',
+                timer: 2000
+            });
 
             navigate("/misItinerarios");
 
@@ -354,7 +377,6 @@ const SubirComponent = () => {
                                             }
                                         })}
 
-                                    // value={editaItinerario ? datosEditar.destino : ""}
 
                                     ></input>
 

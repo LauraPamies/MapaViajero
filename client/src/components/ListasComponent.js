@@ -35,6 +35,8 @@ const ListasComponent = () => {
             const personas = datosBusqueda.personas;
             const min = datosBusqueda.pre_min;
             const max = datosBusqueda.pre_max;
+            const cordX = coordenadaX;
+            const cordY = coordenadaY;
 
             // Construye la URL con los parámetros opcionales
             const queryParams = new URLSearchParams({
@@ -43,6 +45,8 @@ const ListasComponent = () => {
                 personas,
                 min,
                 max,
+                cordX,
+                cordY
             }).toString();
 
             navigate(`/mapa?${queryParams}`);
@@ -70,6 +74,10 @@ const ListasComponent = () => {
     const [itinerariosPrincipio, SetitinerariosPrincipio] = useState([]);
 
 
+    const [coordenadaX, setCordX] = useState(0);
+    const [coordenadaY, setCordY] = useState(0);
+
+
     const [favoritos, setFavoritos] = useState([]);
 
     const [Etiquetas, setEtiquetas] = useState(['Todo']);
@@ -83,8 +91,6 @@ const ListasComponent = () => {
         reset
     } = useForm()
 
-    const pre_min = watch('pre_min');
-    const pre_max = watch('pre_max');
 
 
     useEffect(() => {   //AL CARGAR LA PÁGINA
@@ -110,6 +116,14 @@ const ListasComponent = () => {
         cargarFavs();
 
     }, []);
+
+    useEffect(() => {
+        if (itinerarios.length > 0 && itinerarios[0].coordenadas && itinerarios[0].coordenadas.length > 0) {
+            console.log(itinerarios);
+            setCordX(itinerarios[0].coordenadas[0][0].x);
+            setCordY(itinerarios[0].coordenadas[0][0].y);
+        }
+    }, [itinerarios]);
 
     useEffect(() => {
         const todasEtiquetas = ['Todo', ...new Set(itinerariosPrincipio.map(itinerario => itinerario.etiqueta))];
@@ -377,15 +391,10 @@ const ListasComponent = () => {
                                                     required: {
                                                         value: true,
                                                         message: "Mínimo requerido"
-                                                    },
-                                                    validate: value =>
-                                                        value <= pre_max || "El valor no puede ser superior al máximo."
+                                                    }
                                                 })}
                                             ></input>
                                         </div>
-                                    </div>
-                                    <div>
-                                        {errors.pre_min && <span>{errors.pre_min.message}</span>}
                                     </div>
 
                                 </div>
@@ -399,19 +408,13 @@ const ListasComponent = () => {
                                                     required: {
                                                         value: true,
                                                         message: "Máximo requerido"
-                                                    },
-                                                    validate: value =>
-                                                        value >= pre_min || "El valor no puede ser inferior al mínimo."
+                                                    }
 
                                                 })}
                                             ></input>
                                         </div>
                                     </div>
 
-
-                                    <div>
-                                        {errors.pre_max && <span>{errors.pre_max.message}</span>}
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -423,11 +426,12 @@ const ListasComponent = () => {
                     </div>
                 </form>
 
+                {HaBuscado && (
                 <button id='botonmapa' onClick={ir_mapa}>
                     <img src={map_img} alt='logo' width={"25px"}></img>
                     Ver mapa
                 </button>
-
+                )}
 
                 <div className='filtros_y_itinerarios-listas'>
                     <div className='filtros_container-listas'>

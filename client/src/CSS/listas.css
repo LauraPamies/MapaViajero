@@ -126,6 +126,7 @@
   display: flex;
   align-items: flex-start;
   width: 90%;
+  margin-top: 60px;
 }
 
 .filtros_container-listas {

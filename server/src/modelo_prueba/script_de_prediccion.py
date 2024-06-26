@@ -28,10 +28,10 @@ def predict(destino, dias, viajeros):
     input_data_scaled = loaded_scaler.transform(input_data)
 
     # Hacer predicciones con el modelo cargado
-    predictions = loaded_model.predict(input_data_scaled)
+    prediccion = loaded_model.predict(input_data_scaled)
 
     # Devolver las predicciones como una lista de resultados
-    return predictions.tolist()
+    return prediccion.tolist()
 
 if __name__ == "__main__":
     # Recuperar los argumentos pasados desde Node.js
@@ -50,7 +50,7 @@ if __name__ == "__main__":
     results = predict(destino, dias, viajeros)
 
     # Crear un diccionario con las predicciones
-    predictions_dict = {'predictions': results}
+    predictions_dict = {'prediccion': results}
 
     # Imprimir el diccionario como JSON para que Node.js pueda leerlo
     print(json.dumps(predictions_dict))

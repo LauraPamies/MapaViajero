@@ -7,66 +7,6 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// //TODOS LOS ITINERARIOS
-// export const getItinerarios = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-//     try { //MANEJO DE ERRORES
-
-//         // throw new Error('sample') //MANDAR ERRORES DE PRUEBA
-
-//         console.log(req.body);
-//         const { orden } = req.body;
-//         //SI RECIBE PRECIO ASCENDENTE
-//         if (orden == "precio_asc") {
-//             console.log("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by precio ASC;");
-//             const [result] = await pool.query("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by precio ASC;")
-
-//             res.send(result);
-//         }
-
-//         //SI RECIBE PRECIO DESCENDENTE
-//         else if (orden == "precio_desc") {
-//             console.log("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by precio DESC;");
-//             const [result] = await pool.query("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by precio DESC;")
-
-//             res.send(result);
-//         }
-
-//         //SI RECIBE FECHA ASCENDENTE
-//         else if (orden == "fecha_asc") {
-//             console.log("select iti.id,titulo,fecha,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by fecha ASC;");
-//             const [result] = await pool.query("select iti.id,titulo,fecha,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by fecha ASC;")
-
-//             res.send(result);
-//         }
-
-//         //SI RECIBE FECHA DESCENDENTE
-//         else if (orden == "fecha_desc") {
-//             console.log("select iti.id,titulo,fecha,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by fecha DESC;");
-//             const [result] = await pool.query("select iti.id,titulo,fecha,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id  order by fecha DESC;")
-
-//             res.send(result);
-//         }
-
-//         else {
-//             console.log("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id;");
-
-//             const [result] = await pool.query("select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id;")
-
-//             res.send(result);
-//         }
-
-
-
-
-
-//     } catch (error) {
-//         return res.status(500).json({
-//             message: "Algo fue mal"
-//         })
-//     }
-
-// }
-
 
 export const getItinerariosRandom = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
     try { //MANEJO DE ERRORES
@@ -123,19 +63,19 @@ export const ItinerariosConcretos = async (req, res) => { //req = request, osea 
         let params = [];
 
         if (orden === "precio_asc") {
-            query = "select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name, nombre_foto, data from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? order by precio ASC;"
+            query = "select coordenadas, iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name, nombre_foto, data from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? order by precio ASC;"
             params = [destino, dias, personas, pre_min, pre_max];
         } else if (orden === "precio_desc") {
-            query = "select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name, nombre_foto, data from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? order by precio DESC;"
+            query = "select coordenadas, iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name, nombre_foto, data from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? order by precio DESC;"
             params = [destino, dias, personas, pre_min, pre_max];
         } else if (orden === "fecha_asc") {
-            query = "select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name, nombre_foto, data from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? order by fecha ASC;"
+            query = "select coordenadas, iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name, nombre_foto, data from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? order by fecha ASC;"
             params = [destino, dias, personas, pre_min, pre_max];
         } else if (orden === "fecha_desc") {
-            query = "select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name, nombre_foto, data from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? order by fecha DESC;"
+            query = "select coordenadas, iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name, nombre_foto, data from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? order by fecha DESC;"
             params = [destino, dias, personas, pre_min, pre_max];
         } else {
-            query = "select iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name, nombre_foto, data from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? ;"
+            query = "select coordenadas, iti.id,titulo,nombre_foto,etiqueta,dias,personas,precio,name, nombre_foto, data from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE titulo = ? AND dias = ? AND personas = ? AND precio between ? AND ? ;"
             params = [destino, dias, personas, pre_min, pre_max];
         }
 

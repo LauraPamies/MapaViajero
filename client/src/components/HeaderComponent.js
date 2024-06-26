@@ -11,14 +11,21 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
+{/* <FontAwesomeIcon icon={faHeart} style={{color: "#000000",}} /> */ }
+
+
 function HeaderComponent() {
     const location = useLocation(); //para saber la localización
 
-      const { pathname } = location;
+    const { pathname } = location;
+    const navigate = useNavigate();
 
-      //HEADER PARA LA CUENTA INICIADA
-      const isCuentaHeaderVisible = pathname === '/presupuesto' || pathname === '/listas' || pathname.startsWith('/itinerario/') || pathname === '/misItinerarios' || pathname === '/favoritos' || pathname === '/subirItinerario' || pathname.startsWith('/mapa') ;
-  
+    //HEADER PARA LA CUENTA INICIADA
+    const isCuentaHeaderVisible = pathname === '/presupuesto' || pathname === '/listas' || pathname.startsWith('/itinerario/') || pathname === '/misItinerarios' || pathname === '/favoritos' || pathname === '/subirItinerario' || pathname.startsWith('/mapa');
+
 
 
     return (
@@ -81,7 +88,9 @@ function CuentaHeader() {
 
     };
 
-
+    const handleFavoritosClick = () => {
+        navigate('/favoritos'); // Navega a la ruta '/favoritos'
+    };
 
 
     return (
@@ -90,7 +99,7 @@ function CuentaHeader() {
         <Navbar expand="lg" id="headercuenta" className="justify-content-between">
             <Container fluid className="custom-navbar-padding">
                 <Navbar.Brand className="d-flex align-items-center">
-                    <Link to="/">
+                    <Link to="/listas">
                         <img id="logo" src={logo} alt='logo' width={"108"}></img>
                     </Link>
                     <h1 id='titulomapa' className="ms-3 mb-0">MAPA VIAJERO</h1>
@@ -99,25 +108,28 @@ function CuentaHeader() {
                 <Navbar.Collapse id="basic-navbar-nav" className="">
                     <Nav className="me-auto mx-auto">
                         <NavDropdown title="Itinerarios" id="itinerarioslink">
-                            <NavDropdown.Item href="/listas">Listas</NavDropdown.Item>
-                            <NavDropdown.Item href="/mapa">Mapa</NavDropdown.Item>
+                            <NavDropdown.Item href="/listas">Buscar</NavDropdown.Item>
                             <NavDropdown.Divider />
                             <NavDropdown.Item href="/subirItinerario">Subir itinerario</NavDropdown.Item>
-                            <NavDropdown.Item href="/misItinerarios">Mis itinerarios</NavDropdown.Item>
                         </NavDropdown>
                         <Nav.Item className="mx-3">
                             <Nav.Link href="/presupuesto" id="presupuestolink">Predecir presupuesto</Nav.Link>
                         </Nav.Item>
                         <Nav.Item className="mx-3">
-                            <Nav.Link href="/contacto" id="contactolink">Contacto</Nav.Link>
+                            <Nav.Link href="/contacto" id="presupuestolink">Contacto</Nav.Link>
                         </Nav.Item>
                     </Nav>
                     <Nav className="ms-auto">
+
+                        <NavDropdown.Item href="/favoritos" className="icon-link">
+                                <FontAwesomeIcon icon={faHeart} className="icon" />
+                        </NavDropdown.Item>
+
+
                         <NavDropdown title={<img src={user} alt='logo' width={"72"} />} id="usuariolink">
-                            <NavDropdown.Item href="/favoritos">Favoritos</NavDropdown.Item>
-                            <NavDropdown.Item href="/chats">Chats</NavDropdown.Item>
-                            <NavDropdown.Divider />
                             <NavDropdown.Item href="/cuenta">Cuenta</NavDropdown.Item>
+                            <NavDropdown.Item href="/MisItinerarios">Mis itinerarios</NavDropdown.Item>
+                            <NavDropdown.Divider />
 
                             <NavDropdown.Item onClick={handleLogout}>Cerrar sesión</NavDropdown.Item>
                         </NavDropdown>

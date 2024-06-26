@@ -20,7 +20,9 @@
 
 }
 
-#itinerarioslink, #presupuestolink, #contactolink {
+#itinerarioslink,
+#presupuestolink,
+#contactolink {
     color: black;
     cursor: pointer;
     font-weight: bold;
@@ -28,6 +30,7 @@
     font-family: "Jost", sans-serif;
 
 }
+
 #registro {
     padding: 10px 20px;
     /* Ajusta el padding para el tamaño del botón */
@@ -56,10 +59,24 @@
     font-family: "Jost", sans-serif;
 }
 
-#headercuenta{
+#headercuenta {
     border-bottom: 3px #D9E1E7 solid;
 }
 
+.icon-link {
+    color: black;
+    margin-bottom: 30px;
+}
+
+.icon-link:hover .icon {
+    color: red;
+}
+
+.icon{
+    font-size: 30px;
+    padding-top: 30px;
+    padding-right: 30px;
+}
 
 /*
 -------------------------------------------------------------------------------
@@ -81,7 +98,10 @@
         display: none;
     }
 
-    #login, #itinerarioslink, #presupuestolink, #contactolink {
+    #login,
+    #itinerarioslink,
+    #presupuestolink,
+    #contactolink {
         font-weight: normal;
         text-decoration: underline;
         font-size: 25px;
@@ -100,10 +120,6 @@
         box-shadow: none;
     }
 
-   
-    
+
+
 }
-
-
-
-
