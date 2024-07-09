@@ -159,7 +159,7 @@ const SubirComponent = () => {
             })
         }
 
-        navigate("/misItinerarios");
+        navigate("/MisItinerarios");
 
     }
 

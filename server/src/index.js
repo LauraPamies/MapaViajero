@@ -9,7 +9,6 @@ import { dirname } from 'path';
 //IMPORTAMOS LAS RUTAS
 import usuarios_routes from "./routes/usuarios.routes.js"
 import itinerarios_routes from "./routes/itinerarios.routes.js"
-import images_routes from "./routes/images.routes.js"
 import prediccion_router from "./routes/prediccion.routes.js"
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,7 +22,6 @@ app.use(express.static(path.join(__dirname, 'dbimagenes')));
 //USAMOS LAS RUTAS IMPORTADAS
 app.use(usuarios_routes)
 app.use(itinerarios_routes)
-app.use(images_routes)
 app.use(prediccion_router)
 // app.use("Nombre de archivo rutas")
 
