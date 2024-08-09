@@ -1,8 +1,8 @@
 import { Router } from "express";
 
-import {ItinerariosConcretos,itinerario,textosItinerarioslimite,
-misItinerarios,getItinerariosRandom,favoritos,addFav,borrarFav,subirItinerario, 
-subirTextoItinerario,borrarItinerario,textosItinerarios_sin_limite,comprobarIti_Usuario,
+import {buscarItinerarios,getItinerario,getTextosItinerariosLimite,
+getMisItinerarios,getItinerariosAleatorios,getFavoritos,addFav,borrarFav,subirItinerario, 
+subirTextoItinerario,borrarItinerario,getTextosItinerarios_sin_limite,comprobarIti_Usuario,
 updateTextoItinerario, calcularCentroPoligono_y_coordenadas} from "../controllers/itinerarios.controller.js"
 
 
@@ -33,21 +33,20 @@ const fileUpload = multer({
 }).single('image');
 
 //DEFINIMOS LOS ENDPOINTS
-// router.post("/getItinerarios" , getItinerarios);
-router.post("/getItinerariosRandom" , getItinerariosRandom);
-router.post("/ItinerariosConcretos" , ItinerariosConcretos);
-router.get("/itinerario/:id" , itinerario);
-router.get("/textosItinerarioslimite/:id" , textosItinerarioslimite);
-router.get("/textosItinerarios_sin_limite/:id" , textosItinerarios_sin_limite);
-router.post("/misItinerarios" , misItinerarios);
-router.post("/favoritos" , favoritos);
+router.post("/getItinerariosAleatorios" , getItinerariosAleatorios);
+router.post("/buscarItinerarios" , buscarItinerarios);
+router.get("/getItinerario/:id" , getItinerario);
+router.get("/getTextosItinerariosLimite/:id" , getTextosItinerariosLimite);
+router.get("/getTextosItinerarios_sin_limite/:id" , getTextosItinerarios_sin_limite);
+router.post("/getMisItinerarios" , getMisItinerarios);
+router.post("/getFavoritos" , getFavoritos);
 router.post("/addFav" , addFav);
 router.post("/borrarFav" , borrarFav);
 router.post("/subirItinerario" ,fileUpload, subirItinerario);
+router.post("/updateTextoItinerario", updateTextoItinerario);
 router.post("/subirTextoItinerario", subirTextoItinerario);
 router.post("/borrarItinerario", borrarItinerario);
 router.post("/comprobarIti_Usuario", comprobarIti_Usuario);
-router.post("/updateTextoItinerario", updateTextoItinerario);
 router.post("/calcularCentroPoligono_y_coordenadas", calcularCentroPoligono_y_coordenadas);
 
 

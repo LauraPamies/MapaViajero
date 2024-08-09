@@ -143,11 +143,6 @@ const MapaComponent = () => {
                                         key={itinerario.id}
                                         positions={itinerario.coordenadas[0].map(coord => [coord.y, coord.x])}
                                         color='red'
-                                    // eventHandlers={{
-                                    //     click: () => {
-                                    //         handleItinerarioClick(itinerario.id);
-                                    //     }
-                                    // }}
 
                                     >
                                         <Popup>

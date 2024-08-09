@@ -8,11 +8,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 
-export const getItinerariosRandom = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try { //MANEJO DE ERRORES
-
-
-
+export const getItinerariosAleatorios = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
+    try {
         console.log("select iti.id,titulo,etiqueta,dias,personas,precio,name, nombre_foto, data from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id ORDER BY RAND() LIMIT 3;");
 
         const [result] = await pool.query("select iti.id,titulo,etiqueta,dias,personas,precio,name, nombre_foto, data from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id ORDER BY RAND() LIMIT 3;")
@@ -25,26 +22,6 @@ export const getItinerariosRandom = async (req, res) => { //req = request, osea 
 
         res.send(result);
 
-        // if (result.length === 0) {
-        //     // No se encontraron resultados, devolver arreglos vacíos
-        //     return res.json({ itinerarios: [], imagenes: [] });
-        // }
-
-        // // Array para almacenar los nombres de archivo de las imágenes asociadas a los itinerarios
-        // let imagenesdir = [];
-
-        // Iterar sobre los itinerarios recuperados
-
-
-        // // Respuesta con los itinerarios y las imágenes asociadas
-        // const response = {
-        //     itinerarios: result,
-        //     imagenes: imagenesdir
-        // };
-
-        // // Envía la respuesta con la información combinada
-        // res.json(response);
-
 
     } catch (error) {
         return res.status(500).json({
@@ -54,7 +31,7 @@ export const getItinerariosRandom = async (req, res) => { //req = request, osea 
 
 }
 
-export const ItinerariosConcretos = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
+export const buscarItinerarios = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
     try {
         console.log(req.body);
         const { destino, dias, personas, pre_min, pre_max, orden } = req.body;
@@ -90,14 +67,13 @@ export const ItinerariosConcretos = async (req, res) => { //req = request, osea 
 
     } catch (error) {
         console.error('Error en la consulta:', error);
-        // Manejo del error y devolución de respuesta apropiada
         res.status(500).json({ message: 'Ocurrió un error al procesar la solicitud' });
     }
 
 
 }
-//ITINERARIO POR ID de ITINERARIO
-export const itinerario = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
+
+export const getItinerario = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
     try { //MANEJO DE ERRORES
 
         // throw new Error('sample') //MANDAR ERRORES DE PRUEBA
@@ -119,10 +95,8 @@ export const itinerario = async (req, res) => { //req = request, osea los valore
 
 }
 
-export const textosItinerarioslimite = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try { //MANEJO DE ERRORES
-
-        // throw new Error('sample') //MANDAR ERRORES DE PRUEBA
+export const getTextosItinerariosLimite = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
+    try {
         const id = req.params.id;
         console.log(id);
 
@@ -140,10 +114,8 @@ export const textosItinerarioslimite = async (req, res) => { //req = request, os
 
 }
 
-export const textosItinerarios_sin_limite = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try { //MANEJO DE ERRORES
-
-        // throw new Error('sample') //MANDAR ERRORES DE PRUEBA
+export const getTextosItinerarios_sin_limite = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
+    try {
         const id = req.params.id;
         console.log(id);
 
@@ -161,7 +133,7 @@ export const textosItinerarios_sin_limite = async (req, res) => { //req = reques
 
 }
 
-export const misItinerarios = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
+export const getMisItinerarios = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
     try { //MANEJO DE ERRORES
 
         console.log(req.body);
@@ -200,7 +172,7 @@ export const misItinerarios = async (req, res) => { //req = request, osea los va
 }
 
 
-export const favoritos = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
+export const getFavoritos = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
     try {
         console.log(req.body);
         const { id_usuario, orden } = req.body;
@@ -236,18 +208,15 @@ export const favoritos = async (req, res) => { //req = request, osea los valores
 
     } catch (error) {
         console.error('Error en la consulta:', error);
-        // Manejo del error y devolución de respuesta apropiada
         res.status(500).json({ message: 'Ocurrió un error al procesar la solicitud' });
     }
 }
 
 export const addFav = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try { //MANEJO DE ERRORES
+    try {
         console.log(req.body);
         const { id_itinerario, id_usuario } = req.body;
-        //SI RECIBE PRECIO ASCENDENTE
         console.log("INSERT INTO favoritos (id_usuario, id_itinerario) VALUES ('" + id_usuario + "', '" + id_itinerario + "');");
-
 
         const [result] = await pool.query("INSERT INTO favoritos (id_usuario, id_itinerario) VALUES (?, ?);", [id_usuario, id_itinerario]);
 
@@ -294,7 +263,6 @@ export const subirItinerario = async (req, res) => { //req = request, osea los v
         }
 
         // Procesa y guarda el archivo de imagen en el servidor
-        const tipo = req.file.mimetype;
         const nombre = req.file.originalname;
         const data = fs.readFileSync(path.join(__dirname, '../images/' + req.file.filename));
 
