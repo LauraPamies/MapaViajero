@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import '../CSS/register.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 import '../CSS/favoritos.css';
@@ -9,14 +9,22 @@ import publi from '../images/Publi.png';
 
 //IMPORT NOTIFICACIONES
 import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { faHeartCircleMinus } from '@fortawesome/free-solid-svg-icons'
 
-
+// IMPORT IMAGENES
+import destino_img from '../images/Location.png';
+import calendar_img from '../images/Calendar.png';
+import people_img from '../images/People.png';
+import map_img from '../images/Map.png';
 
 const FavoritosComponent = () => {
+
+const noti = withReactContent(Swal)
+
 
     const opciones_ordenar = [
         { label: "Mas barato primero", value: "precio_asc" },
@@ -37,7 +45,7 @@ const FavoritosComponent = () => {
             navigate("/login");
         }
 
-
+       
         cargarFavs();
 
 
@@ -47,14 +55,14 @@ const FavoritosComponent = () => {
         var id_usuario = localStorage.getItem('userId');
 
         try {
-            const response = await axios.post('http://localhost:3050/getFavoritos', {
+            const response = await axios.post('http://localhost:3050/favoritos', {
                 id_usuario: id_usuario,
                 orden: "precio_asc"
             });
 
             setItinerariosfav(response.data);
             SetitinerariosfavPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
-
+           
 
 
         } catch (error) {
@@ -62,7 +70,7 @@ const FavoritosComponent = () => {
         }
     }
 
-
+    
     useEffect(() => {
         const todasEtiquetas = ['Todo', ...new Set(itinerariosfavPrincipio.map(itinerario => itinerario.etiqueta))];
         setEtiquetas(todasEtiquetas);
@@ -70,13 +78,13 @@ const FavoritosComponent = () => {
 
     const handleItinerarioClick = (id) => {
 
-        navigate(`/getItinerario/${id}`);
+        navigate(`/itinerario/${id}`);
     };
 
     const orden_cambiado = (async (event) => {
         var id_usuario = localStorage.getItem('userId');
         try {
-            const response = await axios.post('http://localhost:3050/getFavoritos', {
+            const response = await axios.post('http://localhost:3050/favoritos', {
                 orden: event.target.value,
                 id_usuario: id_usuario
             });
@@ -101,7 +109,7 @@ const FavoritosComponent = () => {
 
     }
 
-    const borrarFav = (id_itinerario) => {
+    const borrarFav = (id_itinerario) =>{
         Swal.fire({
             title: "Confirmar",
             text: "Eliminar de favoritos",
@@ -112,16 +120,16 @@ const FavoritosComponent = () => {
             confirmButtonText: "Si, eliminar",
             cancelButtonText: "Cancelar"
 
-        }).then((result) => {
+          }).then((result) => {
             if (result.isConfirmed) {
 
                 borrarFavAceptado(id_itinerario);
 
             }
-        });
+          });
     };
 
-    const borrarFavAceptado = (async (id_itinerario) => {
+    const borrarFavAceptado = (async (id_itinerario) =>{
         var id_usuario = localStorage.getItem('userId');
 
         try {
@@ -129,7 +137,7 @@ const FavoritosComponent = () => {
                 id_itinerario: id_itinerario,
                 id_usuario: id_usuario
             });
-            cargarFavs();
+        cargarFavs();
 
 
         } catch (error) {
@@ -138,7 +146,7 @@ const FavoritosComponent = () => {
     });
 
 
-
+   
 
     return (
         <div className='Listasdiv'>
@@ -186,7 +194,7 @@ const FavoritosComponent = () => {
                             <div key={itinerario.id_itinerario} id='itinerario-card-complete-favs'>
                                 <div className="itinerario-card-favs" >
                                     <div className="image-container">
-                                        <img
+                                    <img
                                             src={`http://localhost:3050/${itinerario.nombre_foto}`}
                                             alt={itinerario.nombre_foto}
                                             className="itinerario-imagen-favs"
@@ -206,7 +214,7 @@ const FavoritosComponent = () => {
                                         </div>
                                     </div>
                                     <div className="heart-container">
-                                        <button onClick={() => borrarFav(itinerario.id_itinerario)} id='fav-icon-red'><FontAwesomeIcon icon={faHeartCircleMinus} /></button>
+                                    <button onClick={()=>borrarFav(itinerario.id_itinerario)} id='fav-icon-red'><FontAwesomeIcon icon={faHeartCircleMinus} /></button>
 
 
                                     </div>

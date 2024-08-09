@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {Document, Page, Text, View, PDFViewer } from '@react-pdf/renderer';
+import { pdf, Document, Page, Text, View, Image, PDFViewer } from '@react-pdf/renderer';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const InfoPDF = () => {
@@ -8,6 +8,7 @@ const InfoPDF = () => {
     const [itinerario, setItinerario] = useState(null);
     const [textosItinerario, setTextoItinerario] = useState([]);
     const navigate = useNavigate();
+    const [pdfFileName, setPdfFileName] = useState('nombre_archivo.pdf');
 
 
     useEffect(() => {
@@ -16,8 +17,10 @@ const InfoPDF = () => {
                 if (localStorage.getItem('isLoggedIn') !== 'true') {
                     navigate("/login");
                 } else {
-                    const itinerarioResponse = await axios.get(`http://localhost:3050/getItinerario/${id}`);
+                    const itinerarioResponse = await axios.get(`http://localhost:3050/itinerario/${id}`);
                     setItinerario(itinerarioResponse.data);
+                    // const tituloItinerario = itinerarioResponse.data.titulo;
+                    // setPdfFileName(`${tituloItinerario}.pdf`);
                     await obtenerTextosComoAutor(id);
 
                 }
@@ -32,7 +35,7 @@ const InfoPDF = () => {
 
     const obtenerTextosComoAutor = async (id) => {
         try {
-            const response = await axios.get(`http://localhost:3050/getTextosItinerarios_sin_limite/${id}`);
+            const response = await axios.get(`http://localhost:3050/textosItinerarios_sin_limite/${id}`);
             setTextoItinerario(response.data);
         } catch (error) {
             console.error('Error mostrando textos como autor:', error);
