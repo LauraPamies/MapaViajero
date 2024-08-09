@@ -91,12 +91,12 @@ const SubirComponent = () => {
 
     const sacarDatosItinerario = async (id) => {
         try {
-            const itinerarioResponse = await axios.get(`http://localhost:3050/itinerario/${id}`);
+            const itinerarioResponse = await axios.get(`http://localhost:3050/getItinerario/${id}`);
             // setDatosEditar(itinerarioResponse.data);
             setDatosItinerario(itinerarioResponse.data)
             console.log(itinerarioResponse.data);
             try {
-                const response = await axios.get(`http://localhost:3050/textosItinerarios_sin_limite/${id}`);
+                const response = await axios.get(`http://localhost:3050/getTextosItinerarios_sin_limite/${id}`);
 
                 console.log(response.data);
                 setTextoItinerario(response.data);

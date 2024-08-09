@@ -101,7 +101,7 @@ const ListasComponent = () => {
 
         async function fetchData() {
             try {
-                const response = await axios.post('http://localhost:3050/getItinerariosRandom');
+                const response = await axios.post('http://localhost:3050/getItinerariosAleatorios');
                 // console.log(response.data);
                 setItinerarios(response.data);
                 SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
@@ -134,7 +134,7 @@ const ListasComponent = () => {
     async function cargarFavs() {
         var id_usuario = localStorage.getItem('userId');
         try {
-            const response = await axios.post('http://localhost:3050/favoritos', {
+            const response = await axios.post('http://localhost:3050/getFavoritos', {
                 id_usuario: id_usuario
             });
             setFavoritos(response.data);
@@ -204,7 +204,7 @@ const ListasComponent = () => {
 
 
         try {
-            const response = await axios.post('http://localhost:3050/ItinerariosConcretos', {
+            const response = await axios.post('http://localhost:3050/buscarItinerarios', {
                 destino: datosBusqueda.destino,
                 dias: datosBusqueda.dias,
                 personas: datosBusqueda.personas,
@@ -237,7 +237,7 @@ const ListasComponent = () => {
         setDatosBusqueda(data);
         setHaBuscado(true);
         try {
-            const response = await axios.post('http://localhost:3050/ItinerariosConcretos', {
+            const response = await axios.post('http://localhost:3050/buscarItinerarios', {
                 destino: data.destino,
                 dias: data.dias,
                 personas: data.personas,

@@ -60,7 +60,7 @@ const MisItinerariosComponent = () => {
 
     async function cargarItinerarios() {
         try {
-            const response = await axios.post('http://localhost:3050/misItinerarios', {
+            const response = await axios.post('http://localhost:3050/getMisItinerarios', {
                 autor_id: localStorage.getItem('userId')
             });
             setItinerarios(response.data);
@@ -83,7 +83,7 @@ const MisItinerariosComponent = () => {
 
 
         try {
-            const response = await axios.post('http://localhost:3050/misItinerarios', {
+            const response = await axios.post('http://localhost:3050/getMisItinerarios', {
                 autor_id: localStorage.getItem('userId'),
                 orden: event.target.value
             });

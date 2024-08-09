@@ -17,7 +17,7 @@ const InfoPDF = () => {
                 if (localStorage.getItem('isLoggedIn') !== 'true') {
                     navigate("/login");
                 } else {
-                    const itinerarioResponse = await axios.get(`http://localhost:3050/itinerario/${id}`);
+                    const itinerarioResponse = await axios.get(`http://localhost:3050/getItinerario/${id}`);
                     setItinerario(itinerarioResponse.data);
                     // const tituloItinerario = itinerarioResponse.data.titulo;
                     // setPdfFileName(`${tituloItinerario}.pdf`);
@@ -35,7 +35,7 @@ const InfoPDF = () => {
 
     const obtenerTextosComoAutor = async (id) => {
         try {
-            const response = await axios.get(`http://localhost:3050/textosItinerarios_sin_limite/${id}`);
+            const response = await axios.get(`http://localhost:3050/getTextosItinerarios_sin_limite/${id}`);
             setTextoItinerario(response.data);
         } catch (error) {
             console.error('Error mostrando textos como autor:', error);

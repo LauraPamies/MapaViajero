@@ -60,7 +60,7 @@ const MapaComponent = () => {
 
     async function cargarItinerarios() {
         try {
-            const response = await axios.post('http://localhost:3050/ItinerariosConcretos', {
+            const response = await axios.post('http://localhost:3050/buscarItinerarios', {
                 destino: destino,
                 dias: dias,
                 personas: personas,

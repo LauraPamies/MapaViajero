@@ -36,7 +36,7 @@ const IitinerarioInfo = () => {
                 navigate("/login");
             } else {
                 try {
-                    const itinerarioResponse = await axios.get(`/itinerario/${id}`);
+                    const itinerarioResponse = await axios.get(`/getItinerario/${id}`);
                     setItinerario(itinerarioResponse.data);
                     comprobarCreador(itinerarioResponse.data);
 
@@ -81,7 +81,7 @@ const IitinerarioInfo = () => {
 
     const obtenerTextosComoAutor = async (id) => {
         try {
-            const response = await axios.get(`/textosItinerarios_sin_limite/${id}`);
+            const response = await axios.get(`/getTextosItinerarios_sin_limite/${id}`);
 
             console.log(response.data);
             setTextoItinerario(response.data);
@@ -92,7 +92,7 @@ const IitinerarioInfo = () => {
 
     const obtenerTextosComoUsuario = async (id) => {
         try {
-            const response = await axios.get(`/textosItinerarioslimite/${id}`);
+            const response = await axios.get(`/getTextosItinerariosLimite/${id}`);
             setTextoItinerario(response.data);
         } catch (error) {
             console.error('Error mostrando textos como usuario:', error);

@@ -55,7 +55,7 @@ const noti = withReactContent(Swal)
         var id_usuario = localStorage.getItem('userId');
 
         try {
-            const response = await axios.post('http://localhost:3050/favoritos', {
+            const response = await axios.post('http://localhost:3050/getFavoritos', {
                 id_usuario: id_usuario,
                 orden: "precio_asc"
             });
@@ -84,7 +84,7 @@ const noti = withReactContent(Swal)
     const orden_cambiado = (async (event) => {
         var id_usuario = localStorage.getItem('userId');
         try {
-            const response = await axios.post('http://localhost:3050/favoritos', {
+            const response = await axios.post('http://localhost:3050/getFavoritos', {
                 orden: event.target.value,
                 id_usuario: id_usuario
             });
