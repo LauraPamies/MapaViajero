@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { useLocation } from 'react-router-dom';
 
@@ -9,9 +9,8 @@ import '../CSS/misitinerarios.css';
 import publi from '../images/Publi.png';
 
 // LEAFLET
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polygon } from 'react-leaflet';
+import { MapContainer, TileLayer, Popup, Polygon } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import * as L from "leaflet";
 import 'leaflet/dist/leaflet.css';
 import "leaflet.heat";
 
@@ -60,14 +59,13 @@ const MapaComponent = () => {
 
     async function cargarItinerarios() {
         try {
-            const response = await axios.post('http://localhost:3050/ItinerariosConcretos', {
+            const response = await axios.post('http://localhost:3050/buscarItinerarios', {
                 destino: destino,
                 dias: dias,
                 personas: personas,
                 pre_min: min,
                 pre_max: max
             });
-            // console.log(response.data);
             setItinerarios(response.data);
             SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
 

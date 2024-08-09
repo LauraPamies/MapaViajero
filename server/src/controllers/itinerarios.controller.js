@@ -15,10 +15,6 @@ export const getItinerariosAleatorios = async (req, res) => { //req = request, o
         const [result] = await pool.query("select iti.id,titulo,etiqueta,dias,personas,precio,name, nombre_foto, data from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id ORDER BY RAND() LIMIT 3;")
 
 
-        result.map(img => {
-            fs.writeFileSync(path.join(__dirname, '../dbimagenes/' + img.nombre_foto), img.data)
-
-        })
 
         res.send(result);
 
@@ -58,10 +54,6 @@ export const buscarItinerarios = async (req, res) => { //req = request, osea los
 
         const [result] = await pool.query(query, params);
 
-        result.map(img => {
-            fs.writeFileSync(path.join(__dirname, '../dbimagenes/' + img.nombre_foto), img.data)
-
-        })
 
         res.send(result);
 
@@ -199,10 +191,7 @@ export const getFavoritos = async (req, res) => { //req = request, osea los valo
 
         const [result] = await pool.query(query, params);
 
-        result.map(img => {
-            fs.writeFileSync(path.join(__dirname, '../dbimagenes/' + img.nombre_foto), img.data)
-
-        })
+      
 
         res.send(result);
 
@@ -264,6 +253,7 @@ export const subirItinerario = async (req, res) => { //req = request, osea los v
 
         // Procesa y guarda el archivo de imagen en el servidor
         const nombre = req.file.originalname;
+        const filePath = path.join(__dirname, '../images/' + req.file.filename);
         const data = fs.readFileSync(path.join(__dirname, '../images/' + req.file.filename));
 
 
@@ -271,7 +261,14 @@ export const subirItinerario = async (req, res) => { //req = request, osea los v
 
 
         res.send(result);
-
+        
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error('Error al borrar el archivo:', err);
+            } else {
+                console.log(`Archivo ${req.file.filename} borrado correctamente.`);
+            }
+        });
 
 
     } catch (error) {

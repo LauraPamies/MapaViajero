@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../CSS/login.css';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 //IMPORT NOTIFICACIONES
@@ -20,8 +20,6 @@ import { useForm } from "react-hook-form";
 
 const noti = withReactContent(Swal)
 
-
-
 const LoginComponent = () => {
 
     //MOSTRAR / OCULTAR CONTRASEÑAS
@@ -33,20 +31,11 @@ const LoginComponent = () => {
 
     const navigate = useNavigate();
 
-    // const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado para verificar si el usuario está logueado
-
     //FORMULARIO
     const { register, handleSubmit,
-        formState: { errors },
-        watch,
-        reset
+        formState: { errors }
     } = useForm({
-        // defaultValues: {
-        //     name : "Longa",
-        //     password :123456
-        // }
     })
-
 
     // Verificar si hay una sesión activa al cargar el componente
     //SE LLAMA DESPUÉS DE RENDERIZAR EL COMPONENTE
@@ -143,12 +132,6 @@ const LoginComponent = () => {
                         />
                         Mostrar contraseña
                     </label>
-
-
-                    {/* OLVIDAR CONTRASEÑA */}
-                    {/* <a id="olvidar" >Olvidé mi contraseña</a> */}
-                    
-                    
 
                     {/* REDES SOCIALES */}
                     <div id='redes'>

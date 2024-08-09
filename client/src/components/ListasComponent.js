@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import '../CSS/register.css';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 import '../CSS/listas.css';
@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { faHeart, faHeartCircleMinus, faHeartCirclePlus } from '@fortawesome/free-solid-svg-icons'
+import { faHeartCircleMinus, faHeartCirclePlus } from '@fortawesome/free-solid-svg-icons'
 
 // IMPORT IMAGENES
 import destino_img from '../images/Location.png';
@@ -25,8 +25,6 @@ import people_img from '../images/People.png';
 import map_img from '../images/Map.png';
 
 const ListasComponent = () => {
-
-    const noti = withReactContent(Swal)
 
     const ir_mapa = () => {
         if (HaBuscado) {
@@ -55,10 +53,7 @@ const ListasComponent = () => {
             navigate(`/mapa`);
 
         }
-
-
     };
-
 
     const opciones_ordenar = [
         { label: "Mas barato primero", value: "precio_asc" },
@@ -86,9 +81,7 @@ const ListasComponent = () => {
     const navigate = useNavigate();
     //FORMULARIO
     const { register, handleSubmit,
-        formState: { errors },
-        watch,
-        reset
+        formState: { errors }
     } = useForm()
 
 
@@ -101,11 +94,9 @@ const ListasComponent = () => {
 
         async function fetchData() {
             try {
-                const response = await axios.post('http://localhost:3050/getItinerariosRandom');
-                // console.log(response.data);
+                const response = await axios.post('http://localhost:3050/getItinerariosAleatorios');
                 setItinerarios(response.data);
                 SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
-                // setImagenes(response.data.imagenes);
 
             } catch (error) {
                 console.error('Error al obtener los itinerarios:', error);
@@ -134,7 +125,7 @@ const ListasComponent = () => {
     async function cargarFavs() {
         var id_usuario = localStorage.getItem('userId');
         try {
-            const response = await axios.post('http://localhost:3050/favoritos', {
+            const response = await axios.post('http://localhost:3050/getFavoritos', {
                 id_usuario: id_usuario
             });
             setFavoritos(response.data);
@@ -204,7 +195,7 @@ const ListasComponent = () => {
 
 
         try {
-            const response = await axios.post('http://localhost:3050/ItinerariosConcretos', {
+            const response = await axios.post('http://localhost:3050/buscarItinerarios', {
                 destino: datosBusqueda.destino,
                 dias: datosBusqueda.dias,
                 personas: datosBusqueda.personas,
@@ -214,7 +205,6 @@ const ListasComponent = () => {
             });
             setItinerarios(response.data);
             SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
-            // setImagenes(response.data.imagenes);
         } catch (error) {
             console.error('Error al obtener los itinerarios:', error);
         }
@@ -237,7 +227,7 @@ const ListasComponent = () => {
         setDatosBusqueda(data);
         setHaBuscado(true);
         try {
-            const response = await axios.post('http://localhost:3050/ItinerariosConcretos', {
+            const response = await axios.post('http://localhost:3050/buscarItinerarios', {
                 destino: data.destino,
                 dias: data.dias,
                 personas: data.personas,
@@ -247,7 +237,6 @@ const ListasComponent = () => {
             });
             setItinerarios(response.data);
             SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
-            // setImagenes(response.data.imagenes);
         } catch (error) {
             console.error('Error al obtener los itinerarios:', error);
         }
@@ -427,10 +416,10 @@ const ListasComponent = () => {
                 </form>
 
                 {HaBuscado && (
-                <button id='botonmapa' onClick={ir_mapa}>
-                    <img src={map_img} alt='logo' width={"25px"}></img>
-                    Ver mapa
-                </button>
+                    <button id='botonmapa' onClick={ir_mapa}>
+                        <img src={map_img} alt='logo' width={"25px"}></img>
+                        Ver mapa
+                    </button>
                 )}
 
                 <div className='filtros_y_itinerarios-listas'>
