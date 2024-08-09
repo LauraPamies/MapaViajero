@@ -1,9 +1,9 @@
 // import React from 'react';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import '../CSS/header.css';
 import logo from '../images/logo.png';
 import user from '../images/User.png';
-import { Link, Navigate, useNavigate, useLocation, matchPath } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 
 import Container from 'react-bootstrap/Container';
@@ -14,19 +14,15 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
-{/* <FontAwesomeIcon icon={faHeart} style={{color: "#000000",}} /> */ }
 
 
 function HeaderComponent() {
     const location = useLocation(); //para saber la localización
 
     const { pathname } = location;
-    const navigate = useNavigate();
 
     //HEADER PARA LA CUENTA INICIADA
     const isCuentaHeaderVisible = pathname === '/presupuesto' || pathname === '/listas' || pathname.startsWith('/itinerario/') || pathname === '/MisItinerarios' || pathname === '/misItinerarios' || pathname === '/favoritos' || pathname === '/subirItinerario' || pathname.startsWith('/mapa');
-
-
 
     return (
         //DEVUELVE UN TIPO DE HEADER DISTINTO DEPENDIENDO DE LA UBICACIÓN DONDE ESTEMOS
@@ -88,11 +84,6 @@ function CuentaHeader() {
 
     };
 
-    const handleFavoritosClick = () => {
-        navigate('/favoritos'); // Navega a la ruta '/favoritos'
-    };
-
-
     return (
 
 
@@ -116,7 +107,7 @@ function CuentaHeader() {
                             <Nav.Link href="/presupuesto" id="presupuestolink">Predecir presupuesto</Nav.Link>
                         </Nav.Item>
                         <Nav.Item className="mx-3">
-                            <Nav.Link href="/contacto" id="presupuestolink">Contacto</Nav.Link>
+                            <Nav.Link  id="presupuestolink">Contacto</Nav.Link>
                         </Nav.Item>
                     </Nav>
                     <Nav className="ms-auto">
@@ -137,10 +128,6 @@ function CuentaHeader() {
                 </Navbar.Collapse>
             </Container>
         </Navbar>
-
-
-
-
 
 
     );

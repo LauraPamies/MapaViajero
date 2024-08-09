@@ -3,15 +3,11 @@ import axios from "axios";
 import publi_hori from '../images/publi_horizontal.png';
 import publi from '../images/Publi.png';
 import '../CSS/itinerarioInfo.css';
-import chat from '../images/chat_icon.png';
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
-import { pdf, Document, Page, Text, View, Image, PDFViewer } from '@react-pdf/renderer';
-import { saveAs } from 'file-saver';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // LEAFLET
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polygon } from 'react-leaflet';
+import { MapContainer, TileLayer,Polygon } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import * as L from "leaflet";
 import 'leaflet/dist/leaflet.css';
 import "leaflet.heat";
 
@@ -23,7 +19,6 @@ const IitinerarioInfo = () => {
     const [puntoMedio, setPuntoMedio] = useState({ x: 0, y: 0 });
     const [coordenadas, setCoordenadas] = useState([]);
     const mapRef = useRef(null);
-    const [pdfFileName, setPdfFileName] = useState('nombre_archivo.pdf');
 
     const navigate = useNavigate();
 
@@ -36,7 +31,7 @@ const IitinerarioInfo = () => {
                 navigate("/login");
             } else {
                 try {
-                    const itinerarioResponse = await axios.get(`/itinerario/${id}`);
+                    const itinerarioResponse = await axios.get(`/getItinerario/${id}`);
                     setItinerario(itinerarioResponse.data);
                     comprobarCreador(itinerarioResponse.data);
 
@@ -81,7 +76,7 @@ const IitinerarioInfo = () => {
 
     const obtenerTextosComoAutor = async (id) => {
         try {
-            const response = await axios.get(`/textosItinerarios_sin_limite/${id}`);
+            const response = await axios.get(`/getTextosItinerarios_sin_limite/${id}`);
 
             console.log(response.data);
             setTextoItinerario(response.data);
@@ -92,7 +87,7 @@ const IitinerarioInfo = () => {
 
     const obtenerTextosComoUsuario = async (id) => {
         try {
-            const response = await axios.get(`/textosItinerarioslimite/${id}`);
+            const response = await axios.get(`/getTextosItinerariosLimite/${id}`);
             setTextoItinerario(response.data);
         } catch (error) {
             console.error('Error mostrando textos como usuario:', error);
@@ -104,8 +99,6 @@ const IitinerarioInfo = () => {
     }
 
     const handleBotonDescargar = () => {
-
-        // navigate(`/infoPDF/${id}`);
         window.open(`/infoPDF/${id}`);
     };
 
@@ -124,9 +117,6 @@ const IitinerarioInfo = () => {
                     <p id='personas_dias-info'>{itinerario.personas} personas</p>
                     <p className='itinerario-precio-info'>{itinerario.precio}€</p>
                 </div>
-
-
-
 
                 <button id='empieza' onClick={() => handleBotonDescargar()}>Descargar</button>
 

@@ -4,14 +4,10 @@ import bcrypt from 'bcryptjs';
 
 
 export const loginUsuario = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try { //MANEJO DE ERRORES
+    try { 
 
-        // throw new Error('sample') //MANDAR ERRORES DE PRUEBA
         const { email, password } = req.body;
 
-        //OTRA MANERA DE COGER LOS VALORES
-        // const email = req.body.email;
-        // const password = req.body.password;
 
         const [busqueda] = await pool.query("Select password from usuarios where email = ?", [email]);
 
@@ -28,8 +24,6 @@ export const loginUsuario = async (req, res) => { //req = request, osea los valo
             throw new Error('sample') //MANDAR ERRORES DE PRUEBA
 
         }
-
-        // res.send(result);
     } catch (error) {
         return res.status(500).json({
             message: "Algo fue mal"
