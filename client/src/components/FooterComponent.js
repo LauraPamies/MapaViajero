@@ -1,5 +1,13 @@
+// import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../CSS/footer.css';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useLocation, matchPath } from 'react-router-dom';
+
+
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
 import insta from '../images/instadark.png';
 import twitter from '../images/twitterdark.png';
@@ -13,6 +21,8 @@ function HeaderComponent() {
     //HEADER PARA LA CUENTA INICIADA
     const isCuentaFooterVisible = pathname === '/presupuesto' || pathname === '/listas' || pathname.startsWith('/itinerario/') || pathname === '/misItinerarios' || pathname === '/favoritos' || pathname === '/subirItinerario' || pathname.startsWith('/mapa') ;
 
+
+
     return (
         //DEVUELVE UN TIPO DE HEADER DISTINTO DEPENDIENDO DE LA UBICACIÓN DONDE ESTEMOS
         <header>
@@ -22,7 +32,10 @@ function HeaderComponent() {
         </header>
     );
 
+
+
 }
+
 
 
 function NoFooter() {
@@ -34,6 +47,10 @@ function NoFooter() {
 }
 
 function CuentaFooter() {
+
+    const navigate = useNavigate();
+
+
     return (
         <div id='contenedor-footer'>
             <div id='sup-footer'>

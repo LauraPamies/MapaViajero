@@ -32,7 +32,6 @@ const fileUpload = multer({
     storage: diskstorage
 }).single('image');
 
-
 //DEFINIMOS LOS ENDPOINTS
 router.post("/getItinerariosAleatorios" , getItinerariosAleatorios);
 router.post("/buscarItinerarios" , buscarItinerarios);
