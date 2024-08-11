@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 
-export const getItinerariosAleatorios = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
+export const getItinerariosAleatorios = async (req, res) => {
     try {
         console.log("select iti.id,titulo,etiqueta,dias,personas,precio,name, nombre_foto, data from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id ORDER BY RAND() LIMIT 3;");
 
@@ -31,7 +31,7 @@ export const getItinerariosAleatorios = async (req, res) => { //req = request, o
 
 }
 
-export const buscarItinerarios = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
+export const buscarItinerarios = async (req, res) => {
     try {
         console.log(req.body);
         const { destino, dias, personas, pre_min, pre_max, orden } = req.body;
@@ -73,17 +73,14 @@ export const buscarItinerarios = async (req, res) => { //req = request, osea los
 
 }
 
-export const getItinerario = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try { //MANEJO DE ERRORES
-
-        // throw new Error('sample') //MANDAR ERRORES DE PRUEBA
+export const getItinerario = async (req, res) => { 
+    try {
         const id = req.params.id;
         console.log(id);
 
         console.log("select iti.id,titulo,nombre_foto,data,etiqueta,dias,personas,precio,name,autor_id from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE iti.id = " + id + ";");
         const [result] = await pool.query("select iti.id,titulo,nombre_foto,data,etiqueta,dias,personas,precio,name, autor_id from itinerarios AS iti INNER JOIN usuarios AS us ON iti.autor_id = us.id WHERE iti.id = ?;", [id])
 
-        // console.log(result[0]);
         res.send(result[0]);
 
 
@@ -95,7 +92,7 @@ export const getItinerario = async (req, res) => { //req = request, osea los val
 
 }
 
-export const getTextosItinerariosLimite = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
+export const getTextosItinerariosLimite = async (req, res) => {
     try {
         const id = req.params.id;
         console.log(id);
@@ -114,8 +111,8 @@ export const getTextosItinerariosLimite = async (req, res) => { //req = request,
 
 }
 
-export const getTextosItinerarios_sin_limite = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try {
+export const getTextosItinerarios_sin_limite = async (req, res) => {
+        try {
         const id = req.params.id;
         console.log(id);
 
@@ -133,8 +130,8 @@ export const getTextosItinerarios_sin_limite = async (req, res) => { //req = req
 
 }
 
-export const getMisItinerarios = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try { //MANEJO DE ERRORES
+export const getMisItinerarios = async (req, res) => {
+        try {
 
         console.log(req.body);
         let query = "";
@@ -172,8 +169,8 @@ export const getMisItinerarios = async (req, res) => { //req = request, osea los
 }
 
 
-export const getFavoritos = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try {
+export const getFavoritos = async (req, res) => {
+        try {
         console.log(req.body);
         const { id_usuario, orden } = req.body;
 
@@ -212,8 +209,8 @@ export const getFavoritos = async (req, res) => { //req = request, osea los valo
     }
 }
 
-export const addFav = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try {
+export const addFav = async (req, res) => {
+        try {
         console.log(req.body);
         const { id_itinerario, id_usuario } = req.body;
         console.log("INSERT INTO favoritos (id_usuario, id_itinerario) VALUES ('" + id_usuario + "', '" + id_itinerario + "');");
@@ -232,8 +229,8 @@ export const addFav = async (req, res) => { //req = request, osea los valores qu
 
 }
 
-export const borrarFav = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try { //MANEJO DE ERRORES
+export const borrarFav = async (req, res) => {
+        try {
         console.log(req.body);
         const { id_itinerario, id_usuario } = req.body;
 
@@ -252,8 +249,8 @@ export const borrarFav = async (req, res) => { //req = request, osea los valores
 
 }
 
-export const subirItinerario = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try {
+export const subirItinerario = async (req, res) => {
+        try {
 
         const { destino, fecha, dias, personas, precio, autor_id, etiqueta, coordenadas } = req.body;
 
@@ -282,8 +279,8 @@ export const subirItinerario = async (req, res) => { //req = request, osea los v
 }
 
 
-export const updateTextoItinerario = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try {
+export const updateTextoItinerario = async (req, res) => {
+        try {
 
         const { texto_dia, titulo_dia, id_itinerario, num_dia } = req.body;
 
@@ -301,8 +298,8 @@ export const updateTextoItinerario = async (req, res) => { //req = request, osea
 
 
 
-export const subirTextoItinerario = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try {
+export const subirTextoItinerario = async (req, res) => {
+        try {
 
         const { num_dia, titulo_dia, texto_dia, id_itinerario } = req.body;
 
@@ -324,8 +321,8 @@ export const subirTextoItinerario = async (req, res) => { //req = request, osea 
 }
 
 
-export const borrarItinerario = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try { //MANEJO DE ERRORES
+export const borrarItinerario = async (req, res) => {
+        try {
 
         console.log(req.body);
         let query = "";
@@ -349,8 +346,8 @@ export const borrarItinerario = async (req, res) => { //req = request, osea los 
 }
 
 
-export const comprobarIti_Usuario = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try { //MANEJO DE ERRORES
+export const comprobarIti_Usuario = async (req, res) => {
+        try {
 
         console.log(req.body);
         let query = "";
@@ -380,8 +377,8 @@ export const comprobarIti_Usuario = async (req, res) => { //req = request, osea 
 
 }
 
-export const calcularCentroPoligono_y_coordenadas = async (req, res) => { //req = request, osea los valores que manda el usuario.   res = respuesta, osea la respuesta del servidor
-    try {
+export const calcularCentroPoligono_y_coordenadas = async (req, res) => {
+        try {
 
         console.log(req.body);
         let query = "";

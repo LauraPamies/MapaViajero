@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import '../CSS/register.css';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 import '../CSS/favoritos.css';
@@ -15,15 +15,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { faHeartCircleMinus } from '@fortawesome/free-solid-svg-icons'
 
-// IMPORT IMAGENES
-import destino_img from '../images/Location.png';
-import calendar_img from '../images/Calendar.png';
-import people_img from '../images/People.png';
-import map_img from '../images/Map.png';
+
 
 const FavoritosComponent = () => {
 
-const noti = withReactContent(Swal)
 
 
     const opciones_ordenar = [

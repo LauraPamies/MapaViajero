@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 
 
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 //IMPORT NOTIFICACIONES
 import Swal from 'sweetalert2'
@@ -23,7 +23,6 @@ import calendar_img from '../images/calendar35.png';
 const PredecirpresupuestoComponent = () => {
 
     const navigate = useNavigate();
-    const [prediccion, setPrediccion] = useState(null);
 
     const noti = withReactContent(Swal)
 
@@ -37,24 +36,18 @@ const PredecirpresupuestoComponent = () => {
 
     //FORMULARIO
     const { register, handleSubmit,
-        formState: { errors },
-        watch,
-        reset
+        formState: { errors }
     } = useForm()
 
 
     const onSubmit = handleSubmit(async (data) => {
-
-        console.log(data);
-
         try {
             const responseItinerario = await axios.post('http://localhost:3050/predecir', {
                 destino: parseInt(data.destino, 10),
                 dias: parseInt(data.dias, 10),
                 viajeros: parseInt(data.personas, 10)
             });
-            var numero = Math.round(responseItinerario.data.prediccion[0]); 
-            setPrediccion(numero);
+            var numero = Math.round(responseItinerario.data.prediccion[0]);
         
             // Mostrar el número en un pop-up usando sweetalert2
             noti.fire({

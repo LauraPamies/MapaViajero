@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 
 import '../CSS/register.css';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 import '../CSS/misitinerarios.css';
@@ -12,7 +12,6 @@ import publi from '../images/Publi.png';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
-import { useForm } from "react-hook-form";
 import View_img from '../images/View.png';
 import Edit_img from '../images/edit.png';
 import Delete_img from '../images/Delete.png';
@@ -22,7 +21,6 @@ import Delete_img from '../images/Delete.png';
 const MisItinerariosComponent = () => {
 
     const navigate = useNavigate();
-    const noti = withReactContent(Swal)
 
 
     const [itinerarios, setItinerarios] = useState([]);
@@ -89,7 +87,6 @@ const MisItinerariosComponent = () => {
             });
             setItinerarios(response.data);
             SetitinerariosPrincipio(response.data);//Duplica el array para que haya uno que los tenga todos siempre(el itinerariosPrincipio) y otro con los filtrados
-            // setImagenes(response.data.imagenes);
         } catch (error) {
             console.error('Error al obtener los itinerarios:', error);
         }

@@ -1,9 +1,6 @@
 import React from 'react';
 import '../CSS/landing.css';
 import imgcanoa from '../images/img-canoa.png';
-// import imgmapa from '../images/img-mapa.png';
-// import imgpatio from '../images/img-patio.png';
-// import avion from '../images/avion.png';
 import imagenes from '../images/imagenes.png';
 import flecha from '../images/flecha-icon.png';
 import { Link } from 'react-router-dom';

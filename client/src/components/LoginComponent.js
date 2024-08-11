@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../CSS/login.css';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 //IMPORT NOTIFICACIONES
@@ -33,18 +33,11 @@ const LoginComponent = () => {
 
     const navigate = useNavigate();
 
-    // const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado para verificar si el usuario está logueado
 
     //FORMULARIO
     const { register, handleSubmit,
-        formState: { errors },
-        watch,
-        reset
+        formState: { errors }
     } = useForm({
-        // defaultValues: {
-        //     name : "Longa",
-        //     password :123456
-        // }
     })
 
 
@@ -143,12 +136,6 @@ const LoginComponent = () => {
                         />
                         Mostrar contraseña
                     </label>
-
-
-                    {/* OLVIDAR CONTRASEÑA */}
-                    {/* <a id="olvidar" >Olvidé mi contraseña</a> */}
-                    
-                    
 
                     {/* REDES SOCIALES */}
                     <div id='redes'>

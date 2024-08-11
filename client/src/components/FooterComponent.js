@@ -1,13 +1,8 @@
 // import React from 'react';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import '../CSS/footer.css';
-import { Link, Navigate, useNavigate, useLocation, matchPath } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 
 import insta from '../images/instadark.png';
 import twitter from '../images/twitterdark.png';
@@ -47,9 +42,6 @@ function NoFooter() {
 }
 
 function CuentaFooter() {
-
-    const navigate = useNavigate();
-
 
     return (
         <div id='contenedor-footer'>

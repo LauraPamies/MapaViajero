@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 import '../CSS/register.css';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { useLocation } from 'react-router-dom';
 
@@ -10,9 +10,8 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 // LEAFLET
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polygon } from 'react-leaflet';
+import { MapContainer, TileLayer, useMapEvents, Polygon } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import * as L from "leaflet";
 import 'leaflet/dist/leaflet.css';
 import "leaflet.heat";
 
@@ -20,17 +19,13 @@ import '../CSS/subir.css';
 import publi from '../images/Publi.png';
 
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { useForm } from "react-hook-form";
-
-import { faHeartCircleMinus, faL } from '@fortawesome/free-solid-svg-icons'
 
 // IMPORT IMAGENES
 import destino_img from '../images/Location.png';
 import calendar_img from '../images/Calendar.png';
 import people_img from '../images/People.png';
-import tempIcon from '../images/tempMarkerIcon.png';
 
 const SubirComponent = () => {
 
@@ -92,9 +87,7 @@ const SubirComponent = () => {
     const sacarDatosItinerario = async (id) => {
         try {
             const itinerarioResponse = await axios.get(`http://localhost:3050/getItinerario/${id}`);
-            // setDatosEditar(itinerarioResponse.data);
-            setDatosItinerario(itinerarioResponse.data)
-            console.log(itinerarioResponse.data);
+            setDatosItinerario(itinerarioResponse.data);
             try {
                 const response = await axios.get(`http://localhost:3050/getTextosItinerarios_sin_limite/${id}`);
 
@@ -113,15 +106,12 @@ const SubirComponent = () => {
 
     //FORMULARIO
     const { register, handleSubmit,
-        formState: { errors },
-        watch,
-        reset
+        formState: { errors }
     } = useForm()
 
 
     const onSubmit = handleSubmit(async (data) => {
 
-        console.log(data);
         setDatosItinerario(data);
         setHaBuscado(true);
     });
@@ -246,7 +236,6 @@ const SubirComponent = () => {
     };
 
     const elegirFoto = e => {
-        // console.log(e.target.files[0]);
         setFile(e.target.files[0]);
     }
 
@@ -257,18 +246,14 @@ const SubirComponent = () => {
         });
         return null;
     };
-    // Función para manejar el clic en el mapa cuando se está dibujando el polígono
     const handleClickMapa = (e) => {
-        // Agrega la posición del clic a las coordenadas del polígono
         setCoordenadasPoligono([...coordenadasPoligono, e.latlng]);
-        // Si se han agregado cuatro puntos, detén el dibujo del polígono
         if (coordenadasPoligono.length === 4) {
             resetPoligono();
         }
 
     };
 
-    // Función para dibujar el polígono en el mapa
     const dibujarPoligono = () => {
         return (
             <Polygon positions={coordenadasPoligono} color="red" />

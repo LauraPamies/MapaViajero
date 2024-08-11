@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../CSS/register.css';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 
@@ -37,10 +37,6 @@ const RegisterComponent = () => {
         watch,
         reset
     } = useForm({
-        // defaultValues: {
-        //     name : "Longa",
-        //     password :123456
-        // }
     })
 
     const onSubmit = handleSubmit((data) => {
