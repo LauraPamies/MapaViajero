@@ -116,7 +116,7 @@ function CuentaHeader() {
                             <Nav.Link href="/presupuesto" id="presupuestolink">Predecir presupuesto</Nav.Link>
                         </Nav.Item>
                         <Nav.Item className="mx-3">
-                            <Nav.Link href="/contacto" id="presupuestolink">Contacto</Nav.Link>
+                            <Nav.Link id="presupuestolink">Contacto</Nav.Link>
                         </Nav.Item>
                     </Nav>
                     <Nav className="ms-auto">
@@ -127,7 +127,7 @@ function CuentaHeader() {
 
 
                         <NavDropdown title={<img src={user} alt='logo' width={"72"} />} id="usuariolink">
-                            <NavDropdown.Item href="/cuenta">Cuenta</NavDropdown.Item>
+                            <NavDropdown.Item >Cuenta</NavDropdown.Item>
                             <NavDropdown.Item href="/MisItinerarios">Mis itinerarios</NavDropdown.Item>
                             <NavDropdown.Divider />
 

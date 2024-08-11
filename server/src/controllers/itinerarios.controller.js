@@ -257,6 +257,7 @@ export const subirItinerario = async (req, res) => { //req = request, osea los v
 
         const { destino, fecha, dias, personas, precio, autor_id, etiqueta, coordenadas } = req.body;
 
+        var etiquetaCap = etiqueta.charAt(0).toUpperCase() + etiqueta.slice(1).toLowerCase();
 
         if (!req.file) {
             return res.status(400).json({ message: "No se ha recibido ningún archivo de imagen" });
@@ -267,7 +268,7 @@ export const subirItinerario = async (req, res) => { //req = request, osea los v
         const data = fs.readFileSync(path.join(__dirname, '../images/' + req.file.filename));
 
 
-        const [result] = await pool.query("INSERT INTO itinerarios (titulo, fecha, dias, personas, precio, autor_id, etiqueta, nombre_foto, data,coordenadas) VALUES (?, ? ,? ,?, ?, ?, ?, ?, ?, ST_GeomFromText(?));", [destino, fecha, dias, personas, precio, autor_id, etiqueta, nombre, data, coordenadas]);
+        const [result] = await pool.query("INSERT INTO itinerarios (titulo, fecha, dias, personas, precio, autor_id, etiqueta, nombre_foto, data,coordenadas) VALUES (?, ? ,? ,?, ?, ?, ?, ?, ?, ST_GeomFromText(?));", [destino, fecha, dias, personas, precio, autor_id, etiquetaCap, nombre, data, coordenadas]);
 
 
         res.send(result);

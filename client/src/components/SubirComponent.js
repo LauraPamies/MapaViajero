@@ -159,7 +159,7 @@ const SubirComponent = () => {
             })
         }
 
-        navigate("/MisItinerarios");
+        navigate("/listas");
 
     }
 
@@ -230,7 +230,7 @@ const SubirComponent = () => {
                 timer: 2000
             });
 
-            navigate("/misItinerarios");
+            navigate("/listas");
 
         } catch (error) {
             // Si ocurre un error, mostrar un mensaje de error
